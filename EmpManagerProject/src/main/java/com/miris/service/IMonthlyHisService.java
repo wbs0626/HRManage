@@ -8,4 +8,6 @@ public interface IMonthlyHisService {
 	public List<MonthVO> monEmpAllList();
 	
 	//public List<MonthVO> monEmpSearch(MonthVO mvo);
+	
+	public List<MonthVO> monEmpDateSearch(MonthVO mvo);
 }

@@ -19,8 +19,5 @@ public class MonthVO {
 	private int state; // DB상에는 1: C 2: P
 	private String month_remarks;
 	
-
-	
-	
 }
 	

@@ -17,6 +17,10 @@ public class MonthlyHisService implements IMonthlyHisService {
 		return mdao.monEmpAllList();
 	}
 	
+	public List<MonthVO> monEmpDateSearch(MonthVO mvo) {
+		return mdao.monEmpDateSearch(mvo);
+	}
+	
 	/*
 	 * public List<MonthVO> monEmpSearch(MonthVO mvo) { String id; int section;
 	 * String name; String rank; String b_name; int year; int month; int state;

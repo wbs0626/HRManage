@@ -112,8 +112,9 @@
 							</tr>
 						</thead>
 						<tbody>
+							
 							<tr style="text-align: center;">
-								<td><input type="checkbox"></td>
+								<td><input type="checkbox" ></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -133,6 +134,7 @@
 								<td></td>
 								<td></td>
 							</tr>
+							
 						</tbody>
 					</table>
 				</div>

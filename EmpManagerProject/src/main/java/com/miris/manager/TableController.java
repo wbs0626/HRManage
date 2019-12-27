@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.miris.service.HistoryService;
 import com.miris.service.LocService;
+import com.miris.service.MonthlyHisService;
+import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
 
 @Controller
@@ -22,6 +24,8 @@ public class TableController {
 	private LocService ls;
 	@Autowired
 	private HistoryService hs;
+	@Autowired
+	private MonthlyHisService ms;
 	
 	@RequestMapping("tables/tables.do")
 	public String empAllocate(Model model) {
@@ -37,6 +41,8 @@ public class TableController {
 	@RequestMapping("tables/inputCurrentState.do")
 	public String currentState(Model model) {
 
+		MonthVO mvo = new MonthVO();
+		
 		Calendar calendar = new GregorianCalendar(Locale.KOREA);
 		int nYear = calendar.get(Calendar.YEAR);
 		int nMonth = calendar.get(Calendar.MONTH) + 1;
@@ -44,11 +50,8 @@ public class TableController {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("baseYear", nYear);
 		map.put("baseMonth", nMonth);
-		System.out.println(map);
 		
 		MonthlyRateVO rvo = hs.operationRate(map);
-		
-		System.out.println(rvo);
 		
 		int total = rvo.getMTotal();
 		int possible = rvo.getMPossible();
@@ -56,7 +59,16 @@ public class TableController {
 		double operRate = (Math.round(tmp * 100) / 100.0);
 		
 		rvo.setRate(operRate);
-		model.addAttribute(rvo);
+		
+		mvo.setBaseYear(nYear);
+		mvo.setBaseMonth(nMonth);
+		
+		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
+		
+		
+		// 초기값 설정
+		model.addAttribute("rvo", rvo);
+		
 		
 		return "tables/inputCurrentState";
 	}
