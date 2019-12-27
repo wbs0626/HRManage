@@ -1,0 +1,168 @@
+// Call the dataTables jQuery plugin
+
+$(document).ready(function() {
+	
+	// 날짜 초기값...
+	document.getElementById('hdate').value = new Date().toISOString().substring(0, 10);
+	
+	/*$.fn.dataTable.ext.search.push (
+			function (settings, data, dataIndex) {
+				var searchDate = Date.parse($('#hdate2').val());
+				var targetDate = Date.parse(data[5]);
+				
+				if( isNaN(searchDate) ||
+						targetDate < searchDate) {
+					return true;
+				}
+				return false;
+			}
+	)
+	*/
+	
+	// 날짜별 근무 상태표
+	$("#searchBtn").on("click", function(){
+		$.ajax ({
+			url : 'tables/dailyEmpStateCount.do',
+			data : $('#searchForm').serialize(),
+			type : 'POST',
+			success : function(res) {
+				$("#stateContent td").remove();
+				var str = '<td>' + res.total + '</td>';
+				str += '<td>' + res.work + '</td>';
+				str += '<td>' + res.vacation + '</td>';
+				str += '<td>' + res.business_trip + '</td>';
+				str += '<td>' + res.others + '</td>';
+				$("#stateContent").append(str);
+			}
+		})
+	});
+	
+	function popupOpen(id){
+		var url= "empLog.do?id="+id;    //팝업창에 출력될 페이지 URL
+		var winWidth = 400;
+	    var winHeight = 300;
+	    var popupOption= "width="+winWidth+", height="+winHeight;    //팝업창 옵션(optoin)
+	    var myWindow = window.open(url,"testName",popupOption);
+	}
+	
+	/*
+	 * l - length changing input control
+		f - filtering input
+		t - The table!
+		i - Table information summary
+		p - pagination control
+		r - processing display element
+	 */
+	
+	
+	// 데이터테이블 라이브러리 호출부
+	var table = $('#dataTable').DataTable({
+		"lengthChange":false,
+		//order : [ [ 열 번호, "정렬 순서"] ]
+		"order": [],
+		"serverside":true,
+		"processing":true,
+		"ajax": {
+			"url":"tables/table_data.do",
+			"type":"post",
+			"dataSrc":function(res) {
+				var data = res.data;
+				return data;
+			}
+		},
+		// row 안에 정보가 다 있는듯
+		
+		columns: [
+			{data: "emp_name",
+				"render" : function(data, type, row) {
+					if(type == 'display') {
+						var url = "empLog.do?id=" + row.id;
+						var winWidth = 100;
+					    var winHeight = 300;
+					    var option = "_blank";
+						
+						data = 
+							'<a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' 
+								+ data + 
+							'</a>';
+					}
+					return data;
+				}
+				
+			},
+			{data: "rank"},
+			{data: "depart_name"},
+			{data: "state",
+				"render": function(data, type, row) {
+					if(data == 1) {
+						return "근무";
+					} else if(data == 2) {
+						return "휴가";
+					} else if(data == 3) {
+						return "출장";
+					} else {
+						return "기타";
+					}
+				}
+			},
+			{data: "loc_addr"},
+			{data: "htime"}
+		],
+		
+			columnDef: [{
+				
+		}],
+		
+		"language": {
+            "emptyTable": "데이터가 없어요.",
+            "lengthMenu": "페이지당 _MENU_ 개씩 보기",
+            "info": "현재 _START_ - _END_ / _TOTAL_건",
+            "infoEmpty": "데이터 없음",
+            "infoFiltered": "( _MAX_건의 데이터에서 필터링됨 )",
+            "search": "  에서 검색: ",
+            "zeroRecords": "일치하는 데이터가 없어요.",
+            "loadingRecords": "로딩중...",
+            "processing": "잠시만 기다려 주세요...",
+            "paginate": {
+                "next": "다음",
+                "previous": "이전"
+            }
+        },
+        
+        dom: 'bfrtip',
+        
+		buttons: [{
+            extend: 'csvHtml5',
+            text: 'Export CSV',
+            footer: false,
+            bom: true,
+            className: 'exportCSV'
+        }]
+		
+		
+	});
+	
+	/*$('#dataTable tbody').on( 'click', 'tr', function () {
+	    //var str = JSON.stringify(table.row(this).data());
+		var data = table.row( this ).data();
+		
+	    console.log("id값 : " + table.row(this).data().id);
+	} );*/
+	
+	/* Column별 검색기능 추가 */
+    $('#dataTable_filter').prepend('<select id="select"></select>');
+    $('#dataTable > thead > tr').children().each(function (indexInArray, valueOfElement) { 
+        $('#select').append('<option>'+valueOfElement.innerHTML+'</option>');
+    });
+    
+    $('.dataTables_filter input').unbind().bind('keyup', function () {
+        var colIndex = document.querySelector('#select').selectedIndex;
+        table.column(colIndex).search(this.value).draw();
+    });
+    
+    /*$('#dataTable_filter').prepend('<input type="date" id="hdate" placeholder="yyyy-MM-dd"> ');
+    $('#hdate').unbind().bind('keyup',function(){
+        table.draw();
+    })*/
+    
+});
