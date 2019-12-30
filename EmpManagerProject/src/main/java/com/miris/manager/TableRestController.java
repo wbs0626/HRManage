@@ -72,7 +72,7 @@ public class TableRestController {
 	public MonthlyRateVO monthRate(MonthVO mvo) {
 		MonthlyRateVO rvo = new MonthlyRateVO();
 		
-		//System.out.println(mvo);
+		System.out.println(mvo);
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("baseYear", mvo.getBaseYear());
@@ -92,15 +92,13 @@ public class TableRestController {
 		return rvo;
 	}
 	
-	// 월별 인력 정보 전체
-	@RequestMapping("tables/monEmpAllData.do")
-	public List<MonthVO> monEmpAllData(MonthVO mvo) {
-		List<MonthVO> mlist = ms.monEmpAllList();
+	@RequestMapping("tables/empMonthDataFind.do")
+	public List<MonthVO> empMonthDataFind(MonthVO mvo) {
+		List<MonthVO> list = new ArrayList<MonthVO>();
 		
+		list = ms.monEmpDataFind(mvo);
 		
-		return mlist;
+		return list;
 	}
-	
-	
 	
 }

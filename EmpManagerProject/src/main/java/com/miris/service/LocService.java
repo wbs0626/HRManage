@@ -9,7 +9,7 @@ import com.miris.dao.LocDAO;
 import com.miris.vo.LocVO;
 
 @Service
-public class LocService implements ILocService{
+public class LocService {
 	@Autowired
 	private LocDAO ldao;
 	

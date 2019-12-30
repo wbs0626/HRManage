@@ -43,8 +43,8 @@
 								<td>${rvo.MPossible }</td>
 								<td>${rvo.MInput1 }</td>
 								<td></td>
-								<td>${rvo.MWait }</td>
-								<td>${rvo.rate }</td>
+								<td>${rvo.MWait } </td>
+								<td>${rvo.rate } %</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -61,11 +61,11 @@
 					<form id="empMonthForm" style="margin: 20px 0px 20px 0px;">
 						<div>
 							기준년도 : <select id="baseYear" name="baseYear">
-								<option>전체</option>
-								<option>2019</option>
+								<option value="2019">2019</option>
+								<option value="2020">2020</option>
 							</select>
 							기준월 : <select id="baseMonth" name="baseMonth">
-								<option>전체</option>
+								<option value="0">전체</option>
 							</select>
 							구분 : <select id="select" name="select">
 								<option value = "0">전체</option>
@@ -111,10 +111,28 @@
 								<td>비고</td>
 							</tr>
 						</thead>
-						<tbody>
-							
-							<tr style="text-align: center;">
-								<td><input type="checkbox" ></td>
+						<tbody id = "empMonthData"  style="text-align: center;">
+							<c:forEach items="${mList }" var = "mlist" varStatus="m">
+							<tr>
+								<td>
+									<input type="checkbox" value="${mlist.id }">
+								</td>
+								<c:choose>
+									<c:when test="${mlist.section == 1}">
+										<td>내부</td>
+									</c:when>
+									<c:when test="${mlist.section == 2}">
+										<td>외부</td>
+									</c:when>
+									<c:otherwise>
+										<td></td>
+									</c:otherwise>
+								</c:choose>										
+								<td><a href="">${mlist.emp_name }</a></td>
+								<td>${mlist.rank }</td>
+								<td>${mlist.business_name }</td>
+								<td>${mlist.site_name }</td>
+								<!-- 상태 값 들어가야되는 부분 -->
 								<td></td>
 								<td></td>
 								<td></td>
@@ -127,16 +145,17 @@
 								<td></td>
 								<td></td>
 								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<!-- 상태 END -->
+								<td>${mlist.month_remarks }</td>
 							</tr>
-							
+							</c:forEach>
 						</tbody>
 					</table>
+					<!-- <div>
+						<ul class="Pagination">
+						
+						</ul>
+					</div> -->
 				</div>
 			</div>
 		</div>
@@ -147,39 +166,92 @@
 <script type="text/javascript">
 $(document).ready(function() {	
 	const MONTHS = 12;
+	const NOWYEAR = new Date().getFullYear();
+	const NOWMONTH = new Date().getMonth() + 1;
 	
 	for(var i = 0; i < MONTHS; i++) {
-		$('#baseMonth').append('<option>'+ (i + 1) +'</option>');
+		$("#baseMonth").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
 	}
-	
-	
+	/* select box Init */
+	$("#baseYear option[value='"+ NOWYEAR +"']").attr("selected", true);
+	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
+
 	
 	$("#infoSearch").on("click", function(){
 		
-		if($('#baseYear').val() != "전체" && $('#baseMonth').val() != "전체") {
-
-			$.ajax({
-				url : 'operation_rate.do',
-				data : $('#empMonthForm').serialize(),
-				type : 'POST',
-				success : function(res) {
-					$('#monthRateData td').remove();
-					var str = '<td>' + res.mtotal + '</td>';
-					str += '<td>' + res.mexcept + '</td>';
-					str += '<td>' + res.mpossible + '</td>';
-					str += '<td>' + res.minput1 + '</td>';
-					str += '<td>' + '</td>';
-					str += '<td>' + res.mwait + '</td>';
-					str += '<td>' + res.rate + '</td>';
-					str += '<td>' + '</td>';
-					$("#monthRateData").append(str);
-					//alert(JSON.stringify(res));
-				},
-				error : function(res) {
-					alert ("AJAX 가동률테이블 오류");
-				}
-			});
-		}
+		$.ajax({
+			url : 'operation_rate.do',
+			data : $('#empMonthForm').serialize(),
+			type : 'POST',
+			success : function(res) {
+				$('#monthRateData td').remove();
+				let str = '<td>' + res.mtotal + '</td>';
+				str += '<td>' + res.mexcept + '</td>';
+				str += '<td>' + res.mpossible + '</td>';
+				str += '<td>' + res.minput1 + '</td>';
+				str += '<td>' + '</td>';
+				str += '<td>' + res.mwait + '</td>';
+				str += '<td>' + res.rate + ' %</td>';
+				str += '<td>' + '</td>';
+				$("#monthRateData").append(str);
+				//console.log(JSON.stringify(res));
+			},
+			error : function(res) {
+				alert ("AJAX 가동률테이블 오류");
+			}
+		});
+		
+		$.ajax({
+			url : 'empMonthDataFind.do',
+			data : $('#empMonthForm').serialize(),
+			type : 'POST',
+			success : function(emp) {
+				$("#empMonthData tr").remove();
+				
+				$.each(emp, function(index, emp) {
+					if(emp.section == 1) {
+						emp.section = "내부";
+					} else if (emp.section == 2) {
+						emp.section = "외부";
+					}
+					
+					if(emp.business_name == null) {
+						emp.business_name = "";
+					}
+					if(emp.site_name == null) {
+						emp.site_name = "";
+					}
+					if(emp.month_remarks == null) {
+						emp.month_remarks = "";
+					}
+					
+					
+					var url = "../empYearHistory.do?id=" + emp.id;
+					var winWidth = 100;
+				    var winHeight = 300;
+				    var option = "_blank";
+				    
+				    let str = '<tr>';
+				    str += '<td><input type="checkbox" value="'+ emp.id +'">' + '</td>';
+				    str += '<td>' + emp.section + '</td>';
+				    str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
+					str += '<td>' + emp.rank + '</td>';
+					str += '<td>' + emp.business_name + '</td>';
+					str += '<td>' + emp.site_name + '</td>';
+					for (let a = 0; a < MONTHS; a++) {
+						str += '<td>' + '</td>';
+					}
+					str += '<td>' + emp.month_remarks + '</td>';
+					str += '</tr>'
+					$("#empMonthData").append(str);
+					//console.log(JSON.stringify(emp));
+				});
+			},
+			error : function(res) {
+				alert ("AJAX 가동률테이블 오류");
+			}
+		});
+			
 			
 	});
 	

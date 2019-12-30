@@ -11,7 +11,7 @@ import com.miris.dto.EmpDataTableDTO;
 import com.miris.vo.EmpVO;
 
 @Service
-public class EmpService implements IEmpService {
+public class EmpService {
 
 	final static int LOGIN = 1;
 	final static int PWD_INCORRECT = 2;

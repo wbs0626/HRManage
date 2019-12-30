@@ -12,7 +12,7 @@ import com.miris.vo.HistoryVO;
 import com.miris.vo.MonthlyRateVO;
 
 @Service
-public class HistoryService implements IHistoryService {
+public class HistoryService {
 	@Autowired
 	private HistoryDAO hdao;
 	
@@ -34,4 +34,5 @@ public class HistoryService implements IHistoryService {
 	public MonthlyRateVO operationRate(Map<String, Integer> map) {
 		return hdao.operationRate(map);
 	}
+	
 }

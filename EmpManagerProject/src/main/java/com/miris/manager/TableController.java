@@ -62,21 +62,24 @@ public class TableController {
 		
 		mvo.setBaseYear(nYear);
 		mvo.setBaseMonth(nMonth);
-		
+		 
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
-		
+		//List<MonthVO> mList = ms.monEmpAllList();
 		
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);
-		
+		model.addAttribute("mList", mList);
 		
 		return "tables/inputCurrentState";
 	}
 	
+	// 인력 등록 화면
 	@RequestMapping("empIns.do")
 	public String empIns() {
 		
 		
 		return "empIns";
 	}
+	
+	
 }

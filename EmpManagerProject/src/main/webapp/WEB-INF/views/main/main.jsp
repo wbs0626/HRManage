@@ -19,7 +19,7 @@
 			<li class="breadcrumb-item active">Main</li>
 		</ol>
 		
-		<!-- DataTables Example -->
+		<!-- Page Body -->
 		<div class="card mb-3">
 			<div class="card-header">
 				<i class="fa fa-building-o"></i> 메인 화면
@@ -50,7 +50,7 @@
 								<td>${mvo.MInput1 }</td>
 								<td></td>
 								<td>${mvo.MWait }</td>
-								<td>${mvo.rate }</td>
+								<td>${mvo.rate } %</td>
 								<td></td>
 							</tr>
 						</tbody>
@@ -71,7 +71,7 @@
 						<tbody>
 							<tr style="text-align: center;">
 								<td>${hvo.total }</td>
-								<td>${hvo.work }</td>
+								<td>${hvo.work + hvo.business_trip }</td>
 								<td>${hvo.vacation }</td>
 								<td>${hvo.others }</td>
 							</tr>

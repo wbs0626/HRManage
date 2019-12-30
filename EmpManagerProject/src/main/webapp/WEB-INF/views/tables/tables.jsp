@@ -110,7 +110,7 @@ $(document).ready(function() {
 					type : 'POST',
 					success : function(res) {
 						$("#stateContent td").remove();
-						var str = '<td>' + res.total + '</td>';
+						let str = '<td>' + res.total + '</td>';
 						str += '<td>' + res.work + '</td>';
 						str += '<td>' + res.vacation + '</td>';
 						str += '<td>' + res.business_trip + '</td>';
@@ -153,7 +153,7 @@ $(document).ready(function() {
 				    var winHeight = 300;
 				    var option = "_blank";
 					
-					var str = '<tr>';
+					let str = '<tr>';
 					str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
 					str += '<td>' + emp.rank + '</td>';
 					str += '<td>' + emp.depart_name + '</td>';

@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/*
+ * 	직원의 월별 정보
+ */
+
 @Getter
 @Setter
 @ToString
@@ -14,6 +18,7 @@ public class MonthVO {
 	private String emp_name;
 	private String rank;
 	private String business_name;
+	private String site_name;
 	private int baseYear;
 	private int baseMonth;
 	private int state; // DB상에는 1: C 2: P

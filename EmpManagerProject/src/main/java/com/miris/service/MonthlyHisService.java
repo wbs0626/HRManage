@@ -1,6 +1,6 @@
 package com.miris.service;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,45 +9,36 @@ import com.miris.dao.MonthlyHisDAO;
 import com.miris.vo.MonthVO;
 
 @Service
-public class MonthlyHisService implements IMonthlyHisService {
+public class MonthlyHisService {
 	@Autowired
 	private MonthlyHisDAO mdao;
-	
-	public List<MonthVO> monEmpAllList() {
-		return mdao.monEmpAllList();
-	}
-	
+
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo) {
 		return mdao.monEmpDateSearch(mvo);
 	}
 	
-	/*
-	 * public List<MonthVO> monEmpSearch(MonthVO mvo) { String id; int section;
-	 * String name; String rank; String b_name; int year; int month; int state;
-	 * 
-	 * id = mvo.getId(); section = mvo.getSection(); name = mvo.getEmp_name(); rank
-	 * = mvo.getRank(); b_name = mvo.getBusiness_name(); year = mvo.getBaseYear();
-	 * month = mvo.getBaseMonth(); state = mvo.getState();
-	 * 
-	 * 
-	 * 
-	 * return null; }
-	 */
-
-//	public List<MonthVO> monEmpYearSearch(MonthVO mvo) {
-//		return mdao.monEmpYearSearch(mvo);
-//	}
-//
-//	public List<MonthVO> monEmpDateSearch(MonthVO mvo) {
-//		return mdao.monEmpDateSearch(mvo);
-//	}
-//
-//	public List<MonthVO> monEmpSectionSearch(MonthVO mvo) {
-//		return mdao.monEmpSectionSearch(mvo);
-//	}
-//
-//	public List<MonthVO> monEmpDateSectionSearch(MonthVO mvo) {
-//		return mdao.monEmpDateSectionSearch(mvo);
-//	}
-
+	public List<MonthVO> monEmpDataFind(MonthVO mvo) {
+		int section = mvo.getSection();
+		String name = mvo.getEmp_name();
+		String rank = mvo.getRank();
+		String bname = mvo.getBusiness_name();
+		
+		if(section != 0 && name.isEmpty() == true && rank.equals("전체") && bname == null) {
+			System.out.println("구분 검색");
+			return mdao.monEmpSectionSearch(mvo);
+		} else if(section == 0 && name.isEmpty() == false && rank.equals("전체") && bname == null) {
+			System.out.println("이름 검색");
+			return mdao.monEmpNameSearch(mvo);
+		} else if (section == 0 && name.isEmpty() == true && !rank.equals("전체") && bname == null) {
+			System.out.println("직위 검색");
+			return mdao.monEmpRankSearch(mvo);
+		} else if (section == 0 && name.isEmpty() == true && rank.equals("전체") && bname != null) {
+			System.out.println("업무 검색");
+			return mdao.monEmpBNameSearch(mvo);
+		} else {
+			System.out.println("날짜 검색");
+			return mdao.monEmpDateSearch(mvo);
+		}
+		
+	}
 }

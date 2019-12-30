@@ -9,7 +9,7 @@ import com.miris.dao.DepartDAO;
 import com.miris.vo.DepartVO;
 
 @Service
-public class DeptService implements IDeptservice{
+public class DeptService {
 	@Autowired
 	private DepartDAO ddao;
 

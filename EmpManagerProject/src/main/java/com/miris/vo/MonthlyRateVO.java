@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/*
+ *  월별 인원 가동률
+ */
+
 @Getter
 @Setter
 @ToString
