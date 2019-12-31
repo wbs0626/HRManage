@@ -67,7 +67,7 @@
 							기준월 : <select id="baseMonth" name="baseMonth">
 								<option value="0">전체</option>
 							</select>
-							구분 : <select id="select" name="select">
+							구분 : <select id="select" name="section">
 								<option value = "0">전체</option>
 								<option value = "1">내부</option>
 								<option value = "2">외부</option>
@@ -87,7 +87,7 @@
 							 id="infoSearch" name="infoSearch" value="조회" style="float: right;"> 
 						</div>
 					</form>
-					<table class="table table-bordered" style="border: 1px solid;">
+					<table class="table table-bordered" style="border: 1px solid red;">
 						<thead>
 							<tr class="table-active" style="text-align: center;">
 								<td><input type="checkbox" id="infoChkAll"></td>
@@ -128,12 +128,28 @@
 										<td></td>
 									</c:otherwise>
 								</c:choose>										
-								<td><a href="">${mlist.emp_name }</a></td>
+								<td>
+									<a href="../empYearHistory.do?id=${mlist.id }" width="200" height="300" target="_blank">${mlist.emp_name }</a>
+								</td>
 								<td>${mlist.rank }</td>
 								<td>${mlist.business_name }</td>
 								<td>${mlist.site_name }</td>
 								<!-- 상태 값 들어가야되는 부분 -->
-								<td></td>
+								<c:choose>
+									<c:when test="${mlist.state == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+										<td style="background-color: green; font-weight: bold;">
+											C	
+										</td>
+									</c:when>
+									<c:when test="${mlist.state == 2}">
+										<td style="background-color: lightskyblue; font-weight: bold;">
+											P	
+										</td>
+									</c:when>
+									<c:otherwise>
+										<td></td>
+									</c:otherwise>
+								</c:choose>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -175,9 +191,13 @@ $(document).ready(function() {
 	/* select box Init */
 	$("#baseYear option[value='"+ NOWYEAR +"']").attr("selected", true);
 	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
-
 	
 	$("#infoSearch").on("click", function(){
+
+		if($("select[name=baseMonth]").val() == 0) {
+			alert("기준 월을 선택해주세요");
+			return;
+		}
 		
 		$.ajax({
 			url : 'operation_rate.do',
@@ -225,11 +245,10 @@ $(document).ready(function() {
 						emp.month_remarks = "";
 					}
 					
-					
-					var url = "../empYearHistory.do?id=" + emp.id;
-					var winWidth = 100;
-				    var winHeight = 300;
-				    var option = "_blank";
+					let url = "../empYearHistory.do?id=" + emp.id;
+					let winWidth = 200;
+					let winHeight = 300;
+					let option = "_blank";
 				    
 				    let str = '<tr>';
 				    str += '<td><input type="checkbox" value="'+ emp.id +'">' + '</td>';
@@ -238,17 +257,23 @@ $(document).ready(function() {
 					str += '<td>' + emp.rank + '</td>';
 					str += '<td>' + emp.business_name + '</td>';
 					str += '<td>' + emp.site_name + '</td>';
-					for (let a = 0; a < MONTHS; a++) {
+					// 상태값 출력 부분(12)
+					str += '<td>' + '</td>';
+					
+					for (let a = 0; a < MONTHS - 1; a++) {
 						str += '<td>' + '</td>';
 					}
+					/* for (let a = 0; a < MONTHS; a++) {
+						str += '<td>' + '</td>';
+					} */
 					str += '<td>' + emp.month_remarks + '</td>';
 					str += '</tr>'
 					$("#empMonthData").append(str);
-					//console.log(JSON.stringify(emp));
+					console.log(JSON.stringify(emp));
 				});
 			},
 			error : function(res) {
-				alert ("AJAX 가동률테이블 오류");
+				alert ("AJAX 인력 테이블 오류");
 			}
 		});
 			

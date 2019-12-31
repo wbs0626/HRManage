@@ -80,9 +80,9 @@ public class TableRestController {
 		
 		rvo = hs.operationRate(map);
 		
-		int total = rvo.getMTotal();
+		int input1 = rvo.getMInput1();
 		int possible = rvo.getMPossible();
-		double tmp = ((double)possible / (double)total) * 100.0;
+		double tmp = ((double)input1 / (double)possible) * 100.0;
 		double operRate = (Math.round(tmp * 100) / 100.0);
 		
 		rvo.setRate(operRate);
@@ -95,6 +95,10 @@ public class TableRestController {
 	@RequestMapping("tables/empMonthDataFind.do")
 	public List<MonthVO> empMonthDataFind(MonthVO mvo) {
 		List<MonthVO> list = new ArrayList<MonthVO>();
+		
+		String bname = mvo.getBusiness_name();
+		bname.trim();
+		mvo.setBusiness_name(bname);
 		
 		list = ms.monEmpDataFind(mvo);
 		

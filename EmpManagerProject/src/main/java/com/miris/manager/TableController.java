@@ -17,6 +17,7 @@ import com.miris.service.LocService;
 import com.miris.service.MonthlyHisService;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
+import com.miris.vo.WrapperMonthVO;
 
 @Controller
 public class TableController {
@@ -53,18 +54,29 @@ public class TableController {
 		
 		MonthlyRateVO rvo = hs.operationRate(map);
 		
-		int total = rvo.getMTotal();
+		int input1 = rvo.getMInput1();
 		int possible = rvo.getMPossible();
-		double tmp = ((double)possible / (double)total) * 100.0;
+		double tmp = ((double)input1 / (double)possible) * 100.0;
 		double operRate = (Math.round(tmp * 100) / 100.0);
 		
 		rvo.setRate(operRate);
-		
 		mvo.setBaseYear(nYear);
 		mvo.setBaseMonth(nMonth);
-		 
+		
+//		WrapperMonthVO wvo = new WrapperMonthVO();
+//		int[] arr = { 
+//						mvo.getJan(), mvo.getFeb(), mvo.getMar(),
+//						mvo.getApr(), mvo.getMay(), mvo.getJun(),
+//						mvo.getJul(), mvo.getAug(), mvo.getSep(),
+//						mvo.getOct(), mvo.getNov(), mvo.getDec() 
+//					};
+//
+//		wvo.setData(mvo);
+//		wvo.setMonStates(arr);
+
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
-		//List<MonthVO> mList = ms.monEmpAllList();
+		// List<MonthVO> mList = ms.monEmpAllList();
+		
 		
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);

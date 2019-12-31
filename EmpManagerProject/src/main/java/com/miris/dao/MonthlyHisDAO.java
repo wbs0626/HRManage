@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.miris.mapper.MonthlyHisMapper;
 import com.miris.vo.MonthVO;
 
+/*
+ * 	월별 인력 투입 현황 관련
+ */
+
 @Repository
 public class MonthlyHisDAO implements MonthlyHisMapper {
 	@Autowired
@@ -33,7 +37,7 @@ public class MonthlyHisDAO implements MonthlyHisMapper {
 	public List<MonthVO> monEmpBNameSearch(MonthVO mvo) {
 		return mapper.monEmpBNameSearch(mvo);
 	}
-
+	
 	/*
 	 * public int monEmpTotalCount() { return mapper.monEmpTotalCount(); }
 	 * 

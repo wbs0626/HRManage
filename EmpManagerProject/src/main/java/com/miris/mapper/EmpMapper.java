@@ -82,14 +82,11 @@ public interface EmpMapper {
 	@Select("SELECT count(*) FROM emp WHERE emp_name = #{emp_name}")
 	public int duplicateNameChk(EmpVO vo);
 	
-	
-	
 	// 로그인 관련(ID, PWD 확인)
 	@Select("SELECT count(*) FROM emp WHERE id=#{id}")
 	public int loginIdCheck(EmpVO vo);
 	
 	@Select("SELECT count(*) FROM emp WHERE id=#{id} AND pwd=#{pwd}")
 	public int LoginPwdCheck(EmpVO vo);
-	
 	
 }

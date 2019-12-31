@@ -27,7 +27,6 @@ public class MainController {
 		int nYear;
 		int nMonth;
 		int nDay;
-		
 		 
 		Calendar calendar = new GregorianCalendar(Locale.KOREA);
 		nYear = calendar.get(Calendar.YEAR);
@@ -41,20 +40,12 @@ public class MainController {
 		MonthlyRateVO mRateVO = hs.operationRate(map);
 		System.out.println("mRateVO 값 : " + mRateVO);
 		
-		int total = mRateVO.getMTotal();
+		int input1 = mRateVO.getMInput1();
 		int possible = mRateVO.getMPossible();
-		double tmp = ((double)possible / (double)total) * 100.0;
+		double tmp = ((double)input1 / (double)possible) * 100.0;
 		double operRate = (Math.round(tmp * 100) / 100.0);
 		
 		mRateVO.setRate(operRate);
-		
-		
-		/*
-		 * System.out.println(mRateVO); System.out.println("총합 : " +
-		 * mRateVO.getMTotal()); System.out.println("예외 : " + mRateVO.getMExcept());
-		 * System.out.println("가동가능 : " + mRateVO.getMPossible());
-		 * System.out.println("대기 : " + mRateVO.getMWait());
-		 */
 		
 		String currentMonth = nYear + "-" + nMonth;
 		String currentDate = nYear + "-" + nMonth + "-" + nDay;
