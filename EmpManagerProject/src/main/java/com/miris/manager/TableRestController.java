@@ -13,6 +13,7 @@ import com.miris.dto.EmpDataTableDTO;
 import com.miris.service.EmpService;
 import com.miris.service.HistoryService;
 import com.miris.service.MonthlyHisService;
+import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
 
@@ -103,6 +104,22 @@ public class TableRestController {
 		list = ms.monEmpDataFind(mvo);
 		
 		return list;
+	}
+	
+	@RequestMapping("empUpd_ok.do")
+	public String empInsOk(EmpVO vo) {
+		String msg = "FAIL";
+		
+		System.out.println(vo);
+		
+		try {
+			es.empUpdate(vo);
+			msg = "OK";
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return msg;
 	}
 	
 }

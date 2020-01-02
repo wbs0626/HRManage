@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.miris.dto.DailyEmpCountDTO;
 import com.miris.mapper.HistoryMapper;
 import com.miris.vo.HistoryVO;
+import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthlyRateVO;
 
 @Repository
@@ -36,6 +37,5 @@ public class HistoryDAO implements HistoryMapper{
 	public MonthlyRateVO operationRate(Map<String, Integer> map) {
 		return mapper.operationRate(map);
 	}
-	
-	
+
 }

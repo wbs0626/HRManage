@@ -12,12 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.miris.service.HistoryService;
-import com.miris.service.LocService;
-import com.miris.service.MonthlyHisService;
-import com.miris.vo.MonthVO;
-import com.miris.vo.MonthlyRateVO;
-import com.miris.vo.WrapperMonthVO;
+import com.miris.service.*;
+import com.miris.vo.*;
 
 @Controller
 public class TableController {
@@ -27,6 +23,10 @@ public class TableController {
 	private HistoryService hs;
 	@Autowired
 	private MonthlyHisService ms;
+	@Autowired
+	private DeptService ds;
+	@Autowired
+	private EmpService es;
 	
 	@RequestMapping("tables/tables.do")
 	public String empAllocate(Model model) {
@@ -62,21 +62,9 @@ public class TableController {
 		rvo.setRate(operRate);
 		mvo.setBaseYear(nYear);
 		mvo.setBaseMonth(nMonth);
-		
-//		WrapperMonthVO wvo = new WrapperMonthVO();
-//		int[] arr = { 
-//						mvo.getJan(), mvo.getFeb(), mvo.getMar(),
-//						mvo.getApr(), mvo.getMay(), mvo.getJun(),
-//						mvo.getJul(), mvo.getAug(), mvo.getSep(),
-//						mvo.getOct(), mvo.getNov(), mvo.getDec() 
-//					};
-//
-//		wvo.setData(mvo);
-//		wvo.setMonStates(arr);
 
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
 		// List<MonthVO> mList = ms.monEmpAllList();
-		
 		
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);
@@ -85,13 +73,32 @@ public class TableController {
 		return "tables/inputCurrentState";
 	}
 	
-	// 인력 등록 화면
+	// 인력 등록 창
 	@RequestMapping("empIns.do")
-	public String empIns() {
+	public String empIns(Model model, String id) {
+		List<DepartVO> dvo = ds.deptList();
+		List<EmpVO> evo = es.rankList();
 		
+		MonthVO mvo = es.empInfo(id);
+		System.out.println(mvo);
+		
+		model.addAttribute("mvo", mvo);
+		model.addAttribute("dvo", dvo);
+		model.addAttribute("evo", evo);
 		
 		return "empIns";
 	}
 	
-	
+	// 인력 연간 정보
+	@RequestMapping("empYearHistory.do")
+	public String empYearHis(Model model, String id) {
+		MonthVO mvo = es.empInfo(id);
+		List<MonthEmpLogVO> logList = ms.yearHistoryList(id); 
+		
+		model.addAttribute("empId", id);
+		model.addAttribute("info", mvo);
+		model.addAttribute("logList", logList);
+		
+		return "empYearHistory";
+	}
 }

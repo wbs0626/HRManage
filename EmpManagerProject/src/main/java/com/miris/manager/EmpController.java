@@ -16,7 +16,7 @@ public class EmpController {
 	@Autowired
 	private HistoryService hs;
 	
-	// 새창으로 값 줌
+	// 30일 현황 창
 	@RequestMapping("empLog.do")
 	public String empLog(String id, Model model) {
 		List<HistoryVO> empLogList = hs.historyList(id);
@@ -28,8 +28,11 @@ public class EmpController {
 		return "empLog";
 	}
 	
+	// 인력 관리 화면
 	@RequestMapping("emp/empManage.do")
 	public String empManage(Model model) {
 		return "emp/empManage";
 	}
+	
+	
 }

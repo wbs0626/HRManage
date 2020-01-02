@@ -4,24 +4,25 @@ import java.util.*;
 
 import org.apache.ibatis.annotations.Select;
 
+import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthVO;
 
 public interface MonthlyHisMapper {
 	
 	public final String defStr = "SELECT e.id, e.section, e.emp_name, e.rank, mh.business_name, s.site_name, "
 			+ "mh.state, mh.baseyear, mh.basemonth, mh.month_remarks, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '1' AND id = mh.id), 0) Jan, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '2' AND id = mh.id), 0) Feb, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '3' AND id = mh.id), 0) Mar, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '4' AND id = mh.id), 0) Apr, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '5' AND id = mh.id), 0) May, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '6' AND id = mh.id), 0) Jun, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '7' AND id = mh.id), 0) Jul, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '8' AND id = mh.id), 0) Aug, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '9' AND id = mh.id), 0) Sep, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '10' AND id = mh.id), 0) Oct, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '11' AND id = mh.id), 0) Nov, "
-			+ "nvl((SELECT state FROM monthhistory WHERE basemonth = '12' AND id = mh.id), 0) Dec "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '1' AND id = mh.id), 0) m1, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '2' AND id = mh.id), 0) m2, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '3' AND id = mh.id), 0) m3, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '4' AND id = mh.id), 0) m4, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '5' AND id = mh.id), 0) m5, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '6' AND id = mh.id), 0) m6, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '7' AND id = mh.id), 0) m7, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '8' AND id = mh.id), 0) m8, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '9' AND id = mh.id), 0) m9, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '10' AND id = mh.id), 0) m10, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '11' AND id = mh.id), 0) m11, "
+			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '12' AND id = mh.id), 0) m12 "
 			+ "FROM monthhistory mh JOIN emp e "
 			+ "ON mh.id = e.id "
 			+ "AND mh.baseyear = #{baseYear} "
@@ -66,7 +67,7 @@ public interface MonthlyHisMapper {
 	@Select(defStr
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 8, 9")
+			+ "ORDER BY 1, 8, 9")
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo);
 	
 	// 구분(내부, 외부) 검색
@@ -103,7 +104,19 @@ public interface MonthlyHisMapper {
 	
 	// -------------- 회원별 달마다 상태 구분 -----------
 
-	
+	// 월별 인력 투입 이력 (최근 1년)
+		@Select("SELECT TO_CHAR((mh.baseyear||'.'||mh.basemonth )) as baseDate , mh.business_name, "
+				+ "mh.exclusion_state, mh.month_remarks, mh.baseyear, mh.basemonth "
+				+ "FROM monthhistory mh "
+				+ "JOIN emp e "
+				+ "ON mh.id = e.id "
+				+ "AND mh.id = #{id} "
+				+ "AND TO_DATE((mh.baseyear||'-'||mh.basemonth ) , 'YYYY-MM') BETWEEN to_char(sysdate - 365, 'YYYY-MM-DD') AND to_char(sysdate + 1, 'YYYY-MM-DD') "
+				+ "AND mh.business_name IS NOT NULL "
+				+ "LEFT OUTER JOIN site s "
+				+ "ON mh.site_id = s.site_id "
+				+ "ORDER BY mh.baseyear, mh.basemonth")
+		public List<MonthEmpLogVO> yearHistoryList(String id);
 	  
 	
 }

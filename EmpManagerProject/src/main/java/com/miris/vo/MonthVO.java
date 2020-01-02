@@ -23,20 +23,19 @@ public class MonthVO {
 	private int baseMonth;
 	private int state; // DB상에는 1: C 2: P
 	private String month_remarks;
+	private String depart_name;
 	// ============================
-	private int jan;
-	private int feb;
-	private int mar;
-	private int apr;
-	private int may;
-	private int jun;
-	private int jul;
-	private int aug;
-	private int sep;
-	private int oct;
-	private int nov;
-	private int dec;
-	
-	private int[] monStates;
+	private int m1;//jan;
+	private int m2;//feb;
+	private int m3;//mar;
+	private int m4;//apr;
+	private int m5;//may;
+	private int m6;//jun;
+	private int m7;//jul;
+	private int m8;//aug;
+	private int m9;//sep;
+	private int m10;//oct;
+	private int m11;//nov;
+	private int m12;//dec;
 }
 	

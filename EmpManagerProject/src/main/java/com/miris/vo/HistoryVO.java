@@ -13,6 +13,7 @@ public class HistoryVO {
 	//private String id;
 	private String history_time;	// 등록 시간
 	private int state;
-	private String loc_name;	
+	private String loc_name;
+	private String daily_remarks;
 	
 }

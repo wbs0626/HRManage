@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.miris.dao.EmpDAO;
 import com.miris.dto.EmpDataTableDTO;
 import com.miris.vo.EmpVO;
+import com.miris.vo.MonthVO;
 
 @Service
 public class EmpService {
@@ -60,6 +61,10 @@ public class EmpService {
 	public int empTableCount() {
 		return edao.EmpTableCount();
 	}
+	
+	public List<EmpVO> rankList() {
+		return edao.rankList();
+	}
 
 	public List<EmpDataTableDTO> empNameSearch(EmpDataTableDTO tvo) {
 		return edao.empNameSearch(tvo);
@@ -75,5 +80,28 @@ public class EmpService {
 
 	public List<EmpDataTableDTO> empNameDepartSearch(EmpDataTableDTO tvo) {
 		return edao.empNameDepartSearch(tvo);
+	}
+	
+	public MonthVO empInfo(String id) {
+		if(id == null) {
+			id = "";
+		}
+		
+		return edao.empInfo(id);
+	}
+	
+	public void empUpdate(EmpVO vo) {
+		edao.empUpdate(vo);
+	}
+	
+	public boolean empInsert(EmpVO vo) {
+		boolean isSuccess = false;
+		
+		if(edao.loginIdCheck(vo) == 0) {
+			edao.empInsert(vo);
+			isSuccess = true;
+		}
+		
+		return isSuccess;
 	}
 }

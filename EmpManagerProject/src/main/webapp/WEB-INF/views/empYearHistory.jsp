@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Insert title here</title>
+<title>월별 인력 투입 현황</title>
 <link href="resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="resources/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="resources/assets/css/sb-admin.css" rel="stylesheet">
@@ -15,48 +15,72 @@
 
 </head>
 <body>
-	<div class="container">
-		<h3> ▣ 근무 이력(최근 30일)</h3>
-		<table id="empLogHistory" class="table table-bordered">
+	<div class="container" style="border:1px solid; padding: 15px">
+		<div>
+			<span class="h4">▣ 기본정보
+				<button class="btn btn-secondary btn-xs" id="insCurrentState" style="margin: 0px 0px 10px 0px; float:right;">현황등록</button>
+				<a href="empIns.do?id=${empId }" target="_blank">
+					<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right; margin: 0px 5px 10px 5px;">인력수정</button>
+				</a>
+			</span>
+		</div>
+		<table id="empInfo" class="table table-bordered text-center">
 			<thead>
 				<tr class="table-active">
-					<th>기준일자</th>
-					<th>상태</th>
-					<th>근무지</th>
+					<th>구분</th>
+					<th>부서</th>
+					<th>성명</th>
+					<th>직급</th>
+					<th>비고</th>
 				</tr>
 			</thead>
-			<tbody id = "logContent">
-				<c:forEach var="empLogInfo" items="${empLogList }" varStatus="s">
+			<tbody id = "info">
 					<tr class="table-light">
-						<td>${empLogInfo.history_time }</td>
-						<c:choose>
-							<c:when test="${empLogInfo.state == 1}">
-							<td>근무</td>
-							</c:when>
-							<c:when test="${empLogInfo.state == 2}">
-							<td>휴가</td>
-							</c:when>
-							<c:when test="${empLogInfo.state == 3}">
-							<td>출장</td>
-							</c:when>
-							<c:otherwise>
-							<td>기타</td>
-							</c:otherwise>
-						</c:choose>
-						<td>${empLogInfo.loc_name }</td>
+						<c:if test="${info.section == 1 }">
+							<td>내부</td>
+						</c:if>
+						<c:if test="${info.section == 2 }">
+							<td>외부</td>
+						</c:if>
+						<td><c:out value="${info.depart_name }"/></td>
+						<td><c:out value="${info.emp_name }"/></td>
+						<td><c:out value="${info.rank }"/></td>
+						<td><c:out value="${info.month_remarks }"/></td>
 					</tr>
-				</c:forEach>
 			</tbody>
 		</table>
 		
 		<div>
-			<p>근무 일수 : ${empStateList.work } 일</p>
-			<p>휴가 일수 : ${empStateList.vacation } 일</p>
-			<p>출장 일수 : ${empStateList.business_trip } 일</p>
-			<p>기타 일수 : ${empStateList.others } 일</p>
+			<h4> ▣ 월별 인력 투입이력 (최근1년)</h4>
 		</div>
 		
-		<div>
+		<table id="empYearHis" class="table table-bordered text-center">
+			<thead>
+				<tr class="table-active">
+					<td>기준월</td>
+					<td>투입업무</td>
+					<td>제외여부</td>
+					<td>비고</td>
+				</tr>
+			</thead>
+			<tbody id="empYearLog">
+			<c:forEach items="${logList }" var="log">
+				<tr class="table-light">
+					<td><c:out value="${log.baseDate }"/></td>
+					<td><c:out value="${log.business_name }"/></td>
+					<c:if test="${log.exclusion_state == 1}">
+						<td>Y</td>
+					</c:if>
+					<c:if test="${log.exclusion_state == 2}">
+						<td>-</td>
+					</c:if>
+					<td><c:out value="${log.month_remarks }"/></td>
+				</tr>
+			</c:forEach>
+			</tbody>
+		</table>
+		
+		<div class="text-center">
 			<button type="button" class="btn btn-primary" onClick="window.open('about:blank','_self').self.close();">
 				Close
 			</button>

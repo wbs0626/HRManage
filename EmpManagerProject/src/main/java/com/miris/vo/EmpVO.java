@@ -4,6 +4,7 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 
 /*
@@ -12,6 +13,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@ToString
 public class EmpVO {
 	private String id;
 	private String pwd;
@@ -21,9 +23,6 @@ public class EmpVO {
 	private Date login_date;
 	private String emp_remarks;
 	private String rank;
-	
-	private LocVO locVo;
-	private HistoryVO historyVo;
-	private DepartVO departVo;
+	private String section;
 	
 }

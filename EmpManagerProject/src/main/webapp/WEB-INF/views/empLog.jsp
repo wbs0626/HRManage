@@ -14,7 +14,7 @@
 
 </head>
 <body>
-	<div class="container">
+	<div class="container" style="border:1px solid; padding: 15px">
 		<h3> ▣ 근무 이력(최근 30일)</h3>
 		<table id="empLogHistory" class="table table-bordered">
 			<thead>

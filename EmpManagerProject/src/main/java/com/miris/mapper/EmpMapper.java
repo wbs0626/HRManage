@@ -2,11 +2,14 @@ package com.miris.mapper;
 
 import java.util.*;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.miris.dto.EmpDataTableDTO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.HistoryVO;
+import com.miris.vo.MonthVO;
 
 public interface EmpMapper {
 	// 직원 총 수
@@ -78,6 +81,31 @@ public interface EmpMapper {
 			+ "LEFT OUTER JOIN loc l "
 			+ "ON dh.loc_name = l.loc_name")
 	public List<EmpDataTableDTO> empNameDepartSearch(EmpDataTableDTO tvo);
+	
+	// 직원 정보
+	@Select("SELECT e.id, e.section, d.depart_name, e.emp_name, e.rank, e.emp_remarks as month_remarks "
+			+ "FROM emp e JOIN departs d "
+			+ "ON e.depart_id = d.depart_id "
+			+ "AND e.id=#{id}")
+	public MonthVO empInfo(String id);
+	
+	// 직급 목록
+	@Select("SELECT DISTINCT(rank) FROM emp")
+	public List<EmpVO> rankList();
+	
+	// 직원 정보 수정
+	@Update("UPDATE emp SET "
+			+ "section = #{section}, "
+			+ "depart_id = #{depart_id}, "
+			+ "rank = #{rank}, "
+			+ "emp_remarks = #{emp_remarks} "
+			+ "WHERE id = #{id}")
+	public void empUpdate(EmpVO vo);
+	
+	// 직원 등록
+	@Insert("INSERT INTO emp (id, section, emp_name, depart_id, rank, emp_remarks) "
+			+ "VALUES (#{id}, #{section}, #{emp_name}, #{depart_id}, #{rank}, #{empremarks})")
+	public void empInsert(EmpVO vo);
 	
 	@Select("SELECT count(*) FROM emp WHERE emp_name = #{emp_name}")
 	public int duplicateNameChk(EmpVO vo);

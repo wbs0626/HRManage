@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.miris.dto.DailyEmpCountDTO;
 import com.miris.vo.HistoryVO;
+import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthlyRateVO;
 
 public interface HistoryMapper {
@@ -55,4 +56,6 @@ public interface HistoryMapper {
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id")
 	public MonthlyRateVO operationRate(Map<String, Integer> map);
+	
+	
 }

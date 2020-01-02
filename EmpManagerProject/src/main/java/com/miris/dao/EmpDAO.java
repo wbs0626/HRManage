@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.miris.dto.EmpDataTableDTO;
 import com.miris.mapper.EmpMapper;
 import com.miris.vo.EmpVO;
+import com.miris.vo.MonthVO;
 
 @Repository
 public class EmpDAO implements EmpMapper{
@@ -60,5 +61,21 @@ public class EmpDAO implements EmpMapper{
 
 	public List<EmpDataTableDTO> empNameDepartSearch(EmpDataTableDTO tvo) {
 		return mapper.empNameDepartSearch(tvo);
+	}
+
+	public List<EmpVO> rankList() {
+		return mapper.rankList();
+	}
+
+	public MonthVO empInfo(String id) {
+		return mapper.empInfo(id);
+	}
+
+	public void empUpdate(EmpVO vo) {
+		mapper.empUpdate(vo);
+	}
+
+	public void empInsert(EmpVO vo) {
+		mapper.empInsert(vo);
 	}
 }
