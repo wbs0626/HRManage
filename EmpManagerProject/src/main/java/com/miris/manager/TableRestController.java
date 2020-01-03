@@ -8,14 +8,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.miris.dto.DailyEmpCountDTO;
 import com.miris.dto.EmpDataTableDTO;
+import com.miris.service.BusinessService;
+import com.miris.service.DeptService;
 import com.miris.service.EmpService;
 import com.miris.service.HistoryService;
 import com.miris.service.MonthlyHisService;
+import com.miris.service.SiteService;
+import com.miris.vo.BusinessVO;
+import com.miris.vo.DepartVO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
+import com.miris.vo.SiteVO;
 
 @RestController
 public class TableRestController {
@@ -25,12 +32,18 @@ public class TableRestController {
 	private HistoryService hs;
 	@Autowired
 	private MonthlyHisService ms;
+	@Autowired
+	private DeptService ds;
+	@Autowired
+	private SiteService ss;
+	@Autowired
+	private BusinessService bs;
 	
 	// 날짜별 근무 인원 현황
 	@RequestMapping("tables/dailyEmpStateCount.do")
 	public DailyEmpCountDTO dailyEmpStateCount(String htime, Model model) {
 		DailyEmpCountDTO vo = new DailyEmpCountDTO();
-		System.out.println("hdate : " + htime);
+		//System.out.println("hdate : " + htime);
 		vo = hs.empStateCount(htime);
 
 		return vo;
@@ -51,7 +64,7 @@ public class TableRestController {
 		// 차후 물어보고 추가할 부분
 		String[] arr = { "전체" };
 
-		System.out.println("vo 값 : " + ToStringBuilder.reflectionToString(tvo));
+		//System.out.println("vo 값 : " + ToStringBuilder.reflectionToString(tvo));
 		// == 쓰면 안됨 주소값 다름(문서 참조)
 		if (select.equals(arr[0])) {
 			if(tvo.getHtime().equals("") && tvo.getEmp_name().isEmpty() == false) {
@@ -110,7 +123,7 @@ public class TableRestController {
 	public String empInsOk(EmpVO vo) {
 		String msg = "FAIL";
 		
-		System.out.println(vo);
+		//System.out.println(vo);
 		
 		try {
 			es.empUpdate(vo);
@@ -120,6 +133,20 @@ public class TableRestController {
 		}
 		
 		return msg;
+	}
+	
+	@RequestMapping("getBsInfo.do")
+	public List<BusinessVO> getBsInfo() {
+		List<BusinessVO> bvo = bs.businessAllList();
+		
+		return bvo;
+	}
+	
+	@RequestMapping("getSiteInfo.do")
+	public List<SiteVO> getSiteInfo() {
+		List<SiteVO> svo = ss.siteAllList();
+		
+		return svo;
 	}
 	
 }

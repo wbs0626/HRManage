@@ -10,7 +10,7 @@
 
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Dashboard</a></li>
+			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>
 			<li class="breadcrumb-item active">Main</li>
 		</ol>
 		
@@ -54,7 +54,7 @@
 				<div>
 					<span class= "font-weight-bold" id="tTitle">■ 월별 인력 투입사항
 						<button class="btn btn-secondary btn-xs" id="copyAll" style="float: right;">일괄복사</button>
-						<button class="btn btn-secondary btn-xs" id="insCurrentState" style="margin: 0px 5px; float:right;">현황등록</button>
+						<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 5px; float:right;">현황등록</button>
 						<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right;">인력등록</button>
 					</span>
 					
@@ -442,20 +442,27 @@ $(document).ready(function() {
 					let winHeight = 300;
 					let option = "_blank";
 					
+					/* State value array */
 					var mArr = [emp.m1, emp.m2, emp.m3, emp.m4,
 								emp.m5, emp.m6, emp.m7, emp.m8,
 								emp.m9, emp.m10, emp.m11, emp.m12];
 					
+					/* State Color */
 					var cColor = "#A5DF00";
 					var pColor = "lightskyblue";
 					
 				    let str = '<tr>';
-				    str += '<td><input type="checkbox" value="'+ emp.id +'">' + '</td>';
+				    str += '<td><input type="checkbox" name="empChk" value="'+ emp.id +'">' + '</td>';
 				    str += '<td>' + emp.section + '</td>';
 				    str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
 					str += '<td>' + emp.rank + '</td>';
-					str += '<td>' + emp.business_name + '</td>';
+					if(emp.business_name == '출산 휴가') {
+						str += '<td style="background-color: ' + cColor + ';">' + emp.business_name + '</td>';
+					} else {
+						str += '<td>' + emp.business_name + '</td>';
+					}
 					str += '<td>' + emp.site_name + '</td>';
+					
 					/* 상태 값 */
 					for (let a = 0; a < MONTHS; a++) {
 						
@@ -500,7 +507,7 @@ $(document).ready(function() {
 	$("#insEmp").on("click", function(){
 		
 		if($("input[name=empChk]").is(":checked") == false) {
-			alert("정보를 수정할 대상을 선택해 주세요");
+			alert("검색할 대상을 선택해 주세요");
 			return;
 		}
 		
@@ -518,12 +525,39 @@ $(document).ready(function() {
 			window.open(url, "_blank");
 		});
 	});
-	// InsUpdEvent END 
-});
+	// InsUpd Event END 
 
-/* $("#insEmp").on("click", function(){
+	
+	$("#empStateIns").on("click", function(){
+		
+		if($("input[name=empChk]").is(":checked") == false) {
+			alert("검색할 대상을 선택해 주세요");
+			return;
+		}
+		
+		if($("input[name=empChk]:checked").length > 1) {
+			alert("한 명의 직원만 선택해 주세요");
+			$("input[name=empChk]").prop('checked', false);
+			return;
+		}
+		
+		$("input[name=empChk]:checked").each(function() {
+			var eid = $(this).val();
+			let y = $("select[name=baseYear]").val();
+			let m = $("select[name=baseMonth]").val(); 
+			console.log("id값 : " + eid);
+			
+			if(m == 0) {
+				m = NOWMONTH;
+			} 
+			
+			let url = "../empStateIns.do?id=" + eid + "&baseYear=" + y + "&baseMonth=" + m;
+			window.open(url, "_blank");
+		});
+	});
+	// StateIns Event END
 	
 });
- */
+
 </script>
 </html>

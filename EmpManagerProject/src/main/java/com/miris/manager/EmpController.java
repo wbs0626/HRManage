@@ -8,13 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.miris.dto.DailyEmpCountDTO;
+import com.miris.service.EmpService;
 import com.miris.service.HistoryService;
+import com.miris.service.MonthlyHisService;
+import com.miris.vo.EmpVO;
 import com.miris.vo.HistoryVO;
 
 @Controller
 public class EmpController {
 	@Autowired
 	private HistoryService hs;
+	@Autowired
+	private MonthlyHisService ms;
+	@Autowired
+	private EmpService es;
 	
 	// 30일 현황 창
 	@RequestMapping("empLog.do")
@@ -31,6 +38,12 @@ public class EmpController {
 	// 인력 관리 화면
 	@RequestMapping("emp/empManage.do")
 	public String empManage(Model model) {
+		List<EmpVO> elist = es.empAllList();
+		
+		System.out.println(elist);
+		
+		model.addAttribute(elist);
+		
 		return "emp/empManage";
 	}
 	

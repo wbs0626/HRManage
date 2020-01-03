@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.miris.mapper.MonthlyHisMapper;
+import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthVO;
 
@@ -42,14 +43,9 @@ public class MonthlyHisDAO implements MonthlyHisMapper {
 	public List<MonthEmpLogVO> yearHistoryList(String id) {
 		return mapper.yearHistoryList(id);
 	}
-	
-	/*
-	 * public int monEmpTotalCount() { return mapper.monEmpTotalCount(); }
-	 * 
-	 * public List<MonthVO> monEmpTotalList(Map<String, Object> map) { return
-	 * mapper.monEmpTotalList(map); }
-	 * 
-	 * public int monEmpTotalPage() { return mapper.monEmpTotalPage(); }
-	 */
+
+	public EmpDetailVO empDetailLog(MonthVO mvo) {
+		return mapper.empDetailLog(mvo);
+	}	
 
 }

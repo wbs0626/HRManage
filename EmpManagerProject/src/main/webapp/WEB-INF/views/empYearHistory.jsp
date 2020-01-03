@@ -18,7 +18,9 @@
 	<div class="container" style="border:1px solid; padding: 15px">
 		<div>
 			<span class="h4">▣ 기본정보
-				<button class="btn btn-secondary btn-xs" id="insCurrentState" style="margin: 0px 0px 10px 0px; float:right;">현황등록</button>
+				<a href="empStateIns.do?id=${empId }" target="_blank">
+					<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 0px 10px 0px; float:right;">현황등록</button>
+				</a>
 				<a href="empIns.do?id=${empId }" target="_blank">
 					<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right; margin: 0px 5px 10px 5px;">인력수정</button>
 				</a>

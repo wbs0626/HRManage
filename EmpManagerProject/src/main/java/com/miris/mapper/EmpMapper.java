@@ -82,7 +82,7 @@ public interface EmpMapper {
 			+ "ON dh.loc_name = l.loc_name")
 	public List<EmpDataTableDTO> empNameDepartSearch(EmpDataTableDTO tvo);
 	
-	// 직원 정보
+	// 직원 정보(부서 명 포함)
 	@Select("SELECT e.id, e.section, d.depart_name, e.emp_name, e.rank, e.emp_remarks as month_remarks "
 			+ "FROM emp e JOIN departs d "
 			+ "ON e.depart_id = d.depart_id "

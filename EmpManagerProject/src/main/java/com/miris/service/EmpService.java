@@ -21,6 +21,10 @@ public class EmpService {
 	@Autowired
 	private EmpDAO edao;
 
+	public List<EmpVO> empAllList() {
+		return edao.empList();
+	}
+	
 	public int login(EmpVO vo) {
 		int result = 0;
 

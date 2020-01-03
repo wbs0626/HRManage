@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.miris.dao.MonthlyHisDAO;
+import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthVO;
 
@@ -50,5 +51,9 @@ public class MonthlyHisService {
 		}
 		
 		return mdao.yearHistoryList(id);
+	}
+	
+	public EmpDetailVO empDetailLog(MonthVO mvo) {
+		return mdao.empDetailLog(mvo);
 	}
 }

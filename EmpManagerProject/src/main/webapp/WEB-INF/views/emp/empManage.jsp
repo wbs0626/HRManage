@@ -11,7 +11,7 @@
 
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Dashboard</a></li>
+			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>
 			<li class="breadcrumb-item active">Human Resource Management</li>
 		</ol>
 		
@@ -34,25 +34,46 @@
 						성명 : 
 						<input type="text" id="emp_name" name="emp_name">  주소 :
 						<input type="text" id="depart_id" name="depart_id" placeholder="등록할 정보를 입력하세요." style="width:300px;">
-						<a class="btn btn-info" id="empAddBtn" name="empAddBtn">저장</a>
+						<button class="btn btn-info" id="empAddBtn" name="empAddBtn">저장</button>
 					</form>	
 				</div>
 				
 				<div>
-					<table id="empDataTable" class= "table table-bordered">
+					<table id="empDataTable" class="table table-bordered">
 						<thead>
 							<tr class="table-active">
 								<th><input type="checkbox" id="empChkAll" style="width:15%;"></th>
-								<th>근무지</th>
-								<th>주소</th>
+								<th>직원 ID</th>
+								<th>직원 명</th>
+								<th>구분</th>
+								<th>직위</th>
+								<th>부서 코드</th>
+								<th>입사일</th>
+								<th>로그인 일시</th>
+								<th>비고</th>
 							</tr>
 						</thead>
-						<tbody id="empGetList">
+						<tbody id="">
+							<c:forEach items="${elist}" var="evo">
 								<tr class="table-light">
 									<td>
-										<input type="checkbox">
+										<input type="checkbox" name="empChk">
 									</td>
+									<td><c:out value="${evo.id }"/></td>
+									<td><c:out value="${evo.emp_name }"/></td>
+									<c:if test="${evo.section == 1}">
+										<td>내부</td>
+									</c:if>
+									<c:if test="${evo.section == 2 }">
+										<td>외부</td>
+									</c:if>
+									<td><c:out value="${evo.rank }"/></td>
+									<td><c:out value="${evo.depart_id }"/></td>
+									<td><c:out value="${evo.start_date }"/></td>
+									<td><c:out value="${evo.login_date }"/></td>
+									<td><c:out value="${evo.emp_remarks }"/></td>
 								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
@@ -77,98 +98,6 @@ $(document).ready(function(){
 		} 
 	});
 	
-	$("#empSearchBtn").on("click", function(){
-		var text = $("#empText").val().trim();
-		if(text == "") {
-			$('#empText').focus();
-			
-		}
-		
-		$.ajax ({
-			url : 'empSearch_ok.do',
-			type : 'post',
-			data : {name : text},
-			success : function(res) {
-				$("#empGetList tr").remove();
-				var str = '<tr class="table-light">';
-				str += '<td>' + '<input type="checkbox" value="' + res.emp_name + '">' + '</td>';
-				str += '<td>' + res.emp_name + '</td>';
-				str += '<td>' + res.depart_id + '</td>';
-				str += '</tr>'
-				$("#empGetList").append(str);
-				console.log(str);
-			}
-		})
-		// 안 써주면 페이지 자동 새로고침됨 -> 왜? -> document ready 안에 있어서
-		return false;
-	});
-	
-	$("#empInsBtn").on("click", function(){
-		//$("#searchDiv").hide();
-		//$("#empInsDiv").show();
-		if( $("#empInsDiv").css("display") == "none") {
-			$("#searchDiv").hide();
-			$("#empInsDiv").show();
-			$("#empInsBtn").text("취소")
-		} else {
-			$("#empInsDiv").hide();
-			$("#searchDiv").show();
-			$("#empInsBtn").text("등록")
-		}
-	});
-	
-	$("#empAddBtn").on("click", function(){
-		var name = $('#emp_name').val();
-		var addr = $('#depart_id').val();
-		if (name.trim() == "") {
-			$('#emp_name').focus();
-			return;
-		}
-		if (addr.trim() == "") {
-			$('#depart_id').focus();
-			return;
-		}
-		
-		$.ajax ({
-			url : 'empInsert_ok.do',
-			data : $('#empInsFrm').serialize(),
-			type : 'GET',
-			success : function(res) {
-				if(res=="OK") {
-					alert("정상 처리되었습니다.");
-					return;
-				} else {
-					alert("오류 발생");
-					return;
-				}
-			}
-		})
-		
-	});
-	
-	// 단일 선택 기준
-	$("#empDelBtn").on("click", function(){
-		$("input[name=empChk]:checked").each(function() {
-			var empName = $(this).val();
-			console.log("empName값 : " + empName);
-			
-			$.ajax ({
-				url : 'empDelete_ok.do',
-				data : {name : empName},
-				type : 'POST',
-				success : function(res) {
-					if(res=="OK") {
-						alert("정상 처리되었습니다.");
-						return true;
-					} else {
-						alert("오류 발생");
-						return;
-					}
-				}
-			})
-		});
-	});
 });	
-
 </script>
 </html>

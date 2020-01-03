@@ -12,8 +12,8 @@
 			} else if(menu === "DepartManage") {
 				$("#frm").attr("action", "${pageContext.request.contextPath}/departs/departs.do");
 				$("#pageName").val(menu);
-			} else if(menu === "WorkManage") {
-				$("#frm").attr("action", "${pageContext.request.contextPath}/work/work.do");
+			} else if(menu === "TaskManage") {
+				$("#frm").attr("action", "${pageContext.request.contextPath}/task/task.do");
 				$("#pageName").val(menu);
 			} else if(menu === "EmpManage") {
 				$("#frm").attr("action", "${pageContext.request.contextPath}/emp/empManage.do");
@@ -58,8 +58,8 @@
 			<i class="fas fa-fw fa-table"></i>
 			<span>부서 관리</span></a>
 	</li>
-	<li id="WorkManage" class="menu nav-item">
-		<a class="nav-link" href="${pageContext.request.contextPath}/work/work.do">
+	<li id="TaskManage" class="menu nav-item">
+		<a class="nav-link" href="${pageContext.request.contextPath}/task/task.do">
 			<i class="fa fa-wrench"></i>
 			<span>업무 관리</span></a>
 	</li>

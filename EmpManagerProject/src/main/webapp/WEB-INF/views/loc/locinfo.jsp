@@ -11,7 +11,7 @@
 
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Dashboard</a></li>
+			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>
 			<li class="breadcrumb-item active">Location Table</li>
 		</ol>
 		
@@ -25,7 +25,7 @@
 				<div id = "searchDiv" style="margin: 0px 10px 10px 10px;">
 					<form id="locSearchForm">
 						   근무지 : 
-						<input type="text" id="locText" name="locText">
+						<input type="text" id="locText" name="locText" required="required">
 						<button class="btn btn-primary" id="locSearchBtn" style="float:right; margin:5px;">검색</button>
 					</form>
 				</div>
@@ -86,7 +86,7 @@ $(document).ready(function(){
 		var text = $("#locText").val().trim();
 		if(text == "") {
 			$('#locText').focus();
-			
+			return;
 		}
 		
 		$.ajax ({

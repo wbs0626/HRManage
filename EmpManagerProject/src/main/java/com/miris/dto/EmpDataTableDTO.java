@@ -21,7 +21,4 @@ public class EmpDataTableDTO {
 	private String loc_addr;
 	private String htime;
 	
-	
-	
-	
 }

@@ -27,6 +27,10 @@ public class TableController {
 	private DeptService ds;
 	@Autowired
 	private EmpService es;
+	@Autowired
+	private BusinessService bs;
+	@Autowired
+	private SiteService ss;
 	
 	@RequestMapping("tables/tables.do")
 	public String empAllocate(Model model) {
@@ -80,7 +84,6 @@ public class TableController {
 		List<EmpVO> evo = es.rankList();
 		
 		MonthVO mvo = es.empInfo(id);
-		System.out.println(mvo);
 		
 		model.addAttribute("mvo", mvo);
 		model.addAttribute("dvo", dvo);
@@ -100,5 +103,28 @@ public class TableController {
 		model.addAttribute("logList", logList);
 		
 		return "empYearHistory";
+	}
+	
+	// 현황 등록 창
+	@RequestMapping("empStateIns.do")
+	public String empStateIns(Model model, String id, String baseYear, String baseMonth) {
+		MonthVO mvo = new MonthVO();
+		mvo.setId(id);
+		mvo.setBaseYear(Integer.parseInt(baseYear));
+		mvo.setBaseMonth(Integer.parseInt(baseMonth));
+
+		EmpDetailVO evo = ms.empDetailLog(mvo);
+		System.out.println(evo);
+		
+		List<MonthEmpLogVO> logList = ms.yearHistoryList(id);
+		List<BusinessVO> blist = bs.businessAllList();
+		List<SiteVO> slist = ss.siteAllList();
+		
+		model.addAttribute("info", evo);
+		model.addAttribute("logList", logList);
+		model.addAttribute("blist", blist);
+		model.addAttribute("slist", slist);
+		
+		return "empStateIns";
 	}
 }

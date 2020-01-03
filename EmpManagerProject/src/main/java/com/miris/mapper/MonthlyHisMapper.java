@@ -4,6 +4,7 @@ import java.util.*;
 
 import org.apache.ibatis.annotations.Select;
 
+import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthVO;
 
@@ -105,18 +106,33 @@ public interface MonthlyHisMapper {
 	// -------------- 회원별 달마다 상태 구분 -----------
 
 	// 월별 인력 투입 이력 (최근 1년)
-		@Select("SELECT TO_CHAR((mh.baseyear||'.'||mh.basemonth )) as baseDate , mh.business_name, "
-				+ "mh.exclusion_state, mh.month_remarks, mh.baseyear, mh.basemonth "
-				+ "FROM monthhistory mh "
-				+ "JOIN emp e "
-				+ "ON mh.id = e.id "
-				+ "AND mh.id = #{id} "
-				+ "AND TO_DATE((mh.baseyear||'-'||mh.basemonth ) , 'YYYY-MM') BETWEEN to_char(sysdate - 365, 'YYYY-MM-DD') AND to_char(sysdate + 1, 'YYYY-MM-DD') "
-				+ "AND mh.business_name IS NOT NULL "
-				+ "LEFT OUTER JOIN site s "
-				+ "ON mh.site_id = s.site_id "
-				+ "ORDER BY mh.baseyear, mh.basemonth")
-		public List<MonthEmpLogVO> yearHistoryList(String id);
+	@Select("SELECT TO_CHAR((mh.baseyear||'.'||mh.basemonth )) as baseDate , mh.business_name, "
+			+ "mh.exclusion_state, mh.month_remarks, mh.baseyear, mh.basemonth, mh.state, s.site_name "
+			+ "FROM monthhistory mh "
+			+ "JOIN emp e "
+			+ "ON mh.id = e.id "
+			+ "AND mh.id = #{id} "
+			+ "AND TO_DATE((mh.baseyear||'-'||mh.basemonth ) , 'YYYY-MM') BETWEEN to_char(sysdate - 365, 'YYYY-MM-DD') AND to_char(sysdate + 1, 'YYYY-MM-DD') "
+			+ "AND mh.business_name IS NOT NULL "
+			+ "LEFT OUTER JOIN site s "
+			+ "ON mh.site_id = s.site_id "
+			+ "ORDER BY mh.baseyear, mh.basemonth")
+	public List<MonthEmpLogVO> yearHistoryList(String id);
 	  
+	// 상세 이력 조회 (단일 월)
+	@Select("select e.id, e.section, d.depart_name, e.emp_name, e.rank, e.emp_remarks, "
+			+ "mh.baseyear, mh.basemonth, mh.business_name, site_name, mh.state, mh.month_remarks "
+			+ "FROM monthhistory mh "
+			+ "JOIN emp e "
+			+ "ON mh.id = e.id "
+			+ "AND mh.baseyear = #{baseYear} "
+			+ "AND mh.baseMonth = #{baseMonth} "
+			+ "AND mh.id = #{id} "
+			+ "JOIN departs d "
+			+ "ON e.depart_id = d.depart_id "
+			+ "LEFT OUTER JOIN site s "
+			+ "ON mh.site_id = s.site_id "
+			+ "ORDER BY mh.baseyear, mh.basemonth")
+	public EmpDetailVO empDetailLog (MonthVO mvo);
 	
 }

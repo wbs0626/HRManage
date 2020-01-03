@@ -57,7 +57,7 @@
 		
 		<div>
 			<button type="button" class="btn btn-primary" onClick="window.open('about:blank','_self').self.close();">
-				Close
+				닫기
 			</button>
 		</div>
 	</div>

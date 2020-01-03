@@ -11,14 +11,14 @@
 
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Dashboard</a></li>
+			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>
 			<li class="breadcrumb-item active">Departs Table</li>
 		</ol>
 		
 		<!-- DataTables Example -->
 		<div class="card mb-3">
 			<div class="card-header">
-				<i class="fas fa-table"></i> 부서 현황
+				<i class="fas fa-table"></i> 부서 관리
 			</div>
 			
 			<div class="card-body">
@@ -35,7 +35,7 @@
 						부서코드 : 
 						<input type="text" id="depart_id" name="depart_id">  부서명 :
 						<input type="text" id="depart_name" name="depart_name" placeholder="등록할 정보를 입력하세요." style="width:300px;">
-						<a class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</a>
+						<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
 					</form>	
 				</div>
 				
@@ -82,15 +82,6 @@
 				} 
 			});
 			
-			// 다중 체크문 value값 뽑기 관련 자료는 한글에 정리
-			/* $("#depDelBtn").click(function(){
-				$("input[name=depChk]:checked").each(function() {
-					var test = $(this).val();
-					console.log(test);
-				});
-			}); */	
-		});
-		
 		$("#depSearchBtn").on("click", function(){
 			var text = $("#depText").val().trim();
 			if(text == "") {
@@ -109,7 +100,7 @@
 					str += '<td>' + res.depart_name + '</td>';
 					str += '<td>' + res.depart_addr + '</td>';
 					str += '</tr>'
-					$("#locGetList").append(str);
+					$("#depGetList").append(str);
 				}
 			})
 		})
