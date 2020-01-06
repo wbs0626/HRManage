@@ -19,6 +19,7 @@ import com.miris.service.MonthlyHisService;
 import com.miris.service.SiteService;
 import com.miris.vo.BusinessVO;
 import com.miris.vo.DepartVO;
+import com.miris.vo.EmpDetailVO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
@@ -86,7 +87,7 @@ public class TableRestController {
 	public MonthlyRateVO monthRate(MonthVO mvo) {
 		MonthlyRateVO rvo = new MonthlyRateVO();
 		
-		System.out.println(mvo);
+		//System.out.println(mvo);
 		
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("baseYear", mvo.getBaseYear());
@@ -147,6 +148,24 @@ public class TableRestController {
 		List<SiteVO> svo = ss.siteAllList();
 		
 		return svo;
+	}
+	
+	@RequestMapping("multiAddState.do")
+	public String multiAddState(int count, String[] id, String[] baseYear,
+			String[] baseMonth, String[] business_name, String[] site_name, String state[]) {
+		
+		String msg = "";
+		
+		for(int i = 0; i < count; i++) {
+			System.out.println("id : " + id[i]);
+			System.out.println("baseYear : " + baseYear[i]);
+			System.out.println("baseMonth : " + baseMonth[i]);
+			System.out.println("business_name : " + business_name[i]);
+			System.out.println("site_name : " + site_name[i]);
+			System.out.println("state : " + state[i]);
+		}
+		
+		return msg;
 	}
 	
 }

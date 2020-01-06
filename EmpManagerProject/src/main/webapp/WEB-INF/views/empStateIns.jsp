@@ -62,6 +62,7 @@
 				<tbody id = "stateInfo">
 					<tr>
 						<td>
+							<input type ="hidden" id="empId" value="${info.id }">
 							<select class="form-control" id="baseYear" name="baseYear">
 								<option value="${info.baseYear }" selected="selected">
 									<c:out value="${info.baseYear }"/></option>
@@ -98,12 +99,12 @@
 							<select class="form-control" id="state0" name="state">
 								<c:choose>
 									<c:when test="${info.state == 1}"> 
-										<option value="1" selected="selected">내부</option>
-										<option value="2">외부</option>
+										<option value="1" selected="selected">Cost</option>
+										<option value="2">Price</option>
 									</c:when>
 									<c:when test="${info.state == 2}">
-										<option value="1">내부</option>
-										<option value="2" selected="selected">외부</option>
+										<option value="1">Cost</option>
+										<option value="2" selected="selected">Price</option>
 									</c:when>
 								</c:choose>
 							</select>
@@ -204,9 +205,9 @@ $(document).ready(function() {
 			str += '</td>'
 			// pc
 			str += '<td>'
-			str += '<select class="form-control" id="state' + count + '" "name="state">';
-			str += '<option value="1">내부' + '</option>';
-			str += '<option value="2">외부' + '</option>';
+			str += '<select class="form-control" id="state' + count + '" name="state">';
+			str += '<option value="1">Cost' + '</option>';
+			str += '<option value="2">Price' + '</option>';
 			str += '</select>'
 			str += '</td>'
 			
@@ -229,6 +230,28 @@ $(document).ready(function() {
 			$("#site_name0").focus();
 			return;
 		}
+		
+		let id = $("#empId").val();
+		
+		$.ajax({
+			url : 'multiAddState.do',
+			type : 'POST',
+			data : {
+						count : count,
+						id : id, 
+						baseYear : baseYear,
+						baseMonth : baseMonth,
+						business_name : business_name, 
+						site_name : site_name,
+						state : state
+					},
+			success : function(res) {
+				
+			}
+			
+			
+		});
+		
 	});
 	
 })

@@ -118,7 +118,7 @@ public class TableController {
 		mvo.setBaseMonth(Integer.parseInt(baseMonth));
 
 		EmpDetailVO evo = ms.empDetailLog(mvo);
-		System.out.println(evo);
+		//System.out.println(evo);
 		
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id);
 		List<BusinessVO> blist = bs.businessAllList();
