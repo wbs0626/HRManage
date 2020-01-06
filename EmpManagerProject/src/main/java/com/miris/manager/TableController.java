@@ -73,6 +73,8 @@ public class TableController {
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);
 		model.addAttribute("mList", mList);
+		model.addAttribute("nYear", nYear);
+		model.addAttribute("nMonth", nMonth);
 		
 		return "tables/inputCurrentState";
 	}
@@ -94,13 +96,15 @@ public class TableController {
 	
 	// 인력 연간 정보
 	@RequestMapping("empYearHistory.do")
-	public String empYearHis(Model model, String id) {
+	public String empYearHis(Model model, String id, String baseYear, String baseMonth) {
 		MonthVO mvo = es.empInfo(id);
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id); 
 		
 		model.addAttribute("empId", id);
 		model.addAttribute("info", mvo);
 		model.addAttribute("logList", logList);
+		model.addAttribute("baseYear", baseYear);
+		model.addAttribute("baseMonth", baseMonth);
 		
 		return "empYearHistory";
 	}

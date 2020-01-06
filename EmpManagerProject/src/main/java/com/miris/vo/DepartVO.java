@@ -8,13 +8,15 @@ import java.util.*;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class DepartVO {
-	private String depart_id;
+	private int depart_id;
 	private String depart_name;
-	private Date reg_date;
+	private String reg_date;
 	private String departs_remarks;
 	
 }

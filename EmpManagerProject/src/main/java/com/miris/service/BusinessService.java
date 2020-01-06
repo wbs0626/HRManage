@@ -16,4 +16,33 @@ public class BusinessService {
 	public List<BusinessVO> businessAllList() {
 		return bdao.businessAllList();
 	}
+	
+	public List<BusinessVO> busiFindByName(String business_name) {
+		return bdao.busiFindByName(business_name);
+	}
+	
+	public boolean busiIns(BusinessVO vo) {
+		boolean isSuccess = false;
+		
+		String business_name = vo.getBusiness_name();
+		
+		if(bdao.ChkBusiName(business_name) == 0) {
+			bdao.busiIns(vo);
+			isSuccess = true;
+		}	
+		return isSuccess;
+	}
+	
+	public boolean busiDel(BusinessVO vo) {
+		boolean isSuccess = false;
+		
+		String business_name = vo.getBusiness_name();
+		
+		if(bdao.ChkBusiName(business_name) == 1) {
+			bdao.busiDel(business_name);
+			isSuccess = true;
+		}
+		return isSuccess;
+	}
+	
 }

@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="container-fluid">
-
+		
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>

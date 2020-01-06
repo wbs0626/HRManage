@@ -78,4 +78,12 @@ public class EmpDAO implements EmpMapper{
 	public void empInsert(EmpVO vo) {
 		mapper.empInsert(vo);
 	}
+
+	public List<EmpVO> empNameSearch2(String name) {
+		return mapper.empNameSearch2(name);
+	}
+
+	public void empDelete(String id) {
+		mapper.empDelete(id);
+	}
 }

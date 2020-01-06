@@ -17,4 +17,20 @@ public class BusinessDAO implements BusinessMapper {
 		return mapper.businessAllList();
 	}
 
+	public List<BusinessVO> busiFindByName(String business_name) {
+		return mapper.busiFindByName(business_name);
+	}
+
+	public int ChkBusiName(String business_name) {
+		return mapper.ChkBusiName(business_name);
+	}
+
+	public void busiIns(BusinessVO vo) {
+		mapper.busiIns(vo);
+	}
+
+	public void busiDel(String business_name) {
+		mapper.busiDel(business_name);
+	}
+	
 }

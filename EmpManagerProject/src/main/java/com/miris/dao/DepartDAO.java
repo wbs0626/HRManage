@@ -17,19 +17,23 @@ public class DepartDAO implements DepartMapper{
 		return mapper.deptList();
 	}
 
-	public DepartVO deptNameSearch(String depart_id) {
+	public DepartVO deptNameSearch(int depart_id) {
 		return mapper.deptNameSearch(depart_id);
 	}
 
-	public int deptChkId(String depart_id) {
+	public int deptChkId(int depart_id) {
 		return mapper.deptChkId(depart_id);
 	}
 
-	public void deptDelete(String depart_id) {
+	public void deptDelete(int depart_id) {
 		mapper.deptDelete(depart_id);
 	}
 
 	public void deptInsert(DepartVO vo) {
 		mapper.deptInsert(vo);
+	}
+
+	public List<DepartVO> deptFindByName(String depart_name) {
+		return mapper.deptFindByName(depart_name);
 	}
 }

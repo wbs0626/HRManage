@@ -25,37 +25,56 @@
 				<div id = "searchDiv" style="margin: 0px 10px 10px 10px;">
 					<form id="depSearchForm">
 						   부서명 : 
-						<input type="text" id="depText" name="depText">
+						<input type="text" id="depText" name="depText" required="required">
 						<button class="btn btn-primary" id="depSearchBtn" style="float:right; margin:5px;">검색</button>
 					</form>
 				</div>
 
 				<div id="depInsDiv" style="margin: 0px 10px 10px 10px; display:none;">
 					<form id="depInsFrm" name="depInsFrm">
-						부서코드 : 
-						<input type="text" id="depart_id" name="depart_id">  부서명 :
-						<input type="text" id="depart_name" name="depart_name" placeholder="등록할 정보를 입력하세요." style="width:300px;">
+						<div class="form-group row">
+							<label for="depart_id" class="col-sm-2 col-form-label">부서코드 : </label>
+							<div class="col-sm-6">
+							<input class="form-control" type="text" id="depart_id" name="depart_id" required="required">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="depart_name" class="col-sm-2 col-form-label">부서 명 : </label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="depart_name" name="depart_name" required="required"> 
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="departs_remarks" class="col-sm-2 col-form-label">비고 : </label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="departs_remarks" name="departs_remarks"> 
+							</div>
+						</div>
 						<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
 					</form>	
 				</div>
 				
 				<div>
-					<table id="locDataTable" class= "table table-bordered">
+					<table id="deptDataTable" class= "table table-bordered">
 						<thead>
-							<tr class="table-active">
+							<tr class="table-active text-center">
 								<th><input type="checkbox" id="depChkAll"></th>
 								<th>부서코드</th>
 								<th>부서명</th>
+								<th>등록일자</th>
+								<th>비고</th>
 							</tr>
 						</thead>
 						<tbody id="depGetList">
 							<c:forEach var="depInfo" items="${depList }" varStatus="s">
 								<tr class="table-light">
-									<td>
-										<input type="checkbox" id="depChk-${s.index }" name="depChk" value="${depInfo.depart_id }">
+									<td class="text-center">
+										<input type="checkbox" name="depChk" value="${depInfo.depart_id }">
 									</td>
 									<td>${depInfo.depart_id }</td>
 									<td>${depInfo.depart_name }</td>
+									<td>${depInfo.reg_date }</td>
+									<td class="text-center">${depInfo.departs_remarks }</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -71,103 +90,116 @@
 
 	</div>
 	</body>
-	<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
-	<script type="text/javascript"> 
-		$(function(){
-			$("#depChkAll").click(function(){ 
-				if($("#depChkAll").prop("checked")) { 
-					$("input[type=checkbox]").prop("checked",true); 
-					} else { 
-						$("input[type=checkbox]").prop("checked",false); 
-				} 
-			});
-			
-		$("#depSearchBtn").on("click", function(){
-			var text = $("#depText").val().trim();
-			if(text == "") {
-				$('#depText').focus();
-				return;
-			}
-			
-			$.ajax ({
-				url : 'depSearch_ok.do',
-				type : 'post',
-				data : {name : text},
-				success : function(res) {
-					$("#depGetList tr").remove();
+<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript"> 
+$(document).ready(function(){
+	$("#depChkAll").click(function(){ 
+		if($("#depChkAll").prop("checked")) { 
+			$("input[type=checkbox]").prop("checked",true); 
+			} else { 
+				$("input[type=checkbox]").prop("checked",false); 
+		} 
+	});
+	
+	$("#depSearchBtn").on("click", function(){
+		var text = $("#depText").val().trim();
+		
+		if(text == "") {
+			$('#depText').focus();
+			return;
+		}
+		
+		$.ajax ({
+			url : 'depFindByName.do',
+			type : 'POST',
+			data : {name : text},
+			success : function(res) {
+				$("#depGetList tr").remove();
+				
+				$.each(res, function(index, res) {
+					
+					if(res.departs_remarks == null) {
+						res.departs_remarks = "-"
+					}
+					
 					var str = '<tr class="table-light">';
-					str += '<td>' + '<input type="checkbox" value="' + res.depart_name + '">' + '</td>';
+					str += '<td class="text-center">' + '<input type="checkbox" name="depChk" value="' + res.depart_id + '">' + '</td>';
+					str += '<td>' + res.depart_id + '</td>';
 					str += '<td>' + res.depart_name + '</td>';
-					str += '<td>' + res.depart_addr + '</td>';
+					str += '<td>' + res.reg_date + '</td>';
+					str += '<td class="text-center">' + res.departs_remarks + '</td>';
 					str += '</tr>'
 					$("#depGetList").append(str);
-				}
-			})
+					console.log(JSON.stringify(res));
+				})
+			},
+			error : function(res) {
+				alert("부서 정보 검색 오류");
+			}
 		})
-		
-		$("#depInsBtn").on("click", function(){
-			//$("#searchDiv").hide();
-			//$("#depInsDiv").show();
-			if( $("#depInsDiv").css("display") == "none") {
-				$("#searchDiv").hide();
-				$("#depInsDiv").show();
-				$("#depInsBtn").text("취소")
-			} else {
-				$("#depInsDiv").hide();
-				$("#searchDiv").show();
-				$("#depInsBtn").text("등록")
-			}
-		});
-		
-		$("#depAddBtn").on("click", function(){
-			var name = $('#depart_name').val();
-			var addr = $('#depart_addr').val();
-			if (name.trim() == "") {
-				$('#depart_name').focus();
-				return;
-			}
-			if (addr.trim() == "") {
-				$('#depart_addr').focus();
-				return;
-			}
+		return false;
+	});
+	
+	$("#depInsBtn").on("click", function(){
+		if( $("#depInsDiv").css("display") == "none") {
+			$("#searchDiv").hide();
+			$("#depInsDiv").show();
+			$("#depInsBtn").text("취소");
+		} else {
+			$("#depInsDiv").hide();
+			$("#searchDiv").show();
+			$("#depInsBtn").text("등록");
+		}
+	});
+	
+	$("#depAddBtn").on("click", function(){
+		if( $("#depart_id").val().trim() == "") {
+			$("#depart_id").focus();
+			return;
+		};
+		if( $("#depart_name").val().trim() == "") {
+			$("#depart_id").focus();
+			return;
+		};
+
+		$.ajax ({
+			url : 'depIns_ok.do',
+			data : $("#depInsFrm").serialize(),
+			type : 'POST',
 			
-			$.ajax ({
-				url : 'depInsert_ok.do',
-				data : $('#depInsFrm').serialize(),
-				type : 'GET',
+			success : function(res) {
+				if(res=="OK") {
+					alert("정상 처리되었습니다.");
+					history.replaceState({}, null, location.pathname);
+				}
+			},
+			error : function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
+		})
+	});
+	
+	$("#depDelBtn").on("click", function(){
+		$("input[name=depChk]:checked").each(function() {
+			var id = $(this).val();
+		
+			$.ajax({
+				url : 'depDel_ok.do',
+				type : 'POST',
+				data : {depart_id : id},
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
+						history.replaceState({}, null, location.pathname);					
 					} else {
 						alert("오류 발생");
+						return;
 					}
 				}
 			})
-			
 		});
-		
-		// 단일 선택 기준
-		$("#depDelBtn").on("click", function(){
-			$("input[name=depChk]:checked").each(function() {
-				var depName = $(this).val();
-				console.log("depName값 : " + depName);
-				
-				$.ajax ({
-					url : 'depDelete_ok.do',
-					data : {name : depName},
-					type : 'POST',
-					success : function(res) {
-						if(res=="OK") {
-							alert("정상 처리되었습니다.");
-						} else {
-							alert("오류 발생");
-						}
-					}
-				})
-			});
-		});
-		
-		
-		
-	</script>
+	})
+	
+});
+</script>
 </html>

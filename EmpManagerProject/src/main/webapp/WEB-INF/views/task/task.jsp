@@ -24,43 +24,51 @@
 				<div id = "searchDiv" style="margin: 0px 10px 10px 10px;">
 					<form id="taskSearchForm">
 						업무명 : 
-						<input type="text" id="business_name" name="business_name" required="required">
+						<input type="text" id="bText" name="business_name" required="required">
 						<button class="btn btn-primary" id="findBtn" style="float:right; margin:5px;">검색</button>
 					</form>
 				</div>
 
-				<div id="" style="margin: 0px 10px 10px 10px; display:none;">
+				<div id="taskDataDiv" style="margin: 0px 10px 10px 10px; display:none;">
 					<form id="taskForm" name="taskForm">
-						업무명 : 
-						<input type="text" id="business_name" name="business_name" required="required">  
-						제외여부 :
-						<select id="exclusion_state" name="exclusion_state">
-							<option value="1">제외O</option>
-							<option value="2">제외X</option>
-						</select>
-						<button class="btn btn-info" id="addBtn" name="AddBtn">저장</button>
+					<div class="form-group row">
+						<label for="business_name" class="col-sm-1 col-form-label">업무명 : </label> 
+						<div class="col-sm-6">
+							<input class="form-control" type="text" id="business_name" name="business_name" required="required">
+						</div>	
+					</div>  
+					<div class="form-group row">
+						<label for="business_name" class="col-sm-1 col-form-label">제외여부 : </label> 
+						<div class="col-sm-6">
+							<select class="form-control" id="exclusion_state" name="exclusion_state">
+								<option value="1">제외 O</option>
+								<option value="2">제외 X</option>
+							</select>
+						</div>	
+					</div>  
+						<button class="btn btn-info" id="addBtn" name="addBtn">저장</button>
 					</form>	
 				</div>
 				
 				<div>
 					<table id="" class= "table table-bordered">
 						<thead>
-							<tr class="table-active">
+							<tr class="table-active text-center">
 								<th><input type="checkbox" id="taskChkAll" style="width:15%;"></th>
 								<th>업무명</th>
 								<th>제외여부</th>
 							</tr>
 						</thead>
-						<tbody id="">
+						<tbody id="taskDataList">
 							<c:forEach items="${bvo }" var="bvo">
 								<tr class="table-light">
-									<td><input type="checkbox" name="bChk"></td>
+									<td class= "text-center"><input type="checkbox" name="bChk" value="${bvo.business_name }"></td>
 									<td><c:out value="${bvo.business_name }"/></td>
 									<c:if test="${bvo.exclusion_state == 1}">
-										<td>O</td>
+										<td class= "text-center">O</td>
 									</c:if>
 									<c:if test="${bvo.exclusion_state == 2}">
-										<td>X</td>
+										<td class= "text-center">X</td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -68,7 +76,7 @@
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
 						<button class="btn btn-danger" id="delBtn" style="float:right; margin:5px;">삭제</button>
-						<button class="btn btn-active" id="InsBtn" style="float:right; margin:5px;">등록</button>	
+						<button class="btn btn-active" id="insBtn" style="float:right; margin:5px;">등록</button>	
 					</div>
 				</div>
 			</div>
@@ -89,64 +97,69 @@ $(document).ready(function(){
 	});
 	
 	$("#findBtn").on("click", function(){
-		var text = $("#business_name").val().trim();
+		var text = $("#bText").val().trim();
 		if(text == "") {
-			$('#business_name').focus();
-			
+			$('#bText').focus();
+			return;
 		}
 		
-		$.ajax ({
-			url : 'empSearch_ok.do',
-			type : 'post',
+		$.ajax({
+			url : 'taskFindByName.do',
 			data : {name : text},
-			success : function(res) {
-				$("#empGetList tr").remove();
-				var str = '<tr class="table-light">';
-				str += '<td>' + '<input type="checkbox" value="' + res.emp_name + '">' + '</td>';
-				str += '<td>' + res.emp_name + '</td>';
-				str += '<td>' + res.depart_id + '</td>';
-				str += '</tr>'
-				$("#empGetList").append(str);
-				console.log(str);
+			type : 'POST',
+			success : function(data) {
+				$("#taskDataList tr").remove();
+				
+				$.each(data, function(index, data){
+					if(data.exclusion_state == 1) {
+						data.exclusion_state = "O";
+					} else if (data.exclusion_state == 2) {
+						data.exclusion_state = "X";
+					}
+					
+					let str = '<tr>';
+					str += '<td class= "text-center"><input type="checkbox" name="bChk" value="'+ data.business_name +'">' + '</td>';
+				    str += '<td>' + data.business_name + '</td>';
+				    str += '<td class= "text-center">' + data.exclusion_state + '</td>';
+				    str += '</tr>'
+				    
+				    $("#taskDataList").append(str);
+				    console.log(JSON.stringify(data))
+				})
+			},
+			error : function(data) { 
+				alert("이름 검색 오류");
 			}
-		})
+		});
 		return false;
 	});
 	
-	$("#empInsBtn").on("click", function(){
-		//$("#searchDiv").hide();
-		//$("#empInsDiv").show();
-		if( $("#empInsDiv").css("display") == "none") {
+	$("#insBtn").on("click", function(){
+		
+		if( $("#taskDataDiv").css("display") == "none") {
 			$("#searchDiv").hide();
-			$("#empInsDiv").show();
-			$("#empInsBtn").text("취소")
+			$("#taskDataDiv").show();
+			$("#business_name").focus();
+			$("#insBtn").text("취소");
 		} else {
-			$("#empInsDiv").hide();
+			$("#taskDataDiv").hide();
 			$("#searchDiv").show();
-			$("#empInsBtn").text("등록")
+			$("#bText").focus();
+			$("#insBtn").text("등록");
 		}
 	});
 	
-	$("#empAddBtn").on("click", function(){
-		var name = $('#emp_name').val();
-		var addr = $('#depart_id').val();
-		if (name.trim() == "") {
-			$('#emp_name').focus();
-			return;
-		}
-		if (addr.trim() == "") {
-			$('#depart_id').focus();
-			return;
-		}
+	$("#addBtn").on("click", function(){
 		
 		$.ajax ({
-			url : 'empInsert_ok.do',
-			data : $('#empInsFrm').serialize(),
-			type : 'GET',
+			url : 'taskInsert_ok.do',
+			data : $('#taskForm').serialize(),
+			type : 'POST',
 			success : function(res) {
 				if(res=="OK") {
 					alert("정상 처리되었습니다.");
-					return;
+					history.replaceState({}, null, location.pathname);
+					window.replace();
 				} else {
 					alert("오류 발생");
 					return;
@@ -156,20 +169,21 @@ $(document).ready(function(){
 		
 	});
 	
-	// 단일 선택 기준
-	$("#empDelBtn").on("click", function(){
-		$("input[name=empChk]:checked").each(function() {
-			var empName = $(this).val();
-			console.log("empName값 : " + empName);
+	
+	$("#delBtn").on("click", function(){
+		$("input[name=bChk]:checked").each(function() {
+			var bName = $(this).val();
+			console.log("bName값 : " + bName);
 			
 			$.ajax ({
-				url : 'empDelete_ok.do',
-				data : {name : empName},
+				url : 'taskDelete_ok.do',
+				data : {business_name : bName},
 				type : 'POST',
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						return true;
+						history.replaceState({}, null, location.pathname);
+						window.replace();
 					} else {
 						alert("오류 발생");
 						return;

@@ -27,7 +27,7 @@ public class MainController {
 		int nYear;
 		int nMonth;
 		int nDay;
-		 
+		
 		Calendar calendar = new GregorianCalendar(Locale.KOREA);
 		nYear = calendar.get(Calendar.YEAR);
 		nMonth = calendar.get(Calendar.MONTH) + 1;

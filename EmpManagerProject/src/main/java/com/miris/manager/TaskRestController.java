@@ -6,31 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.miris.service.DeptService;
-import com.miris.vo.DepartVO;
+import com.miris.service.BusinessService;
+import com.miris.vo.BusinessVO;
 
 @RestController
-public class DeptRestController {
+public class TaskRestController {
 	@Autowired
-	private DeptService ds;
+	private BusinessService bs;
 	
-	@RequestMapping("departs/depFindByName.do")
-	public List<DepartVO> deptSearchInfo(String name) {
-		List<DepartVO> list = ds.deptFindByName(name);
+	@RequestMapping("task/taskFindByName.do")
+	public List<BusinessVO> taskFindByName(String name) {
 		
-		System.out.println("부서 검색 리스트 : " + list);
+		List<BusinessVO> list = bs.busiFindByName(name);
+		System.out.println("업무 리스트 : " + list);
 		
 		return list;
 	}
 	
-	@RequestMapping("departs/depIns_ok.do")
-	public String depIns_ok(DepartVO vo) {
+	@RequestMapping("task/taskInsert_ok.do")
+	public String taskInsert_ok(BusinessVO vo) {
 		String msg = "";
-
+		
 		System.out.println("들어온 값 : " + vo);
 		
 		try {	// 같은 이름이 이미 있으면 FAIL
-			if(ds.deptInsert(vo)) {
+			if(bs.busiIns(vo)) {
 				msg = "OK";
 			} else {
 				msg = "FAIL";
@@ -38,15 +38,18 @@ public class DeptRestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return msg;
 	}
 	
-	@RequestMapping("departs/depDel_ok.do")
-	public String depDel_ok(int depart_id) {
+	@RequestMapping("task/taskDelete_ok.do")
+	public String taskDelete_ok(BusinessVO vo) {
 		String msg = "";
 		
-		try {	// 같은 이름이 이미 있으면 FAIL
-			if(ds.deptDelete(depart_id)) {
+		System.out.println(vo);
+		
+		try {	// 같은 ID 없으면 FAIL
+			if(bs.busiDel(vo)) {
 				msg = "OK";
 			} else {
 				msg = "FAIL";

@@ -32,10 +32,19 @@
 
 				<div id="locInsDiv" style="margin: 0px 10px 10px 10px; display:none;">
 					<form id="locInsFrm" name="locInsFrm">
-						근무지 : 
-						<input type="text" id="loc_name" name="loc_name">  주소 :
-						<input type="text" id="loc_addr" name="loc_addr" placeholder="등록할 정보를 입력하세요." style="width:300px;">
-						<a class="btn btn-info" id="locAddBtn" name="locAddBtn">저장</a>
+						<div class="form-group row">
+							<label for="loc_name" class="col-sm-2 col-form-label">근무지 명 : </label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="loc_name" name="loc_name">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="loc_addr" class="col-sm-2 col-form-label">근무지 주소 : </label>
+							<div class="col-sm-6">
+								<input class="form-control" type="text" id="loc_addr" name="loc_addr">
+							</div>
+						</div>
+						<button class="btn btn-info" id="locAddBtn" name="locAddBtn">저장</button>
 					</form>	
 				</div>
 				
@@ -114,11 +123,11 @@ $(document).ready(function(){
 		if( $("#locInsDiv").css("display") == "none") {
 			$("#searchDiv").hide();
 			$("#locInsDiv").show();
-			$("#locInsBtn").text("취소")
+			$("#locInsBtn").text("취소");
 		} else {
 			$("#locInsDiv").hide();
 			$("#searchDiv").show();
-			$("#locInsBtn").text("등록")
+			$("#locInsBtn").text("등록");
 		}
 	});
 	
@@ -141,7 +150,8 @@ $(document).ready(function(){
 			success : function(res) {
 				if(res=="OK") {
 					alert("정상 처리되었습니다.");
-					return;
+					history.replaceState({}, null, location.pathname);
+					window.replace();
 				} else {
 					alert("오류 발생");
 					return;
@@ -164,7 +174,8 @@ $(document).ready(function(){
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						return true;
+						history.replaceState({}, null, location.pathname);
+						window.replace();
 					} else {
 						alert("오류 발생");
 						return;
@@ -175,7 +186,6 @@ $(document).ready(function(){
 	});
 });
 	
-
 		
 		// 다중 체크문 value값 뽑기 관련 자료는 한글에 정리
 		/* $("#locDelBtn").click(function(){

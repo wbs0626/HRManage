@@ -17,11 +17,11 @@ public class DeptService {
 		return ddao.deptList();
 	}
 
-	public DepartVO deptNameSearch(String depart_id) {
+	public DepartVO deptNameSearch(int depart_id) {
 		return ddao.deptNameSearch(depart_id);
 	}
 
-	public boolean deptDelete(String depart_id) {
+	public boolean deptDelete(int depart_id) {
 		boolean isSuccess = false;
 		
 		if(ddao.deptChkId(depart_id) != 0 ) {
@@ -43,5 +43,12 @@ public class DeptService {
 		return isSuccess;
 	}
 	
+	public List<DepartVO> deptFindByName(String depart_name) {
+		if(depart_name == null) {
+			depart_name = "";
+		}
+		
+		return ddao.deptFindByName(depart_name);
+	}
 	
 }

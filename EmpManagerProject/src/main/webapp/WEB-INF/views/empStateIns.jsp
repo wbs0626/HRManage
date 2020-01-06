@@ -134,7 +134,7 @@ $(document).ready(function() {
 	const MONTHS = 12;
 	const NOWYEAR = new Date().getFullYear();
 	const NOWMONTH = $("#eMonth").val();
-	var count = 1;
+	var count = 0;
 	
 	var bArr = new Array();	// 업무 목록
 	var sArr = new Array();	// site 목록
@@ -168,27 +168,27 @@ $(document).ready(function() {
 	});
 	
 	$("#addInfoBox").on("click", function(){
-		if(count < 12) {
-			
+		if(count < 11) {
+			count++;
 			let str = '<tr>';
 			// baseYear
 			str += '<td>';
-			str += '<select class="form-control" id="baseYear' + count + '">';
+			str += '<select class="form-control" id="baseYear' + count + '" name="baseYear">';
 			str += '<option>' + NOWYEAR + '</option>';
-			str += '<option>' + NOWYEAR - 1 + '</option>';
+			str += '<option>' + (NOWYEAR - 1) + '</option>';
 			str += '</select>'
 			str += '</td>'
 			// baseMonth
 			str += '<td>'
-			str += '<select class="form-control" id="baseMonth' + count + '">';
+			str += '<select class="form-control" id="baseMonth' + count + '" name="baseMonth">';
 			for(let i = 1; i < 13; i++) {
-				str += '<option>' + i + '</option>';
+				str += '<option value="i">' + i + '</option>';
 			}
 			str += '</select>'
 			str += '</td>'
 			// business_name
 			str += '<td>'
-			str += '<select class="form-control" id="business_name' + count + '">';
+			str += '<select class="form-control" id="business_name' + count + '" name="business_name">';
 			for(let i = 0; i < bArr.length; i++){
 				str += '<option>' + bArr[i] + '</option>';				
 			}
@@ -196,7 +196,7 @@ $(document).ready(function() {
 			str += '</td>'
 			// site
 			str += '<td>'
-			str += '<select class="form-control" id="site_name' + count + '">';
+			str += '<select class="form-control" id="site_name' + count + '" "name=site_name">';
 			for(let i = 0; i < sArr.length; i++){
 				str += '<option>' + sArr[i] + '</option>';				
 			}
@@ -204,21 +204,32 @@ $(document).ready(function() {
 			str += '</td>'
 			// pc
 			str += '<td>'
-			str += '<select class="form-control" id="state' + count + '">';
+			str += '<select class="form-control" id="state' + count + '" "name="state">';
 			str += '<option value="1">내부' + '</option>';
 			str += '<option value="2">외부' + '</option>';
 			str += '</select>'
 			str += '</td>'
 			
 			$("#stateInfo").append(str);
-			//console.log("칸 개수: " + (count+1));
+			
+			
 		} else {
 			$("#addInfoBox").attr('disabled', true);
 		}
-		count++;
-		
+		console.log("count값 : " + count);
 	});
 	
+	$("#empStateRegBtn").on("click", function(){
+		if($("#business_name0").val() == null) {
+			$("#business_name0").focus();
+			return;
+		}
+		
+		if($("#site_name0").val() == null) {
+			$("#site_name0").focus();
+			return;
+		}
+	});
 	
 })
 </script>

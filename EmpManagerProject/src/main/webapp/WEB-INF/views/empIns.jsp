@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div class="container" style="border:1px solid; padding: 15px">
-		<h4>■ 인력 등록/수정</h4>
+		<h4>■ 인력 수정</h4>
 		<form id="empInsUpdForm">
 		<input type="hidden" id="id" name="id" value="${mvo.id }">
 

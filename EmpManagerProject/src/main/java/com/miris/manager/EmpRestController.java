@@ -6,31 +6,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.miris.service.DeptService;
-import com.miris.vo.DepartVO;
+import com.miris.service.EmpService;
+import com.miris.vo.EmpVO;
 
 @RestController
-public class DeptRestController {
+public class EmpRestController {
 	@Autowired
-	private DeptService ds;
+	private EmpService es;
 	
-	@RequestMapping("departs/depFindByName.do")
-	public List<DepartVO> deptSearchInfo(String name) {
-		List<DepartVO> list = ds.deptFindByName(name);
+	@RequestMapping("emp/empFindByName.do")
+	public List<EmpVO> empFindByName(String emp_name) {
+		List<EmpVO> list = es.empNameSearch2(emp_name);
 		
-		System.out.println("부서 검색 리스트 : " + list);
+		System.out.println("이름검색: " + list);
 		
 		return list;
 	}
 	
-	@RequestMapping("departs/depIns_ok.do")
-	public String depIns_ok(DepartVO vo) {
+	@RequestMapping("emp/empInsert_ok.do")
+	public String empInsert_ok(EmpVO vo) {
 		String msg = "";
-
+		
 		System.out.println("들어온 값 : " + vo);
 		
 		try {	// 같은 이름이 이미 있으면 FAIL
-			if(ds.deptInsert(vo)) {
+			if(es.empInsert(vo)) {
 				msg = "OK";
 			} else {
 				msg = "FAIL";
@@ -38,15 +38,18 @@ public class DeptRestController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return msg;
 	}
 	
-	@RequestMapping("departs/depDel_ok.do")
-	public String depDel_ok(int depart_id) {
+	@RequestMapping("emp/empDelete_ok.do")
+	public String empDelete_ok(EmpVO vo) {
 		String msg = "";
 		
-		try {	// 같은 이름이 이미 있으면 FAIL
-			if(ds.deptDelete(depart_id)) {
+		System.out.println(vo);
+		
+		try {	// 같은 ID 없으면 FAIL
+			if(es.empDelete(vo)) {
 				msg = "OK";
 			} else {
 				msg = "FAIL";

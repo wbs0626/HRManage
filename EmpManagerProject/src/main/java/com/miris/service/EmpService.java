@@ -108,4 +108,18 @@ public class EmpService {
 		
 		return isSuccess;
 	}
+	
+	public boolean empDelete(EmpVO vo) {
+		boolean isSuccess = false;
+
+		if(edao.loginIdCheck(vo) == 1) {
+			edao.empDelete(vo.getId());
+			isSuccess = true;
+		}
+		return isSuccess;
+	}
+	
+	public List<EmpVO> empNameSearch2(String name){
+		return edao.empNameSearch2(name);
+	}
 }
