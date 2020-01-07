@@ -150,19 +150,17 @@ public class TableRestController {
 		return svo;
 	}
 	
-	@RequestMapping("multiAddState.do")
-	public String multiAddState(int count, String[] id, String[] baseYear,
-			String[] baseMonth, String[] business_name, String[] site_name, String state[]) {
+	@RequestMapping("addState.do")
+	public String addState(MonthVO mvo) {
 		
 		String msg = "";
 		
-		for(int i = 0; i < count; i++) {
-			System.out.println("id : " + id[i]);
-			System.out.println("baseYear : " + baseYear[i]);
-			System.out.println("baseMonth : " + baseMonth[i]);
-			System.out.println("business_name : " + business_name[i]);
-			System.out.println("site_name : " + site_name[i]);
-			System.out.println("state : " + state[i]);
+		try {
+			ms.monthHisInsert(mvo);
+			msg = "OK";
+		} catch(Exception e) {
+			msg = "FAIL";
+			e.printStackTrace();
 		}
 		
 		return msg;

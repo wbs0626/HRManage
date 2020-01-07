@@ -2,7 +2,9 @@ package com.miris.mapper;
 
 import java.util.*;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
@@ -12,18 +14,90 @@ public interface MonthlyHisMapper {
 	
 	public final String defStr = "SELECT e.id, e.section, e.emp_name, e.rank, mh.business_name, s.site_name, "
 			+ "mh.state, mh.baseyear, mh.basemonth, mh.month_remarks, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '1' AND id = mh.id), 0) m1, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '2' AND id = mh.id), 0) m2, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '3' AND id = mh.id), 0) m3, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '4' AND id = mh.id), 0) m4, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '5' AND id = mh.id), 0) m5, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '6' AND id = mh.id), 0) m6, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '7' AND id = mh.id), 0) m7, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '8' AND id = mh.id), 0) m8, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '9' AND id = mh.id), 0) m9, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '10' AND id = mh.id), 0) m10, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '11' AND id = mh.id), 0) m11, "
-			+ "nvl((SELECT state FROM monthhistory WHERE baseyear = #{baseYear} AND basemonth = '12' AND id = mh.id), 0) m12 "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '1' AND id = mh.id), 0) m1, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '2' AND id = mh.id), 0) m2, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '3' AND id = mh.id), 0) m3, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '4' AND id = mh.id), 0) m4, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '5' AND id = mh.id), 0) m5, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '6' AND id = mh.id), 0) m6, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '7' AND id = mh.id), 0) m7, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '8' AND id = mh.id), 0) m8, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '9' AND id = mh.id), 0) m9, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '10' AND id = mh.id), 0) m10, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '11' AND id = mh.id), 0) m11, "
+			+ "nvl((SELECT CASE "
+			+ "WHEN state = 1 AND exclusion_state = 1 THEN 1 "
+			+ "WHEN state = 2 AND exclusion_state = 2 THEN 2 "
+			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
+			+ "ELSE 3 END "
+			+ "FROM monthhistory "
+			+ "WHERE baseyear='2020' AND basemonth = '12' AND id = mh.id), 0) m12 "
 			+ "FROM monthhistory mh JOIN emp e "
 			+ "ON mh.id = e.id "
 			+ "AND mh.baseyear = #{baseYear} "
@@ -68,7 +142,7 @@ public interface MonthlyHisMapper {
 	@Select(defStr
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 1, 8, 9")
+			+ "ORDER BY mh.id, mh.baseYear, mh.baseMonth")
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo);
 	
 	// 구분(내부, 외부) 검색
@@ -76,7 +150,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.section = #{section}"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 8, 9")
+			+ "ORDER BY mh.baseYear, mh.baseMonth")
 	public List<MonthVO> monEmpSectionSearch(MonthVO mvo);
 	
 	// 성명 검색
@@ -84,7 +158,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%'"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 8, 9")
+			+ "ORDER BY mh.baseYear, mh.baseMonth")
 	public List<MonthVO> monEmpNameSearch(MonthVO mvo);
 	
 	// 직급 검색
@@ -92,7 +166,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.rank = #{rank}"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 8, 9")
+			+ "ORDER BY mh.baseYear, mh.baseMonth")
 	public List<MonthVO> monEmpRankSearch(MonthVO mvo);
 	
 	// 현업무 검색
@@ -100,7 +174,7 @@ public interface MonthlyHisMapper {
 			+ "AND mh.business_name LIKE '%'||#{business_name}||'%'"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY 8, 9")
+			+ "ORDER BY mh.baseYear, mh.baseMonth")
 	public List<MonthVO> monEmpBNameSearch(MonthVO mvo);
 	
 	// -------------- 회원별 달마다 상태 구분 -----------
@@ -135,4 +209,27 @@ public interface MonthlyHisMapper {
 			+ "ORDER BY mh.baseyear, mh.basemonth")
 	public EmpDetailVO empDetailLog (MonthVO mvo);
 	
+	// 이력 중복 확인
+	@Select("SELECT count(*) FROM monthhistory "
+			+ "WHERE baseyear = #{baseYear} "
+			+ "AND basemonth = #{baseMonth} "
+			+ "AND id = #{id}")
+	public int monHisDupChk(MonthVO mvo);
+	
+	// 월별 이력 추가
+	@Insert("INSERT INTO monthhistory(ID, baseyear, basemonth, business_name, site_id, exclusion_state, state, month_remarks) "
+			+ "VALUES (#{id}, #{baseYear}, #{baseMonth}, #{business_name}, #{site_id}, #{exclusion_state}, #{state}, #{month_remarks})")
+	public void monthHisInsert(MonthVO mvo);
+	
+	// 월별 이력 변경
+	@Update("UPDATE monthhistory SET "
+			+ "id = #{id}, "
+			+ "baseYear = #{baseYear}, "
+			+ "baseMonth = #{baseMonth}, "
+			+ "business_name = #{business_name}, "
+			+ "site_id = #{site_id}, "
+			+ "exclusion_state = #{exclusion_state}, "
+			+ "month_remarks = #{month_remarks}")
+	public void monthHisUpdate(MonthVO mvo);
 }
+	

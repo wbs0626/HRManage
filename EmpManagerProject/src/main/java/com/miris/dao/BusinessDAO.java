@@ -32,5 +32,9 @@ public class BusinessDAO implements BusinessMapper {
 	public void busiDel(String business_name) {
 		mapper.busiDel(business_name);
 	}
+
+	public int findBState(String business_name) {
+		return mapper.findBState(business_name);
+	}
 	
 }

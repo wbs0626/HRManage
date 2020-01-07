@@ -23,7 +23,7 @@
 			<div class="card-body">
 				<div>
 					<span class= "font-weight-bold" style="margin: 10px 0px 20px 0px;">■ 인력 가동률</span>
-					<table class="table table-bordered" style="width: 80%; border: 1px solid black;">
+					<table class="table table-bordered" style="border: 1px solid black;">
 						<thead>
 							<tr class="table-active" style="text-align: center;">
 								<td>총인원</td>
@@ -129,21 +129,22 @@
 									</c:otherwise>
 								</c:choose>										
 								<td>
-									<a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" style="width=400; height=600;" target="_blank">${mlist.emp_name }</a>
+									<%-- <a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" style="width=400; height=600;" target="_blank">${mlist.emp_name }</a> --%>
+									<a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" onclick="window.open(this.href,'_blank','width = 500px, height=600px'); return false;">${mlist.emp_name }</a>
 								</td>
 								<td><c:out value="${mlist.rank }"/></td>
 								<td><c:out value="${mlist.business_name }"/></td>
 								<td><c:out value="${mlist.site_name }"/></td>
 								<%-- 1월 --%>
 								<c:choose>
-									<c:when test="${mlist.m1 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m1 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">
 											C	
 										</td>
 									</c:when>
-									<c:when test="${mlist.m1 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m1 == 3}">
 										<td style="background-color: WHITE; font-weight: bold;">
-											C	
+											P	
 										</td>
 									</c:when>
 									<c:when test="${mlist.m1 == 2}">
@@ -157,12 +158,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 2월 --%>
-									<c:when test="${mlist.m2 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m2 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m2 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m2 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m2 == 2}">
@@ -175,12 +176,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 3월 --%>
-									<c:when test="${mlist.m3 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m3 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m3 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m3 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m3 == 2}">
@@ -193,12 +194,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 4월 --%>
-									<c:when test="${mlist.m4 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m4 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m4 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m4 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m4 == 2}">
@@ -211,12 +212,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 5월 --%>
-									<c:when test="${mlist.m5 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m5 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m5 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m5 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m5 == 2}">
@@ -229,12 +230,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 6월 --%>
-									<c:when test="${mlist.m6 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m6 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m6 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m6 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m6 == 2}">
@@ -247,12 +248,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 7월 --%>
-									<c:when test="${mlist.m7 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m7 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m7 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m7 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m7 == 2}">
@@ -265,12 +266,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 8월 --%>
-									<c:when test="${mlist.m8 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m8 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m8 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m8 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m8 == 2}">
@@ -283,12 +284,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 9월 --%>
-									<c:when test="${mlist.m9 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m9 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m9 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m9 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m9 == 2}">
@@ -301,12 +302,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 10월 --%>
-									<c:when test="${mlist.m10 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m10 == 1}">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m10 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m10 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m10 == 2}">
@@ -319,12 +320,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 11월 --%>
-									<c:when test="${mlist.m11 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m11 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m11 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m11 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m11 == 2}">
@@ -337,12 +338,12 @@
 								</c:choose>
 								<c:choose>
 								<%-- 12월 --%>
-									<c:when test="${mlist.m12 == 1 && mlist.business_name != 'SI 사업 발주 대기'}">
+									<c:when test="${mlist.m12 == 1 }">
 										<td style="background-color: #A5DF00; font-weight: bold;">C
 										</td>
 									</c:when>
-									<c:when test="${mlist.m12 == 1 && mlist.business_name == 'SI 사업 발주 대기'}">
-										<td style="background-color: WHITE; font-weight: bold;">C
+									<c:when test="${mlist.m12 == 3}">
+										<td style="background-color: WHITE; font-weight: bold;">P
 										</td>
 									</c:when>
 									<c:when test="${mlist.m12 == 2}">
@@ -473,18 +474,18 @@ $(document).ready(function() {
 					/* 상태 값 */
 					for (let a = 0; a < MONTHS; a++) {
 						
-						if(mArr[a] == 1 && emp.business_name != 'SI 사업 발주 대기') {
+						if(mArr[a] == 1 ) {
 							if(a+1 == emp.baseMonth) {
 								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
 							} else {
 								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
 							}
-						} else if(mArr[a] == 1 && emp.business_name == 'SI 사업 발주 대기') {
+						} else if(mArr[a] == 3) {
 							cColor = "WHITE";
 							if(a+1 == emp.baseMonth) {
-								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
+								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
 							} else {
-								str += '<td style="background-color: ' + cColor + ';">' + 'C' +'</td>';
+								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
 							}
 						} else if(mArr[a] == 2) {
 							if(a+1 == emp.baseMonth) {

@@ -22,6 +22,10 @@ public interface BusinessMapper {
 			+ "WHERE business_name = #{business_name}")
 	public int ChkBusiName(String business_name);
 	
+	@Select("SELECT exclusion_state FROM business "
+			+ "WHERE business_name = #{business_name}")
+	public int findBState(String business_name);
+	
 	@Insert("INSERT INTO business "
 			+ "VALUES(#{business_name}, #{exclusion_state} )")
 	public void busiIns(BusinessVO vo);

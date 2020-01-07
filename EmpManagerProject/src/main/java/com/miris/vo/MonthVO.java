@@ -18,6 +18,8 @@ public class MonthVO {
 	private String emp_name;
 	private String rank;
 	private String business_name;
+	private int exclusion_state;
+	private String site_id;
 	private String site_name;
 	private int baseYear;
 	private int baseMonth;

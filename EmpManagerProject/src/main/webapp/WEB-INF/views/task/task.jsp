@@ -32,17 +32,17 @@
 				<div id="taskDataDiv" style="margin: 0px 10px 10px 10px; display:none;">
 					<form id="taskForm" name="taskForm">
 					<div class="form-group row">
-						<label for="business_name" class="col-sm-1 col-form-label">업무명 : </label> 
+						<label for="business_name" class="col-sm-2 col-form-label">업무명 : </label> 
 						<div class="col-sm-6">
 							<input class="form-control" type="text" id="business_name" name="business_name" required="required">
 						</div>	
 					</div>  
 					<div class="form-group row">
-						<label for="business_name" class="col-sm-1 col-form-label">제외여부 : </label> 
+						<label for="business_name" class="col-sm-2 col-form-label">제외여부 : </label> 
 						<div class="col-sm-6">
 							<select class="form-control" id="exclusion_state" name="exclusion_state">
-								<option value="1">제외 O</option>
-								<option value="2">제외 X</option>
+								<option value="1">Y</option>
+								<option value="2">N</option>
 							</select>
 						</div>	
 					</div>  
@@ -65,10 +65,10 @@
 									<td class= "text-center"><input type="checkbox" name="bChk" value="${bvo.business_name }"></td>
 									<td><c:out value="${bvo.business_name }"/></td>
 									<c:if test="${bvo.exclusion_state == 1}">
-										<td class= "text-center">O</td>
+										<td class= "text-center">Y</td>
 									</c:if>
 									<c:if test="${bvo.exclusion_state == 2}">
-										<td class= "text-center">X</td>
+										<td class= "text-center">N</td>
 									</c:if>
 								</tr>
 							</c:forEach>
@@ -112,9 +112,9 @@ $(document).ready(function(){
 				
 				$.each(data, function(index, data){
 					if(data.exclusion_state == 1) {
-						data.exclusion_state = "O";
+						data.exclusion_state = "Y";
 					} else if (data.exclusion_state == 2) {
-						data.exclusion_state = "X";
+						data.exclusion_state = "N";
 					}
 					
 					let str = '<tr>';

@@ -46,6 +46,18 @@ public class MonthlyHisDAO implements MonthlyHisMapper {
 
 	public EmpDetailVO empDetailLog(MonthVO mvo) {
 		return mapper.empDetailLog(mvo);
+	}
+
+	public void monthHisInsert(MonthVO mvo) {
+		mapper.monthHisInsert(mvo);
+	}
+
+	public int monHisDupChk(MonthVO mvo) {
+		return mapper.monHisDupChk(mvo);
+	}
+
+	public void monthHisUpdate(MonthVO mvo) {
+		mapper.monthHisUpdate(mvo);
 	}	
 
 }

@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.miris.dao.BusinessDAO;
 import com.miris.dao.MonthlyHisDAO;
 import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
@@ -14,7 +15,10 @@ import com.miris.vo.MonthVO;
 public class MonthlyHisService {
 	@Autowired
 	private MonthlyHisDAO mdao;
-
+	@Autowired
+	private BusinessDAO bdao;
+	
+	
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo) {	
 		
 		return mdao.monEmpDateSearch(mvo);
@@ -55,5 +59,21 @@ public class MonthlyHisService {
 	
 	public EmpDetailVO empDetailLog(MonthVO mvo) {
 		return mdao.empDetailLog(mvo);
+	}
+	
+	public boolean monthHisInsert(MonthVO mvo) {
+		boolean isSuccess = false;
+		
+		String bname = mvo.getBusiness_name();
+		int state = bdao.findBState(bname);
+		
+		mvo.setExclusion_state(state);
+		
+		if(mdao.monHisDupChk(mvo) != 1) {
+			mdao.monthHisInsert(mvo);
+			isSuccess = true;
+		}
+		
+		return isSuccess;
 	}
 }

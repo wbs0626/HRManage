@@ -91,7 +91,7 @@
 							<select class="form-control" id="site_name0" name="site_name">
 								<option></option>
 								<c:forEach items="${slist }" var="slist">
-									<option><c:out value="${slist.site_name }"/></option>
+									<option value="${slist.site_id }"><c:out value="${slist.site_name }"/></option>
 								</c:forEach>
 							</select>
 						</td>
@@ -138,7 +138,9 @@ $(document).ready(function() {
 	var count = 0;
 	
 	var bArr = new Array();	// 업무 목록
+	var bState = new Array();
 	var sArr = new Array();	// site 목록
+	var sId = new Array();
 	
 	for(let i = 0; i < MONTHS; i++) {
 		$("#baseMonth0").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
@@ -152,6 +154,7 @@ $(document).ready(function() {
 		success : function(data) {
 			$.each(data, function(index, data){
 				bArr[index] = data.business_name;
+				bState[index] = data.exclusion_state;
 				//console.log("bArr " + index + "번 : " + bArr[index]);
 			})
 		}
@@ -163,6 +166,7 @@ $(document).ready(function() {
 		success : function(data) {
 			$.each(data, function(index, data){
 				sArr[index] = data.site_name;
+				sId[index] = data.site_id;
 				//console.log("sArr " + index + "번 : " + sArr[index]);
 			})
 		}
@@ -199,7 +203,7 @@ $(document).ready(function() {
 			str += '<td>'
 			str += '<select class="form-control" id="site_name' + count + '" "name=site_name">';
 			for(let i = 0; i < sArr.length; i++){
-				str += '<option>' + sArr[i] + '</option>';				
+				str += '<option value='+ sId[i] +'>' + sArr[i] + '</option>';				
 			}
 			str += '</select>'
 			str += '</td>'
@@ -233,24 +237,33 @@ $(document).ready(function() {
 		
 		let id = $("#empId").val();
 		
-		$.ajax({
-			url : 'multiAddState.do',
-			type : 'POST',
-			data : {
-						count : count,
-						id : id, 
-						baseYear : baseYear,
-						baseMonth : baseMonth,
-						business_name : business_name, 
-						site_name : site_name,
-						state : state
-					},
-			success : function(res) {
-				
-			}
+		if(count == 1) {
+			$.ajax({
+				url : 'addState.do',
+				type : 'POST',
+				data : {
+							id : id, 
+							baseYear : baseYear,
+							baseMonth : baseMonth,
+							business_name : business_name, 
+							site_id : site_name,
+							state : state
+						},
+				success : function(res) {
+					if(res=="OK") {
+						alert("정상 처리되었습니다.");
+						history.replaceState({}, null, location.pathname);
+						window.replace();
+					} else {
+						alert("오류 발생");
+						return;
+					}
+				}
+			});
 			
-			
-		});
+		}
+		
+		
 		
 	});
 	
