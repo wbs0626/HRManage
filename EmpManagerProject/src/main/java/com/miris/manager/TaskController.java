@@ -1,6 +1,9 @@
 package com.miris.manager;
 
 import java.util.*;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +18,17 @@ public class TaskController {
 	private BusinessService bs;
 	
 	@RequestMapping("task/task.do")
-	public String work(Model model) {
+	public String work(Model model, HttpSession session) {
 		List<BusinessVO> bvo = bs.businessAllList();
 		
 		model.addAttribute("bvo", bvo);
 		
-		return "task/task";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "task/task";
+		}
 	}
 }

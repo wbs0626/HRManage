@@ -66,13 +66,16 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">로그아웃 버튼을 클릭해 세션을 종료합니다.</div>
+          <div class="modal-body"></div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/login.do">로그아웃</a>
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/logout.do">로그아웃</a>
           </div>
         </div>
       </div>
     </div>
   </body>
+  <script type="text/javascript">
+  	
+  </script>
 </html>

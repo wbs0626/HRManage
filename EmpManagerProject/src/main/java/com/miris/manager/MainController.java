@@ -2,6 +2,8 @@ package com.miris.manager;
 
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,7 @@ public class MainController {
 	
 
 	@RequestMapping("main.do")
-	public String main_main(Model model) {
+	public String main_main(Model model, HttpSession session) {
 		int nYear;
 		int nMonth;
 		int nDay;
@@ -36,9 +38,7 @@ public class MainController {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("baseYear", nYear);
 		map.put("baseMonth", nMonth);
-		System.out.println(map);
 		MonthlyRateVO mRateVO = hs.operationRate(map);
-		System.out.println("mRateVO 값 : " + mRateVO);
 		
 		int input1 = mRateVO.getMInput1();
 		int possible = mRateVO.getMPossible();
@@ -52,11 +52,19 @@ public class MainController {
 		
 		DailyEmpCountDTO hvo = hs.empStateCount(currentDate);
 		
+		String tempId = (String)session.getAttribute("userId");
+		
+		System.out.println("현재 세션 userId 값 : " + tempId);
+		
 		model.addAttribute("mvo", mRateVO);
 		model.addAttribute("currentMonth", currentMonth);
 		model.addAttribute("currentDate", currentDate);
 		model.addAttribute("hvo", hvo);
 		
-		return "main";
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:login.do";
+		} else {
+			return "main";
+		}
 	}
 }

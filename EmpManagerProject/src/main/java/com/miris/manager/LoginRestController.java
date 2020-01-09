@@ -9,27 +9,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.miris.service.AdminService;
 import com.miris.service.EmpService;
+import com.miris.vo.AdminVO;
 import com.miris.vo.EmpVO;
 
 @RestController
 public class LoginRestController {
 	@Autowired
-	private EmpService es;
+	private AdminService as;
 	
 	@RequestMapping("login_ok.do")
-	public String login_ok(EmpVO vo, HttpSession session) {
+	public String login_ok(AdminVO vo, HttpSession session) {
 		
-		//System.out.println("vo 값 : " + ToStringBuilder.reflectionToString(vo));
-		
-		//vo = es.empDetailInfo(vo);
-		
-		int result = es.login(vo);
+		int result = as.login(vo);
 		System.out.println("result : " + result);
 		System.out.println("입력된 ID값 : " + vo.getId());
 		System.out.println("입력된 pwd값 : " + vo.getPwd());
 		if(result == 1) {
-			session.setAttribute("id", vo.getId());
+			session.setMaxInactiveInterval(60 * 60);	// 세션 1시간 유지
+			session.setAttribute("userId", vo.getId());
 		} 
 		
 		return String.valueOf(result);

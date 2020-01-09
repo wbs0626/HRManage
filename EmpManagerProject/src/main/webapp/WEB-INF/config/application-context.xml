@@ -14,6 +14,24 @@
 	
 	<mvc:annotation-driven />
 	
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/WEB-INF/**"/>
+			<mvc:exclude-mapping path="/WEB-INF/views/login.jsp"/>
+			<bean class="com.miris.interceptor.Interceptor"/>
+		</mvc:interceptor>
+		
+		<bean id="webContentInterceptor" 
+			class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+		    <property name="cacheSeconds" value="0"/>
+		    <property name="useExpiresHeader" value="false"/>
+		    <property name="useCacheControlHeader" value="true"/>
+		    <property name="useCacheControlNoStore" value="true"/>
+    	</bean>
+	</mvc:interceptors>
+	
+	
+	
 	<bean id="tilesConfigurer"
        class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
        p:definitions="/WEB-INF/config/tiles.xml"

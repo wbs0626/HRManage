@@ -24,26 +24,7 @@ public class EmpService {
 	public List<EmpVO> empAllList() {
 		return edao.empList();
 	}
-	
-	public int login(EmpVO vo) {
-		int result = 0;
 
-		if (edao.loginIdCheck(vo) == 1) {
-			if (edao.LoginPwdCheck(vo) == 1) {
-				result = LOGIN;
-			} else {
-				result = PWD_INCORRECT;
-			}
-		} else {
-			result = NO_ID;
-		}
-		return result;
-	}
-
-	public void logout(HttpSession session) {
-		session.invalidate();
-	}
-	
 	public int duplicateNameChk(EmpVO vo) {
 		int result = edao.duplicateNameChk(vo);
 		

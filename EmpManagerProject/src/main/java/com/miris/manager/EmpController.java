@@ -2,6 +2,8 @@ package com.miris.manager;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,19 +31,26 @@ public class EmpController {
 	
 	// 30일 현황 창
 	@RequestMapping("empLog.do")
-	public String empLog(String id, Model model) {
+	public String empLog(String id, Model model, HttpSession session) {
 		List<HistoryVO> empLogList = hs.historyList(id);
 		
 		DailyEmpCountDTO empStateList = hs.empLogCount(id);
 		
 		model.addAttribute("empLogList", empLogList);
 		model.addAttribute("empStateList", empStateList);
-		return "empLog";
+		
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "empLog";
+		}
 	}
 	
 	// 인력 관리 화면
 	@RequestMapping("emp/empManage.do")
-	public String empManage(Model model) {
+	public String empManage(Model model, HttpSession session) {
 		List<EmpVO> elist = es.empAllList();
 		List<DepartVO> dvo = ds.deptList();
 		//System.out.println("인력 관리 화면 값: " + elist);
@@ -51,7 +60,13 @@ public class EmpController {
 		
 		//System.out.println(dvo);
 		
-		return "emp/empManage";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "emp/empManage";
+		}
 	}
 	
 	

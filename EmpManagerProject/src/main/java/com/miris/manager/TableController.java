@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,18 +35,24 @@ public class TableController {
 	private SiteService ss;
 	
 	@RequestMapping("tables/tables.do")
-	public String empAllocate(Model model) {
+	public String empAllocate(Model model, HttpSession session) {
 //		int maxLoc = ls.locCount();
 //		List<LocVO> locList = ls.locAllInfo();
 //		
 //		model.addAttribute("maxLoc", maxLoc);
 //		model.addAttribute("locList", locList);
 		
-		return "tables/tables";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "tables/tables";
+		}
 	}
 	
 	@RequestMapping("tables/inputCurrentState.do")
-	public String currentState(Model model) {
+	public String currentState(Model model, HttpSession session) {
 
 		MonthVO mvo = new MonthVO();
 		
@@ -76,12 +84,18 @@ public class TableController {
 		model.addAttribute("nYear", nYear);
 		model.addAttribute("nMonth", nMonth);
 		
-		return "tables/inputCurrentState";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "tables/inputCurrentState";
+		}
 	}
 	
 	// 인력 등록 창
 	@RequestMapping("empIns.do")
-	public String empIns(Model model, String id) {
+	public String empIns(Model model, HttpSession session, String id) {
 		List<DepartVO> dvo = ds.deptList();
 		List<EmpVO> evo = es.rankList();
 		
@@ -90,13 +104,18 @@ public class TableController {
 		model.addAttribute("mvo", mvo);
 		model.addAttribute("dvo", dvo);
 		model.addAttribute("evo", evo);
+		String tempId = (String)session.getAttribute("userId");
 		
-		return "empIns";
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "empIns";
+		}
 	}
 	
 	// 인력 연간 정보
 	@RequestMapping("empYearHistory.do")
-	public String empYearHis(Model model, String id, String baseYear, String baseMonth) {
+	public String empYearHis(Model model, HttpSession session, String id, String baseYear, String baseMonth) {
 		MonthVO mvo = es.empInfo(id);
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id); 
 		
@@ -106,12 +125,18 @@ public class TableController {
 		model.addAttribute("baseYear", baseYear);
 		model.addAttribute("baseMonth", baseMonth);
 		
-		return "empYearHistory";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "empYearHistory";
+		}
 	}
 	
 	// 현황 등록 창
 	@RequestMapping("empStateIns.do")
-	public String empStateIns(Model model, String id, String baseYear, String baseMonth) {
+	public String empStateIns(Model model, HttpSession session, String id, String baseYear, String baseMonth) {
 		MonthVO mvo = new MonthVO();
 		mvo.setId(id);
 		mvo.setBaseYear(Integer.parseInt(baseYear));
@@ -129,6 +154,12 @@ public class TableController {
 		model.addAttribute("blist", blist);
 		model.addAttribute("slist", slist);
 		
-		return "empStateIns";
+		String tempId = (String)session.getAttribute("userId");
+		
+		if(tempId == null || tempId.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "empStateIns";
+		}
 	}
 }

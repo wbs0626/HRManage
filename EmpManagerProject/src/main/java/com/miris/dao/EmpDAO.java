@@ -35,10 +35,6 @@ public class EmpDAO implements EmpMapper{
 		return mapper.loginIdCheck(vo);
 	}
 
-	public int LoginPwdCheck(EmpVO vo) {
-		return mapper.LoginPwdCheck(vo);
-	}
-
 	public List<EmpVO> empList() {
 		return mapper.empList();
 	}

@@ -475,10 +475,23 @@ $(document).ready(function() {
 					for (let a = 0; a < MONTHS; a++) {
 						
 						if(mArr[a] == 1 ) {
+							cColor = "#A5DF00";
 							if(a+1 == emp.baseMonth) {
 								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
 							} else {
 								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
+							}
+						} else if(mArr[a] == 2) {
+							if(a+1 <= emp.baseMonth) {
+								pColor = "lightskyblue";
+								if(a+1 == emp.baseMonth) {
+									str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+								}
+							} else {
+								pColor = "#FE9A2E";
+								str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
 							}
 						} else if(mArr[a] == 3) {
 							cColor = "WHITE";
@@ -486,13 +499,6 @@ $(document).ready(function() {
 								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
 							} else {
 								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
-							}
-						} else if(mArr[a] == 2) {
-							if(a+1 == emp.baseMonth) {
-								str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
-								pColor = "#FE9A2E"
-							} else {
-								str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
 							}
 						} else {
 							str+= '<td>' + '</td>'
