@@ -39,7 +39,12 @@
 						<input class="form-control" type="text" id="departs_remarks" name="departs_remarks">
 					</div>
 				</div>
-				<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
+				<div class="text-right">
+					<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
+					<button type="button" class="btn btn-danger" onClick="window.open('about:blank','_self').self.close();">
+					닫기
+					</button>
+				</div>	
 			</form>
 		</div>
 	</div>
