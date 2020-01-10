@@ -52,7 +52,7 @@
 				</div>
 					
 				<div>
-					<span class= "font-weight-bold" id="tTitle">■ 월별 인력 투입사항
+					<span class= "font-weight-bold" id="tTitle">■ 월별 인력 투입사항   (<c:out value="${nYear }년 ${nMonth }월"/>)
 						<button class="btn btn-secondary btn-xs" id="copyAll" style="float: right;">일괄복사</button>
 						<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 5px; float:right;">현황등록</button>
 						<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right;">인력수정</button>
@@ -148,9 +148,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m1 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">
-											P	
-										</td>
+										<c:if test="${1 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P
+											</td>
+										</c:if>
+										<c:if test="${1 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -167,8 +174,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m2 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${2 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${2 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -185,8 +200,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m3 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${3 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${3 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -203,8 +226,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m4 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${4 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${4 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -221,8 +252,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m5 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${5 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${5 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -239,8 +278,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m6 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${6 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${6 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -257,8 +304,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m7 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${7 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${7 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -275,8 +330,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m8 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${8 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${8 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -293,8 +356,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m9 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${9 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${9 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -311,8 +382,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m10 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${10 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${10 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -329,8 +408,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m11 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${11 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${11 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -347,8 +434,16 @@
 										</td>
 									</c:when>
 									<c:when test="${mlist.m12 == 2}">
-										<td style="background-color: lightskyblue; font-weight: bold;">P
-										</td>
+										<c:if test="${12 > nMonth  }">
+											<td style="background-color: #FE9A2E; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
+										<c:if test="${12 <= nMonth  }">
+											<td style="background-color: lightskyblue; font-weight: bold;">
+												P	
+											</td>
+										</c:if>
 									</c:when>
 									<c:otherwise>
 										<td></td>
@@ -383,7 +478,7 @@ $(document).ready(function() {
 	}
 	/* select box Init */
 	$("#baseYear option[value='"+ NOWYEAR +"']").attr("selected", true);
-	//$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
+	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
 	
 	$("#infoSearch").on("click", function(){
 
@@ -446,9 +541,7 @@ $(document).ready(function() {
 					} 
 					
 					let url = "../empYearHistory.do?id=" + emp.id + "&baseYear=" + y + "&baseMonth=" + m;
-					let winWidth = 200;
-					let winHeight = 300;
-					let option = "_blank";
+					let option = "window.open(this.href,'_blank','width = 500px, height=600px'); return false;";
 					
 					/* State value array */
 					var mArr = [emp.m1, emp.m2, emp.m3, emp.m4,
@@ -456,13 +549,14 @@ $(document).ready(function() {
 								emp.m9, emp.m10, emp.m11, emp.m12];
 					
 					/* State Color */
-					var cColor = "#A5DF00";
-					var pColor = "lightskyblue";
+					//var cColor = "#A5DF00";
+					//var pColor = "lightskyblue";
 					
 				    let str = '<tr>';
 				    str += '<td><input type="checkbox" name="empChk" value="'+ emp.id +'">' + '</td>';
 				    str += '<td>' + emp.section + '</td>';
-				    str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
+				    //str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
+				    str += '<td><a href="'+url+'" onclick="'+ option +'">' + emp.emp_name + '</a></td>';
 					str += '<td>' + emp.rank + '</td>';
 					if(emp.business_name == '출산 휴가') {
 						str += '<td style="background-color: ' + cColor + ';">' + emp.business_name + '</td>';
@@ -476,15 +570,15 @@ $(document).ready(function() {
 						
 						if(mArr[a] == 1 ) {
 							cColor = "#A5DF00";
-							if(a+1 == emp.baseMonth) {
+							if(a+1 == NOWMONTH) {
 								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
 							} else {
 								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
 							}
 						} else if(mArr[a] == 2) {
-							if(a+1 <= emp.baseMonth) {
+							if(a+1 <= NOWMONTH) {
 								pColor = "lightskyblue";
-								if(a+1 == emp.baseMonth) {
+								if(a+1 == NOWMONTH) {
 									str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
 								} else {
 									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
@@ -495,7 +589,7 @@ $(document).ready(function() {
 							}
 						} else if(mArr[a] == 3) {
 							cColor = "WHITE";
-							if(a+1 == emp.baseMonth) {
+							if(a+1 == NOWMONTH) {
 								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
 							} else {
 								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
@@ -45,9 +46,10 @@
             <i class="fas fa-user-circle fa-fw"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-            <a class="dropdown-item" href="#">관리자</a>
+            <!-- <a class="dropdown-item" href="#">관리자</a>
             <a class="dropdown-item" href="#">투입 현황</a>
-            <a class="dropdown-item" href="#">근무 상태</a>
+            <a class="dropdown-item" href="#">근무 상태</a> -->
+            <a class="dropdown-item"><c:out value="${sessionScope.userId }"/>님</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>

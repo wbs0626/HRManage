@@ -16,4 +16,8 @@ public interface AdminMapper {
 	
 	@Select("SELECT * FROM admin")
 	public List<AdminVO> adminAllList();
+	
+	@Select("SELECT * FROM admin "
+			+ "WHERE id = #{id}")
+	public AdminVO adminInfo(AdminVO vo);
 }

@@ -30,30 +30,6 @@
 					</form>
 				</div>
 
-				<div id="depInsDiv" style="margin: 0px 10px 10px 10px; display:none;">
-					<form id="depInsFrm" name="depInsFrm">
-						<div class="form-group row">
-							<label for="depart_id" class="col-sm-2 col-form-label">부서코드 : </label>
-							<div class="col-sm-6">
-							<input class="form-control" type="text" id="depart_id" name="depart_id" required="required">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="depart_name" class="col-sm-2 col-form-label">부서 명 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="depart_name" name="depart_name" required="required"> 
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="departs_remarks" class="col-sm-2 col-form-label">비고 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="departs_remarks" name="departs_remarks"> 
-							</div>
-						</div>
-						<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
-					</form>	
-				</div>
-				
 				<div>
 					<table id="deptDataTable" class= "table table-bordered">
 						<thead>
@@ -141,18 +117,12 @@ $(document).ready(function(){
 	});
 	
 	$("#depInsBtn").on("click", function(){
-		if( $("#depInsDiv").css("display") == "none") {
-			$("#searchDiv").hide();
-			$("#depInsDiv").show();
-			$("#depInsBtn").text("취소");
-		} else {
-			$("#depInsDiv").hide();
-			$("#searchDiv").show();
-			$("#depInsBtn").text("등록");
-		}
+
+		window.open('../departIns.do', '_blank', 'width=500px, height=600px');
+		return false;
 	});
 	
-	$("#depAddBtn").on("click", function(){
+	/* $("#depAddBtn").on("click", function(){
 		if( $("#depart_id").val().trim() == "") {
 			$("#depart_id").focus();
 			return;
@@ -177,7 +147,7 @@ $(document).ready(function(){
 		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		    }
 		})
-	});
+	}); */
 	
 	$("#depDelBtn").on("click", function(){
 		$("input[name=depChk]:checked").each(function() {
@@ -190,7 +160,7 @@ $(document).ready(function(){
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						history.replaceState({}, null, location.pathname);					
+						window.location.reload();					
 					} else {
 						alert("오류 발생");
 						return;

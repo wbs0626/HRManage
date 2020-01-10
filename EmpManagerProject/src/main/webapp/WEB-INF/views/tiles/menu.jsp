@@ -37,23 +37,38 @@
 			var menu = $(this).attr("id");
 			left.pageSubmitFn(menu);
 		})
-	}) 
-	
+	})
 	*/
 </script>
-
 <ul class="sidebar navbar-nav">
-	<li class="nav-item dropdown">
+	<c:if test="${sessionScope.permit == 'A'}">
+	<li class="nav-item dropdown" id="sysAdminItem">
 		<a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			<i class="fas fa-fw fa-folder"></i>
 			<span>관리자</span>
 		</a>
 		<div class="dropdown-menu" aria-labelledby="pagesDropdown">
-			<h6 class="dropdown-header">로그인 화면 :</h6>
-			<a class="dropdown-item" href="${pageContext.request.contextPath}/login.do" onclick="pageSubmitFn()">Login</a>
+			<h6 class="dropdown-header">관리자 메뉴 :</h6>			
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/departs/departs.do" onclick="pageSubmitFn()">
+				<i class="fas fa-fw fa-table"></i>
+				<span>부서 관리</span>
+			</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/task/task.do" onclick="pageSubmitFn()">
+				<i class="fa fa-wrench"></i>
+				<span>업무 관리</span>
+			</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/emp/empManage.do" onclick="pageSubmitFn()">
+				<i class="fa fa-cogs"></i>
+				<span>직원 관리</span>
+			</a>
+			<a class="dropdown-item" href="${pageContext.request.contextPath}/loc/locinfo.do" onclick="pageSubmitFn()">
+				<i class="fa fa-globe"></i>
+				<span>근무지 관리</span>
+			</a>
 		</div>
 	</li>
-	<li id="DepartManage" class="menu nav-item">
+	</c:if>
+	<%-- <li id="DepartManage" class="menu nav-item">
 		<a class="nav-link" href="${pageContext.request.contextPath}/departs/departs.do">
 			<i class="fas fa-fw fa-table"></i>
 			<span>부서 관리</span></a>
@@ -72,7 +87,7 @@
 		<a class="nav-link" href="${pageContext.request.contextPath}/loc/locinfo.do">
 			<i class="fa fa-globe"></i>
 			<span>근무지 관리</span></a>
-	</li>
+	</li> --%>
 	<li id="EmpTables" class="menu nav-item">
 		<a class="nav-link" href="${pageContext.request.contextPath}/tables/tables.do">
 			<i class="fa fa-child"></i>

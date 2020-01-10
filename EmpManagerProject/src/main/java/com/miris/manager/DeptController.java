@@ -35,4 +35,16 @@ public class DeptController {
 		}
 		
 	}
+	
+	@RequestMapping("departIns.do")
+	public String departIns(Model model, HttpSession session) {
+		
+		String permit = (String)session.getAttribute("permit");
+		
+		if(permit == null || permit.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "departIns";
+		}
+	}
 }

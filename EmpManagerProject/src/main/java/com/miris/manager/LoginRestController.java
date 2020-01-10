@@ -25,10 +25,16 @@ public class LoginRestController {
 		int result = as.login(vo);
 		System.out.println("result : " + result);
 		System.out.println("입력된 ID값 : " + vo.getId());
-		System.out.println("입력된 pwd값 : " + vo.getPwd());
+		System.out.println("입력된 pwd값 : " + vo.getPwd() +"\n");
+		
+		AdminVO tmp = as.adminInfo(vo);
+		
+		System.out.println("tmp 전체값: " + tmp);
+		
 		if(result == 1) {
+			session.setAttribute("userId", tmp.getId());
+			session.setAttribute("permit", tmp.getPermit());
 			session.setMaxInactiveInterval(60 * 60);	// 세션 1시간 유지
-			session.setAttribute("userId", vo.getId());
 		} 
 		
 		return String.valueOf(result);

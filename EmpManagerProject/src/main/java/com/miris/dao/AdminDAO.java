@@ -24,4 +24,7 @@ public class AdminDAO implements AdminMapper{
 		return mapper.adminAllList();
 	}
 	
+	public AdminVO adminInfo(AdminVO vo) {
+		return mapper.adminInfo(vo);
+	}
 }

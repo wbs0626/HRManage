@@ -19,6 +19,7 @@ public class AdminService {
 	final static int PWD_INCORRECT = 2;
 	final static int NO_ID = 3;
 	
+	// 로그인
 	public int login(AdminVO vo) {
 		int result = 0;
 
@@ -32,6 +33,10 @@ public class AdminService {
 			result = NO_ID;
 		}
 		return result;
+	}
+	
+	public AdminVO adminInfo(AdminVO vo) {
+		return adao.adminInfo(vo);
 	}
 
 }
