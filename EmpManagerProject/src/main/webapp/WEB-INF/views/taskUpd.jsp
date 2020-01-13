@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>부서 등록</title>
+<title>업무 정보 수정</title>
 <link href="resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="resources/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="resources/assets/css/sb-admin.css" rel="stylesheet">
@@ -16,55 +16,51 @@
 <body>
 	<div class="card mb-3" style="border: 1px solid; padding: 15px; margin: 10px">
 		<div>
-			<span class="h4">▣ 부서 등록</span>
+			<span class="h4">▣ 업무 정보 수정</span>
 		</div>
 
-		<div class="card-body" id="depInsDiv">
-			<form id="depInsFrm" name="depInsFrm">
+		<div class="card-body" id="taskInsDiv">
+			<form id="taskInsForm" name="taskInsForm">
 				<div class="form-group row">
-					<label for="depart_id" class="col-sm-2 col-form-label">부서코드 : </label>
+					<label for="business_name" class="col-sm-2 col-form-label">업무명 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_id" name="depart_id" 
-							placeholder="숫자만 입력해주세요" required="required">
+						<input class="form-control" type="text" id="business_name" name="business_name" required="required">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="depart_name" class="col-sm-2 col-form-label">부서 명 : </label>
+					<label for="exclusion_state" class="col-sm-2 col-form-label">제외여부 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_name" name="depart_name" required="required">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="departs_remarks" class="col-sm-2 col-form-label">비고 : </label>
-					<div class="col-sm-6">
-						<input class="form-control" type="text" id="departs_remarks" name="departs_remarks">
+						<select class="form-control" id="exclusion_state" name="exclusion_state">
+							<option value="1">Y</option>
+							<option value="2">N</option>
+						</select>
 					</div>
 				</div>
 				<div class="text-right">
-					<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
+					<button class="btn btn-info" id="taskAddBtn" name="taskAddBtn">저장</button>
 					<button type="button" class="btn btn-danger" onClick="window.open('about:blank','_self').self.close();">
-					닫기
+						닫기
 					</button>
-				</div>	
+				</div>
 			</form>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#depAddBtn").on("click", function(){
-		if( $("#depart_id").val().trim() == "") {
-			$("#depart_id").focus();
+	$("#taskAddBtn").on("click", function(){
+		if( $("#business_name").val().trim() == "") {
+			$("#business_name").focus();
 			return;
 		};
-		if( $("#depart_name").val().trim() == "") {
-			$("#depart_name").focus();
+		if( $("#exclusion_state").val().trim() == "") {
+			$("#exclusion_state").focus();
 			return;
 		};
 
 		$.ajax ({
-			url : 'departs/depIns_ok.do',
-			data : $("#depInsFrm").serialize(),
+			url : 'task/taskInsert_ok.do',
+			data : $("#taskInsForm").serialize(),
 			type : 'POST',
 			
 			success : function(res) {

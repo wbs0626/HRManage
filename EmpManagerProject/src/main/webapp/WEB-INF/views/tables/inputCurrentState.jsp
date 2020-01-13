@@ -86,8 +86,14 @@
 							<input type="button" class="btn btn-primary"
 							 id="infoSearch" name="infoSearch" value="조회" style="float: right;"> 
 						</div>
+						<div>
+													
+						</div>
+						<div>
+							<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+						</div>
 					</form>
-					<table class="table table-bordered" style="border: 1px solid red;">
+					<table class="table table-bordered table-hover" style="border: 1px solid red;">
 						<thead>
 							<tr class="table-active" style="text-align: center;">
 								<td><input type="checkbox" id="infoChkAll"></td>
@@ -629,8 +635,8 @@ $(document).ready(function() {
 			var eid = $(this).val();
 			console.log("id값 : " + eid);
 			
-			let url = "../empIns.do?id=" + eid;
-			window.open(url, "_blank");
+			let url = "../empUpd.do?id=" + eid;
+			window.open(url, "_blank", 'width=800px, height=350px');
 		});
 	});
 	// InsUpd Event END 

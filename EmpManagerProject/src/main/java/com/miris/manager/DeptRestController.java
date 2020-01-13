@@ -56,4 +56,22 @@ public class DeptRestController {
 		}
 		return msg;
 	}
+	
+	@RequestMapping("departs/depUpd_ok.do")
+	public String depUpd_ok(DepartVO vo) {
+		String msg = "";
+		
+		System.out.println("업데이트 정보: " + vo);
+		
+		try {
+			if(ds.deptUpdate(vo)) {
+				msg = "OK";
+			} else {
+				msg = "NO NAME";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return msg;
+	}
 }

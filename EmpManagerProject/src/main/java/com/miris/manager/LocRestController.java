@@ -56,10 +56,23 @@ public class LocRestController {
 	public LocVO locSearch_ok(String name) {
 		LocVO searchData = new LocVO();
 		
-		System.out.println("들어온 name값: " + name);
+		//System.out.println("들어온 name값: " + name);
 		searchData = ls.locSearch(name);
-		System.out.println("searchData 값 : " + ToStringBuilder.reflectionToString(searchData));
+		//System.out.println("searchData 값 : " + ToStringBuilder.reflectionToString(searchData));
 		
 		return searchData;
+	}
+	
+	@RequestMapping("loc/locUpd_ok.do")
+	public String locUpd_ok(LocVO vo) {
+		String msg = "";
+		
+		if(ls.locUpdate(vo)) {
+			msg = "OK";
+		} else {
+			msg = "FAIL";
+		}
+		
+		return msg;
 	}
 }

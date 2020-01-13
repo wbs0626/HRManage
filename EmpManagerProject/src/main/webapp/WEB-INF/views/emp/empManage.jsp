@@ -29,68 +29,6 @@
 					</form>
 				</div>
 				
-				<div id="empInsDiv" style="margin: 0px 10px 10px 10px; display:none;">
-					<form id="empInsFrm" name="empInsFrm">
-						<div class="form-group row">
-							<label for="id" class="col-sm-1 col-form-label">직원 ID : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="id" name="id" required="required">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="emp_name" class="col-sm-1 col-form-label">직원 명 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="emp_name" name="emp_name" required="required">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="section" class="col-sm-1 col-form-label">구분 : </label>
-							<div class="col-sm-6">
-								<select class="form-control" id="section" name="section">
-									<option value="1">내부</option>
-									<option value="2">외부</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="rank" class="col-sm-1 col-form-label">직위 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="rank" name="rank" required="required">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="depart_id" class="col-sm-1 col-form-label">부서 : </label>
-							<div class="col-sm-6">
-								<select class="form-control" id="depart_id" name="depart_id">
-									<c:forEach items="${dvo }" var="dvo">
-										<option value="${dvo.depart_id }"><c:out value="${dvo.depart_name }"/></option>
-									</c:forEach>	
-								</select>
-								
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="entry_date" class="col-sm-1 col-form-label">입사일 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="date" id="entry_date" name="entry_date" required="required">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="retire_date" class="col-sm-1 col-form-label">퇴사일 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="date" id="retire_date" name="retire_date">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="emp_remarks" class="col-sm-1 col-form-label">비고 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="emp_remarks" name="emp_remarks">
-							</div>
-						</div>
-						<button class="btn btn-info" id="empAddBtn" name="empAddBtn">저장</button>
-					</form>	
-				</div>
-				
 				<div>
 					<table id="empDataTable" class="table table-bordered text-center">
 						<thead>
@@ -100,7 +38,7 @@
 								<th>직원 명</th>
 								<th>구분</th>
 								<th>직위</th>
-								<th>부서 코드</th>
+								<th>부서 명</th>
 								<th>입사일</th>
 								<th>퇴사일</th>
 								<th>비고</th>
@@ -121,7 +59,7 @@
 										<td>외부</td>
 									</c:if>
 									<td><c:out value="${evo.rank }"/></td>
-									<td><c:out value="${evo.depart_id }"/></td>
+									<td><c:out value="${evo.depart_name }"/></td>
 									<c:if test="${evo.entry_date != null }">
 										<td><c:out value="${evo.entry_date }"/></td>
 									</c:if>
@@ -141,6 +79,7 @@
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
 						<button class="btn btn-danger" id="empDelBtn" style="float:right; margin:5px;">삭제</button>
+						<button class="btn btn-warning" id="empUpdBtn" style="float:right; margin:5px;">수정</button>
 						<button class="btn btn-active" id="empInsBtn" style="float:right; margin:5px;">등록</button>	
 					</div>
 				</div>
@@ -201,7 +140,7 @@ $(document).ready(function(){
 				    str += '<td>' + emp.emp_name + '</td>';
 				    str += '<td>' + emp.section + '</td>';
 				    str += '<td>' + emp.rank + '</td>';
-				    str += '<td>' + emp.depart_id + '</td>';
+				    str += '<td>' + emp.depart_name + '</td>';
 				    str += '<td>' + emp.entry_date + '</td>';
 				    str += '<td>' + emp.retire_date + '</td>';
 				    str += '<td>' + emp.emp_remarks + '</td>';
@@ -219,39 +158,30 @@ $(document).ready(function(){
 	});
 	
 	$("#empInsBtn").on("click", function(){
-		
-		if( $("#empInsDiv").css("display") == "none") {
-			$("#searchDiv").hide();
-			$("#empInsDiv").show();
-			$("#emp_name").focus();
-			$("#empInsBtn").text("취소");
-		} else {
-			$("#empInsDiv").hide();
-			$("#searchDiv").show();
-			$("#empText").focus();
-			$("#empInsBtn").text("등록");
-		}
+		window.open('../empIns.do', '_blank', 'width=500px, height=600px');
+		return false;
 	});
 	
-	$("#empAddBtn").on("click", function(){
+	$("#empUpdBtn").on("click", function(){
+		if($("input[name=empChk]").is(":checked") == false) {
+			alert("검색할 대상을 선택해 주세요");
+			return;
+		}
 		
-		$.ajax ({
-			url : 'empInsert_ok.do',
-			data : $('#empInsFrm').serialize(),
-			type : 'POST',
-			success : function(res) {
-				if(res=="OK") {
-					alert("정상 처리되었습니다.");
-					//window.replace();
-					history.replaceState({}, null, location.pathname);
-					window.replace();
-				} else {
-					alert("오류 발생");
-					return;
-				}
-			}
-		})
+		if($("input[name=empChk]:checked").length > 1) {
+			alert("한 명의 인원만 선택해 주세요");
+			$("input[name=empChk]").prop('checked', false);
+			return;
+		}
 		
+		$("input[name=empChk]:checked").each(function() {
+			var id = $(this).val();
+			console.log("id값 : " + id);
+			
+			let url = "../empUpd.do?id=" + id;
+			window.open(url, "_blank", 'width=500px, height=600px');
+		});
+		return false;
 	});
 	
 	$("#empDelBtn").on("click", function(){
@@ -266,13 +196,15 @@ $(document).ready(function(){
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						history.replaceState({}, null, location.pathname);
-						window.replace();
+						window.location.reload();
 					} else {
 						alert("오류 발생");
 						return;
 					}
-				}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
 			})
 		});
 	})

@@ -30,24 +30,6 @@
 					</form>
 				</div>
 
-				<div id="locInsDiv" style="margin: 0px 10px 10px 10px; display:none;">
-					<form id="locInsFrm" name="locInsFrm">
-						<div class="form-group row">
-							<label for="loc_name" class="col-sm-2 col-form-label">근무지 명 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="loc_name" name="loc_name">
-							</div>
-						</div>
-						<div class="form-group row">
-							<label for="loc_addr" class="col-sm-2 col-form-label">근무지 주소 : </label>
-							<div class="col-sm-6">
-								<input class="form-control" type="text" id="loc_addr" name="loc_addr">
-							</div>
-						</div>
-						<button class="btn btn-info" id="locAddBtn" name="locAddBtn">저장</button>
-					</form>	
-				</div>
-				
 				<div>
 					<table id="locDataTable" class= "table table-bordered">
 						<thead>
@@ -61,7 +43,7 @@
 							<c:forEach var="locInfo" items="${locList }" varStatus="s">
 								<tr class="table-light">
 									<td>
-										<input type="checkbox" id="locChk-${s.index }" name="locChk" value="${locInfo.loc_name }">
+										<input type="checkbox" name="locChk" value="${locInfo.loc_name }">
 									</td>
 									<td>${locInfo.loc_name }</td>
 									<td>${locInfo.loc_addr }</td>
@@ -71,6 +53,7 @@
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
 						<button class="btn btn-danger" id="locDelBtn" style="float:right; margin:5px;">삭제</button>
+						<button class="btn btn-warning" id="locUpdBtn" style="float:right; margin:5px;">수정</button>
 						<button class="btn btn-active" id="locInsBtn" style="float:right; margin:5px;">등록</button>	
 					</div>
 				</div>
@@ -118,50 +101,31 @@ $(document).ready(function(){
 	});
 	
 	$("#locInsBtn").on("click", function(){
-		//$("#searchDiv").hide();
-		//$("#locInsDiv").show();
-		if( $("#locInsDiv").css("display") == "none") {
-			$("#searchDiv").hide();
-			$("#locInsDiv").show();
-			$("#locInsBtn").text("취소");
-		} else {
-			$("#locInsDiv").hide();
-			$("#searchDiv").show();
-			$("#locInsBtn").text("등록");
-		}
+		window.open('../locIns.do', '_blank', 'width=500px, height=600px');
+		return false;
 	});
 	
-	$("#locAddBtn").on("click", function(){
-		var name = $('#loc_name').val();
-		var addr = $('#loc_addr').val();
-		if (name.trim() == "") {
-			$('#loc_name').focus();
-			return;
-		}
-		if (addr.trim() == "") {
-			$('#loc_addr').focus();
+	$("#locUpdBtn").on("click", function(){
+		if($("input[name=locChk]").is(":checked") == false) {
+			alert("검색할 대상을 선택해 주세요");
 			return;
 		}
 		
-		$.ajax ({
-			url : 'locInsert_ok.do',
-			data : $('#locInsFrm').serialize(),
-			type : 'GET',
-			success : function(res) {
-				if(res=="OK") {
-					alert("정상 처리되었습니다.");
-					history.replaceState({}, null, location.pathname);
-					window.replace();
-				} else {
-					alert("오류 발생");
-					return;
-				}
-			}
-		})
+		if($("input[name=locChk]:checked").length > 1) {
+			alert("하나의 근무지만 선택해 주세요");
+			$("input[name=locChk]").prop('checked', false);
+			return;
+		}
 		
+		$("input[name=locChk]:checked").each(function() {
+			var locName = $(this).val();
+			console.log("locName값 : " + locName);
+			
+			let url = "../locUpd.do?loc_name=" + locName;
+			window.open(url, "_blank", 'width=500px, height=600px');
+		});
 	});
 	
-	// 단일 선택 기준
 	$("#locDelBtn").on("click", function(){
 		$("input[name=locChk]:checked").each(function() {
 			var locName = $(this).val();
@@ -174,13 +138,15 @@ $(document).ready(function(){
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						history.replaceState({}, null, location.pathname);
-						window.replace();
+						window.location.reload();					
 					} else {
 						alert("오류 발생");
 						return;
 					}
-				}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
 			})
 		});
 	});

@@ -21,8 +21,10 @@ public interface EmpMapper {
 	public EmpVO empDetailInfo(EmpVO vo);
 	
 	// 직원 내역 출력
-	@Select("SELECT id, pwd, emp_name, rank, section, depart_id, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, TO_CHAR(retire_date, 'YYYY-MM-DD') retire_date, emp_remarks "
-			+ "FROM emp")
+	@Select("SELECT id, pwd, emp_name, rank, section, d.depart_name, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, "
+				+ "TO_CHAR(retire_date, 'YYYY-MM-DD') retire_date, emp_remarks "
+			+ "FROM emp JOIN departs d "
+			+ "ON emp.depart_id = d.depart_id")
 	public List<EmpVO> empList();
 	//TO_CHAR(dh.history_time, 'YYYY-MM-DD')
 	
@@ -55,8 +57,9 @@ public interface EmpMapper {
 	public List<EmpDataTableDTO> empNameSearch(EmpDataTableDTO tvo);
 	
 	// 직원 명 검색(직원 관리)
-	@Select("SELECT id, pwd, emp_name, rank, section, depart_id, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, TO_CHAR(retire_date, 'YYYY-MM-DD') retire_date, emp_remarks "
-			+ "FROM emp "
+	@Select("SELECT id, emp_name, rank, section, d.depart_name, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, TO_CHAR(retire_date, 'YYYY-MM-DD') retire_date, emp_remarks "
+			+ "FROM emp JOIN departs d "
+			+ "ON emp.depart_id = d.depart_id "
 			+ "WHERE emp_name LIKE '%'||#{emp_name}||'%'")
 	public List<EmpVO> empNameSearch2(String name);
 	
@@ -110,6 +113,16 @@ public interface EmpMapper {
 			+ "WHERE id = #{id}")
 	public void empUpdate(EmpVO vo);
 	
+	// 직원 정보 상세 수정
+	@Update("UPDATE emp SET "
+			+ "emp_name = #{emp_name}, "
+			+ "rank = #{rank}, "
+			+ "depart_id = #{depart_id}, "
+			+ "retire_date = #{retire_date}, "
+			+ "emp_remarks = #{emp_remarks} "
+			+ "WHERE id = #{id}")
+	public void empDetailUpdate(EmpVO vo);
+	
 	// 직원 등록
 	@Insert("INSERT INTO emp (id, section, emp_name, depart_id, rank, emp_remarks, entry_date, retire_date) "
 			+ "VALUES (#{id}, #{section}, #{emp_name}, #{depart_id}, "
@@ -126,5 +139,12 @@ public interface EmpMapper {
 	// (ID 확인)
 	@Select("SELECT count(*) FROM emp WHERE id=#{id}")
 	public int loginIdCheck(EmpVO vo);
+	
+	@Select("SELECT id, section, emp_name, emp.depart_id, d.depart_name, rank, "
+			+ "TO_CHAR(entry_date, 'YYYY-MM-DD') as entry_date, TO_CHAR(retire_date, 'YYYY-MM-DD') as retire_date, emp_remarks "
+			+ "FROM emp JOIN departs d "
+			+ "ON emp.depart_id = d.depart_id "
+			+ "AND emp.id = #{id}")
+	public EmpVO empInfoFind(EmpVO vo);
 	
 }

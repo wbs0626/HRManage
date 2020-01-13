@@ -14,7 +14,7 @@
 
 </head>
 <body>
-	<div class="container" style="border:1px solid; padding: 15px">
+	<div class="container-fluid" style="border:1px solid; padding: 15px">
 		<h4> ▣ 대상인력</h4>
 		<table id="empInfo" class="table table-bordered text-center">
 			<thead>
@@ -260,10 +260,7 @@ $(document).ready(function() {
 					}
 				}
 			});
-			
 		}
-		
-		
 		
 	});
 	

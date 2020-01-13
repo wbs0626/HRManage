@@ -82,4 +82,12 @@ public class EmpDAO implements EmpMapper{
 	public void empDelete(String id) {
 		mapper.empDelete(id);
 	}
+	
+	public void empDetailUpdate(EmpVO vo) { 
+		mapper.empDetailUpdate(vo);
+	}
+
+	public EmpVO empInfoFind(EmpVO vo) {
+		return mapper.empInfoFind(vo);
+	}
 }

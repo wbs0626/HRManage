@@ -97,11 +97,14 @@ public interface MonthlyHisMapper {
 			+ "WHEN state is NULL OR exclusion_state is NULL THEN 0 "
 			+ "ELSE 3 END "
 			+ "FROM monthhistory "
-			+ "WHERE baseyear='2020' AND basemonth = '12' AND id = mh.id), 0) m12 "
+			+ "WHERE baseyear='2020' AND basemonth = '12' AND id = mh.id), 0) m12,"
+			+ "r.rank_rate "
 			+ "FROM monthhistory mh JOIN emp e "
 			+ "ON mh.id = e.id "
 			+ "AND mh.baseyear = #{baseYear} "
-			+ "AND mh.basemonth = #{baseMonth} ";
+			+ "AND mh.basemonth = #{baseMonth} "
+			+ "JOIN ranktable r "
+			+ "ON e.rank = r.rank_name ";
 	/*
 	 * // 월별 인력 투입 현황 전체
 	 * 
@@ -142,7 +145,7 @@ public interface MonthlyHisMapper {
 	@Select(defStr
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.id, mh.baseYear, mh.baseMonth")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo);
 	
 	// 구분(내부, 외부) 검색
@@ -150,7 +153,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.section = #{section}"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpSectionSearch(MonthVO mvo);
 	
 	// 성명 검색
@@ -158,7 +161,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%'"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpNameSearch(MonthVO mvo);
 	
 	// 직급 검색
@@ -166,7 +169,7 @@ public interface MonthlyHisMapper {
 			+ "AND e.rank = #{rank}"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpRankSearch(MonthVO mvo);
 	
 	// 현업무 검색
@@ -174,7 +177,7 @@ public interface MonthlyHisMapper {
 			+ "AND mh.business_name LIKE '%'||#{business_name}||'%'"
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpBNameSearch(MonthVO mvo);
 	
 	// -------------- 회원별 달마다 상태 구분 -----------

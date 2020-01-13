@@ -9,6 +9,7 @@ import java.util.*;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.miris.vo.LocVO;
 
@@ -36,5 +37,10 @@ public interface LocMapper {
 	// 근무지 중복 여부 확인
 	@Select("SELECT COUNT(*) FROM loc WHERE loc_name=#{loc_name}")
 	public int ChecklocName(String name);
+	
+	@Update("UPDATE loc SET "
+			+ "loc_addr = #{loc_addr} "
+			+ "WHERE loc_name = #{loc_name}")
+	public void locUpdate(LocVO vo);
 	
 }

@@ -31,4 +31,32 @@ public class LocController {
 			return "loc/locinfo";
 		}
 	}
+	
+	@RequestMapping("locIns.do")
+	public String locIns(HttpSession session) {
+		
+		String permit = (String) session.getAttribute("permit");
+		
+		if(!permit.trim().equals("A")) {
+			return "redirect:../login.do";
+		} else {
+			return "locIns";
+		}
+	}
+	
+	@RequestMapping("locUpd.do")
+	public String locUpd(Model model, HttpSession session, LocVO vo) {
+		
+		LocVO lvo = ls.locSearch(vo.getLoc_name());
+		
+		model.addAttribute("lvo", lvo);
+		
+		String permit = (String) session.getAttribute("permit");
+		
+		if(!permit.trim().equals("A")) {
+			return "redirect:../login.do";
+		} else {
+			return "locUpd";
+		}
+	}
 }

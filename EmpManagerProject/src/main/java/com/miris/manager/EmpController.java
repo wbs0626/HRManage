@@ -52,13 +52,8 @@ public class EmpController {
 	@RequestMapping("emp/empManage.do")
 	public String empManage(Model model, HttpSession session) {
 		List<EmpVO> elist = es.empAllList();
-		List<DepartVO> dvo = ds.deptList();
-		//System.out.println("인력 관리 화면 값: " + elist);
 		
 		model.addAttribute("elist", elist);
-		model.addAttribute("dvo", dvo);
-		
-		//System.out.println(dvo);
 		
 		String tempId = (String)session.getAttribute("userId");
 		
@@ -69,5 +64,37 @@ public class EmpController {
 		}
 	}
 	
+	@RequestMapping("empIns.do")
+	public String empIns(Model model, HttpSession session) {
+		List<DepartVO> dvo = ds.deptList();
+		model.addAttribute("dvo", dvo);
+		
+		String permit = (String)session.getAttribute("permit");
+		
+		if(!permit.trim().equals("A")) {
+			return "redirect:../login.do";
+		} else {
+			return "empIns";
+		}
+		
+	}
 	
+	@RequestMapping("empUpd.do")
+	public String empUpd(Model model, HttpSession session, EmpVO vo) {
+		List<DepartVO> deptvo = ds.deptList();
+		EmpVO evo = es.empInfoFind(vo);
+		
+		System.out.println("직원 변경용 정보: " + evo + "\n들어온 id값: " + vo.getId());
+		
+		model.addAttribute("deptvo", deptvo);
+		model.addAttribute("evo", evo);
+		
+		String permit = (String)session.getAttribute("permit");
+		
+		if(!permit.trim().equals("A")) {
+			return "redirect:../login.do";
+		} else {
+			return "empUpd";
+		}
+	}
 }

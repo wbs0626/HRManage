@@ -79,6 +79,10 @@ public class EmpService {
 		edao.empUpdate(vo);
 	}
 	
+	public void empDetailUpdate(EmpVO vo) {
+		edao.empDetailUpdate(vo);
+	}
+	
 	public boolean empInsert(EmpVO vo) {
 		boolean isSuccess = false;
 		
@@ -102,5 +106,9 @@ public class EmpService {
 	
 	public List<EmpVO> empNameSearch2(String name){
 		return edao.empNameSearch2(name);
+	}
+	
+	public EmpVO empInfoFind(EmpVO vo) {
+		return edao.empInfoFind(vo);
 	}
 }

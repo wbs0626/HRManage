@@ -47,4 +47,23 @@ public class DeptController {
 			return "departIns";
 		}
 	}
+	
+	@RequestMapping("departUpd.do")
+	public String departupd(Model model, HttpSession session, DepartVO dvo) {
+		
+		String permit = (String) session.getAttribute("permit");
+		
+		DepartVO deptvo = ds.deptFindInfo(dvo);
+		
+		System.out.println("부서코드 검색 : " + deptvo);
+		
+		model.addAttribute("deptvo", deptvo);
+		
+		if(permit == null || permit.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "departUpd";
+		}
+		
+	}
 }

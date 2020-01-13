@@ -57,6 +57,7 @@
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
 						<button class="btn btn-danger" id="depDelBtn" style="float:right; margin:5px;">삭제</button>
+						<button class="btn btn-warning" id="depUpdBtn" style="float:right; margin:5px;">수정</button>	
 						<button class="btn btn-active" id="depInsBtn" style="float:right; margin:5px;">등록</button>	
 					</div>
 				</div>
@@ -117,37 +118,30 @@ $(document).ready(function(){
 	});
 	
 	$("#depInsBtn").on("click", function(){
-
 		window.open('../departIns.do', '_blank', 'width=500px, height=600px');
 		return false;
 	});
 	
-	/* $("#depAddBtn").on("click", function(){
-		if( $("#depart_id").val().trim() == "") {
-			$("#depart_id").focus();
+	$("#depUpdBtn").on("click", function(){
+		if($("input[name=depChk]").is(":checked") == false) {
+			alert("검색할 대상을 선택해 주세요");
 			return;
-		};
-		if( $("#depart_name").val().trim() == "") {
-			$("#depart_id").focus();
+		}
+		
+		if($("input[name=depChk]:checked").length > 1) {
+			alert("하나의 부서만 선택해 주세요");
+			$("input[name=depChk]").prop('checked', false);
 			return;
-		};
-
-		$.ajax ({
-			url : 'depIns_ok.do',
-			data : $("#depInsFrm").serialize(),
-			type : 'POST',
+		}
+		
+		$("input[name=depChk]:checked").each(function() {
+			var deptId = $(this).val();
+			console.log("id값 : " + deptId);
 			
-			success : function(res) {
-				if(res=="OK") {
-					alert("정상 처리되었습니다.");
-					history.replaceState({}, null, location.pathname);
-				}
-			},
-			error : function(request,status,error){
-		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    }
-		})
-	}); */
+			let url = "../departUpd.do?depart_id=" + deptId;
+			window.open(url, "_blank", 'width=800px, height=350px');
+		});
+	});
 	
 	$("#depDelBtn").on("click", function(){
 		$("input[name=depChk]:checked").each(function() {
@@ -165,7 +159,10 @@ $(document).ready(function(){
 						alert("오류 발생");
 						return;
 					}
-				}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
 			})
 		});
 	})

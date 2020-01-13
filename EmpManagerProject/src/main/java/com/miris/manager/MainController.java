@@ -56,8 +56,8 @@ public class MainController {
 		String tempId = (String)session.getAttribute("userId");
 		String tempPermit = (String)session.getAttribute("permit");
 		
-		System.out.println("현재 세션 userId 값 : " + tempId);
-		System.out.println("현재 세션 userPermit 값 : " + tempPermit);
+		//System.out.println("현재 세션 userId 값 : " + tempId);
+		//System.out.println("현재 세션 userPermit 값 : " + tempPermit);
 		
 		model.addAttribute("mvo", mRateVO);
 		model.addAttribute("currentMonth", currentMonth);

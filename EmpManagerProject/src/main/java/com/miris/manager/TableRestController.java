@@ -120,7 +120,7 @@ public class TableRestController {
 		return list;
 	}
 	
-	@RequestMapping("empUpd_ok.do")
+	@RequestMapping("empInfoUpd_ok.do")
 	public String empInsOk(EmpVO vo) {
 		String msg = "FAIL";
 		

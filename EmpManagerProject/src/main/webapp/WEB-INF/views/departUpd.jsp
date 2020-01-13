@@ -16,7 +16,7 @@
 <body>
 	<div class="card mb-3" style="border: 1px solid; padding: 15px; margin: 10px">
 		<div>
-			<span class="h4">▣ 부서 등록</span>
+			<span class="h4">▣ 부서 정보 수정</span>
 		</div>
 
 		<div class="card-body" id="depInsDiv">
@@ -24,24 +24,24 @@
 				<div class="form-group row">
 					<label for="depart_id" class="col-sm-2 col-form-label">부서코드 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_id" name="depart_id" 
-							placeholder="숫자만 입력해주세요" required="required">
+						<input class="form-control" type="text" id="depart_id" name="depart_id" value="${deptvo.depart_id }"
+							 readonly="readonly">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="depart_name" class="col-sm-2 col-form-label">부서 명 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_name" name="depart_name" required="required">
+						<input class="form-control" type="text" id="depart_name" name="depart_name" value="${deptvo.depart_name }">
 					</div>
 				</div>
 				<div class="form-group row">
 					<label for="departs_remarks" class="col-sm-2 col-form-label">비고 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="departs_remarks" name="departs_remarks">
+						<input class="form-control" type="text" id="departs_remarks" name="departs_remarks" value="${deptvo.departs_remarks }">
 					</div>
 				</div>
 				<div class="text-right">
-					<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
+					<button class="btn btn-info" id="depUpdBtn" name="depAddBtn">저장</button>
 					<button type="button" class="btn btn-danger" onClick="window.open('about:blank','_self').self.close();">
 					닫기
 					</button>
@@ -52,18 +52,14 @@
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#depAddBtn").on("click", function(){
-		if( $("#depart_id").val().trim() == "") {
-			$("#depart_id").focus();
-			return;
-		};
+	$("#depUpdBtn").on("click", function(){
 		if( $("#depart_name").val().trim() == "") {
 			$("#depart_name").focus();
 			return;
 		};
-
+		
 		$.ajax ({
-			url : 'departs/depIns_ok.do',
+			url : 'departs/depUpd_ok.do',
 			data : $("#depInsFrm").serialize(),
 			type : 'POST',
 			
@@ -72,6 +68,8 @@ $(document).ready(function(){
 					alert("정상 처리되었습니다.");
 					opener.parent.location.reload();
 					window.close();
+				} else {
+					alert(res);
 				}
 			},
 			error : function(request,status,error){

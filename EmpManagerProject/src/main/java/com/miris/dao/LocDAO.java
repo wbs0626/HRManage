@@ -37,5 +37,7 @@ public class LocDAO implements LocMapper {
 		return mapper.locCount();
 	}
 
-	
+	public void locUpdate(LocVO vo) {
+		mapper.locUpdate(vo);
+	}
 }

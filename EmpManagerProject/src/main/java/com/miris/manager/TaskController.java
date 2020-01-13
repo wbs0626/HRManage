@@ -18,7 +18,7 @@ public class TaskController {
 	private BusinessService bs;
 	
 	@RequestMapping("task/task.do")
-	public String work(Model model, HttpSession session) {
+	public String task(Model model, HttpSession session) {
 		List<BusinessVO> bvo = bs.businessAllList();
 		
 		model.addAttribute("bvo", bvo);
@@ -30,5 +30,17 @@ public class TaskController {
 		} else {
 			return "task/task";
 		}
+	}
+	
+	@RequestMapping("taskIns.do")
+	public String taskIns(HttpSession session) {
+		String permit = (String) session.getAttribute("permit");
+		
+		if(permit == null || permit.trim().equals("")) {
+			return "redirect:../login.do";
+		} else {
+			return "taskIns";
+		}
+		
 	}
 }

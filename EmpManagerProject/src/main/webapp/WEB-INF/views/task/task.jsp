@@ -8,7 +8,6 @@
 </head>
 <body>
 	<div class="container-fluid">
-
 		<!-- Breadcrumbs-->
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/main.do">Main</a></li>
@@ -27,27 +26,6 @@
 						<input type="text" id="bText" name="business_name" required="required">
 						<button class="btn btn-primary" id="findBtn" style="float:right; margin:5px;">검색</button>
 					</form>
-				</div>
-
-				<div id="taskDataDiv" style="margin: 0px 10px 10px 10px; display:none;">
-					<form id="taskForm" name="taskForm">
-					<div class="form-group row">
-						<label for="business_name" class="col-sm-2 col-form-label">업무명 : </label> 
-						<div class="col-sm-6">
-							<input class="form-control" type="text" id="business_name" name="business_name" required="required">
-						</div>	
-					</div>  
-					<div class="form-group row">
-						<label for="business_name" class="col-sm-2 col-form-label">제외여부 : </label> 
-						<div class="col-sm-6">
-							<select class="form-control" id="exclusion_state" name="exclusion_state">
-								<option value="1">Y</option>
-								<option value="2">N</option>
-							</select>
-						</div>	
-					</div>  
-						<button class="btn btn-info" id="addBtn" name="addBtn">저장</button>
-					</form>	
 				</div>
 				
 				<div>
@@ -75,14 +53,13 @@
 						</tbody>
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
-						<button class="btn btn-danger" id="delBtn" style="float:right; margin:5px;">삭제</button>
-						<button class="btn btn-active" id="insBtn" style="float:right; margin:5px;">등록</button>	
+						<button class="btn btn-danger" id="taskDelBtn" style="float:right; margin:5px;">삭제</button>
+						<button class="btn btn-warning" id="taskUpdBtn" style="float:right; margin:5px;">수정</button>
+						<button class="btn btn-active" id="taskInsBtn" style="float:right; margin:5px;">등록</button>	
 					</div>
 				</div>
 			</div>
-			
 		</div>
-
 	</div>
 	</body>
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
@@ -134,43 +111,12 @@ $(document).ready(function(){
 		return false;
 	});
 	
-	$("#insBtn").on("click", function(){
-		
-		if( $("#taskDataDiv").css("display") == "none") {
-			$("#searchDiv").hide();
-			$("#taskDataDiv").show();
-			$("#business_name").focus();
-			$("#insBtn").text("취소");
-		} else {
-			$("#taskDataDiv").hide();
-			$("#searchDiv").show();
-			$("#bText").focus();
-			$("#insBtn").text("등록");
-		}
+	$("#taskInsBtn").on("click", function(){
+		window.open('../taskIns.do', '_blank', 'width=500px, height=600px');
+		return false;
 	});
 	
-	$("#addBtn").on("click", function(){
-		
-		$.ajax ({
-			url : 'taskInsert_ok.do',
-			data : $('#taskForm').serialize(),
-			type : 'POST',
-			success : function(res) {
-				if(res=="OK") {
-					alert("정상 처리되었습니다.");
-					history.replaceState({}, null, location.pathname);
-					window.replace();
-				} else {
-					alert("오류 발생");
-					return;
-				}
-			}
-		})
-		
-	});
-	
-	
-	$("#delBtn").on("click", function(){
+	$("#taskDelBtn").on("click", function(){
 		$("input[name=bChk]:checked").each(function() {
 			var bName = $(this).val();
 			console.log("bName값 : " + bName);
@@ -182,13 +128,15 @@ $(document).ready(function(){
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						history.replaceState({}, null, location.pathname);
-						window.replace();
+						window.location.reload();					
 					} else {
 						alert("오류 발생");
 						return;
 					}
-				}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
 			})
 		});
 	});

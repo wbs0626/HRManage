@@ -48,4 +48,14 @@ public class LocService {
 		return ldao.locCount();
 	}
 	
+	public boolean locUpdate(LocVO vo) {
+		boolean isSuccess = false;
+		
+		if(ldao.ChecklocName(vo.getLoc_name()) != 0) {
+			ldao.locUpdate(vo);
+			isSuccess = true;
+		}
+		return isSuccess;
+	}
+	
 }

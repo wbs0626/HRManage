@@ -36,4 +36,12 @@ public class DepartDAO implements DepartMapper{
 	public List<DepartVO> deptFindByName(String depart_name) {
 		return mapper.deptFindByName(depart_name);
 	}
+	
+	public void deptUpdate(DepartVO vo) {
+		mapper.deptUpdate(vo);
+	}
+
+	public DepartVO deptFindInfo(DepartVO vo) {
+		return mapper.deptFindInfo(vo);
+	}
 }

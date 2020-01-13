@@ -19,52 +19,46 @@
 			<span class="h4">▣ 부서 등록</span>
 		</div>
 
-		<div class="card-body" id="depInsDiv">
-			<form id="depInsFrm" name="depInsFrm">
+		<div class="card-body" id="locInsDiv">
+			<form id="locInsFrm" name="locInsFrm">
 				<div class="form-group row">
-					<label for="depart_id" class="col-sm-2 col-form-label">부서코드 : </label>
+					<label for="loc_name" class="col-sm-2 col-form-label">근무지 명 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_id" name="depart_id" 
-							placeholder="숫자만 입력해주세요" required="required">
+						<input class="form-control" type="text" id="loc_name" name="loc_name" value="${lvo.loc_name }"
+							readonly="readonly">
 					</div>
 				</div>
 				<div class="form-group row">
-					<label for="depart_name" class="col-sm-2 col-form-label">부서 명 : </label>
+					<label for="loc_addr" class="col-sm-2 col-form-label">근무지 주소 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="depart_name" name="depart_name" required="required">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="departs_remarks" class="col-sm-2 col-form-label">비고 : </label>
-					<div class="col-sm-6">
-						<input class="form-control" type="text" id="departs_remarks" name="departs_remarks">
+						<input class="form-control" type="text" id="loc_addr" name="loc_addr" value="${lvo.loc_addr }" required="required">
 					</div>
 				</div>
 				<div class="text-right">
-					<button class="btn btn-info" id="depAddBtn" name="depAddBtn">저장</button>
+					<button class="btn btn-info" id="locUpdBtn" name="locAddBtn">저장</button>
 					<button type="button" class="btn btn-danger" onClick="window.open('about:blank','_self').self.close();">
-					닫기
-					</button>
-				</div>	
+							닫기
+						</button>
+				</div>
 			</form>
 		</div>
 	</div>
 </body>
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#depAddBtn").on("click", function(){
-		if( $("#depart_id").val().trim() == "") {
-			$("#depart_id").focus();
+	$("#locUpdBtn").on("click", function(){
+		if( $("#loc_name").val().trim() == "") {
+			$("#loc_name").focus();
 			return;
 		};
-		if( $("#depart_name").val().trim() == "") {
-			$("#depart_name").focus();
+		if( $("#loc_addr").val().trim() == "") {
+			$("#loc_addr").focus();
 			return;
 		};
 
 		$.ajax ({
-			url : 'departs/depIns_ok.do',
-			data : $("#depInsFrm").serialize(),
+			url : 'loc/locUpd_ok.do',
+			data : $("#locInsFrm").serialize(),
 			type : 'POST',
 			
 			success : function(res) {

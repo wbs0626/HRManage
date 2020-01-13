@@ -20,7 +20,7 @@ public class DeptService {
 	public DepartVO deptNameSearch(int depart_id) {
 		return ddao.deptNameSearch(depart_id);
 	}
-
+	
 	public boolean deptDelete(int depart_id) {
 		boolean isSuccess = false;
 		
@@ -49,6 +49,21 @@ public class DeptService {
 		}
 		
 		return ddao.deptFindByName(depart_name);
+	}
+	
+	public boolean deptUpdate(DepartVO vo) {
+		boolean isSuccess = false;
+		
+		if(ddao.deptChkId(vo.getDepart_id()) != 0 ) {
+			ddao.deptUpdate(vo);
+			isSuccess = true;
+		}
+		
+		return isSuccess;
+	}
+	
+	public DepartVO deptFindInfo(DepartVO vo) {
+		return ddao.deptFindInfo(vo);
 	}
 	
 }

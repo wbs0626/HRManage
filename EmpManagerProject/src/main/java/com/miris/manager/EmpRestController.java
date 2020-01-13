@@ -18,7 +18,7 @@ public class EmpRestController {
 	public List<EmpVO> empFindByName(String emp_name) {
 		List<EmpVO> list = es.empNameSearch2(emp_name);
 		
-		System.out.println("이름검색: " + list);
+		//System.out.println("이름검색: " + list);
 		
 		return list;
 	}
@@ -55,6 +55,20 @@ public class EmpRestController {
 				msg = "FAIL";
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return msg;
+	}
+	
+	@RequestMapping("emp/empUpd_ok.do")
+	public String empUpd_ok(EmpVO vo) {
+		String msg = "";
+		
+		try {
+			es.empDetailUpdate(vo);
+			msg = "OK";
+		} catch (Exception e) {
+			msg = "FAIL";
 			e.printStackTrace();
 		}
 		return msg;

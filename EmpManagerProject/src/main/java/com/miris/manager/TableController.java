@@ -93,8 +93,8 @@ public class TableController {
 		}
 	}
 	
-	// 인력 등록 창
-	@RequestMapping("empIns.do")
+	// 인력 정보 수정 창
+	@RequestMapping("empInfoUpd.do")
 	public String empIns(Model model, HttpSession session, String id) {
 		List<DepartVO> dvo = ds.deptList();
 		List<EmpVO> evo = es.rankList();
@@ -109,7 +109,7 @@ public class TableController {
 		if(tempId == null || tempId.trim().equals("")) {
 			return "redirect:../login.do";
 		} else {
-			return "empIns";
+			return "empInfoUpd";
 		}
 	}
 	
