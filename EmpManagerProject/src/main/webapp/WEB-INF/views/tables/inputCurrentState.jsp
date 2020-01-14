@@ -635,7 +635,7 @@ $(document).ready(function() {
 			var eid = $(this).val();
 			console.log("id값 : " + eid);
 			
-			let url = "../empUpd.do?id=" + eid;
+			let url = "../empInfoUpd.do?id=" + eid;
 			window.open(url, "_blank", 'width=800px, height=350px');
 		});
 	});
@@ -663,10 +663,10 @@ $(document).ready(function() {
 			
 			if(m == 0) {
 				m = NOWMONTH;
-			} 
+			}  
 			
 			let url = "../empStateIns.do?id=" + eid + "&baseYear=" + y + "&baseMonth=" + m;
-			window.open(url, "_blank");
+			window.open(url, "_blank", "width=700px, height=600px");
 		});
 	});
 	// StateIns Event END

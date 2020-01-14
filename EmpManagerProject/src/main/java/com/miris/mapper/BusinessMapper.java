@@ -5,6 +5,7 @@ import java.util.*;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.miris.vo.BusinessVO;
 
@@ -33,4 +34,14 @@ public interface BusinessMapper {
 	@Delete("DELETE FROM business "
 			+ "WHERE business_name = #{business_name}")
 	public void busiDel(String business_name);
+	
+	@Update("UPDATE business SET "
+			+ "exclusion_state = #{exclusion_state} "
+			+ "WHERE business_name = #{business_name}")
+	public void busiUpd(BusinessVO vo);
+	
+	@Select("SELECT * FROM business "
+			+ "WHERE business_name = #{business_name}")
+	public BusinessVO busiFind(BusinessVO vo);
+		
 }

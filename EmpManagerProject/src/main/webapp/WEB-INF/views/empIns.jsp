@@ -58,7 +58,11 @@
 				<div class="form-group row">
 					<label for="rank" class="col-sm-1 col-form-label">직위 : </label>
 					<div class="col-sm-6">
-						<input class="form-control" type="text" id="rank" name="rank" required="required">
+						<select class="form-control" id="rank" name="rank">
+							<c:forEach items="${rvo }" var="rvo">
+								<option><c:out value="${rvo.rank_name }" /></option>
+							</c:forEach>
+						</select>
 					</div>
 				</div>
 				<div class="form-group row">

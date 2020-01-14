@@ -33,6 +33,8 @@ public class TableController {
 	private BusinessService bs;
 	@Autowired
 	private SiteService ss;
+	@Autowired
+	private RankService rs;
 	
 	@RequestMapping("tables/tables.do")
 	public String empAllocate(Model model, HttpSession session) {
@@ -97,13 +99,13 @@ public class TableController {
 	@RequestMapping("empInfoUpd.do")
 	public String empIns(Model model, HttpSession session, String id) {
 		List<DepartVO> dvo = ds.deptList();
-		List<EmpVO> evo = es.rankList();
+		List<RankVO> rvo = rs.rankAllFind();
 		
 		MonthVO mvo = es.empInfo(id);
 		
 		model.addAttribute("mvo", mvo);
 		model.addAttribute("dvo", dvo);
-		model.addAttribute("evo", evo);
+		model.addAttribute("rvo", rvo);
 		String tempId = (String)session.getAttribute("userId");
 		
 		if(tempId == null || tempId.trim().equals("")) {
@@ -138,12 +140,25 @@ public class TableController {
 	@RequestMapping("empStateIns.do")
 	public String empStateIns(Model model, HttpSession session, String id, String baseYear, String baseMonth) {
 		MonthVO mvo = new MonthVO();
+		EmpDetailVO evo = new EmpDetailVO();
+		
 		mvo.setId(id);
 		mvo.setBaseYear(Integer.parseInt(baseYear));
 		mvo.setBaseMonth(Integer.parseInt(baseMonth));
-
-		EmpDetailVO evo = ms.empDetailLog(mvo);
-		//System.out.println(evo);
+		System.out.println("직원 데이터 정보: " + mvo);
+		
+		if(mvo.getBusiness_name() == null) {
+			mvo = es.empInfo(id);
+			evo.setSection(mvo.getSection());
+			evo.setDepart_name(mvo.getDepart_name());
+			evo.setEmp_name(mvo.getEmp_name());
+			evo.setRank(mvo.getRank());
+			evo.setEmp_remarks(mvo.getMonth_remarks());
+		} else {
+			evo = ms.empDetailLog(mvo);
+		}
+		
+		System.out.println("직원 정보: " + evo);
 		
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id);
 		List<BusinessVO> blist = bs.businessAllList();

@@ -28,12 +28,17 @@
 			</thead>
 			<tbody id = "info">
 					<tr class="table-light">
-						<c:if test="${info.section == 1 }">
-							<td>내부</td>
-						</c:if>
-						<c:if test="${info.section == 2 }">
-							<td>외부</td>
-						</c:if>
+						<c:choose>
+							<c:when test="${info.section == 1 }">
+								<td>내부</td>
+							</c:when>
+							<c:when test="${info.section == 2}">
+								<td>외부</td>
+							</c:when>
+							<c:otherwise>
+								<td></td>
+							</c:otherwise>
+						</c:choose>
 						<td><c:out value="${info.depart_name }"/></td>
 						<td><c:out value="${info.emp_name }"/></td>
 						<td><c:out value="${info.rank }"/></td>

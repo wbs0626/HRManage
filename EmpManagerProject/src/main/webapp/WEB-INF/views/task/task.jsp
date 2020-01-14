@@ -116,6 +116,28 @@ $(document).ready(function(){
 		return false;
 	});
 	
+	$("#taskUpdBtn").on("click", function(){
+		if($("input[name=bChk]").is(":checked") == false) {
+			alert("검색할 대상을 선택해 주세요");
+			return;
+		}
+		
+		if($("input[name=bChk]:checked").length > 1) {
+			alert("하나의 부서만 선택해 주세요");
+			$("input[name=bChk]").prop('checked', false);
+			return;
+		}
+		
+		$("input[name=bChk]:checked").each(function() {
+			var bName = $(this).val();
+			console.log("bName값 : " + bName);
+			let url = "../taskUpd.do?business_name=" + bName;
+			window.open(url, "_blank", 'width=500px, height=600px');
+		});
+
+		return false;
+	});
+	
 	$("#taskDelBtn").on("click", function(){
 		$("input[name=bChk]:checked").each(function() {
 			var bName = $(this).val();

@@ -65,13 +65,13 @@
 						</td>
 						<td>
 							<select class="form-control" id="rank" name="rank">
-								<c:forEach items="${evo }" var="rankList" varStatus="r">
+								<c:forEach items="${rvo }" var="rvo" varStatus="r">
 									<c:choose>
-										<c:when test="${rankList.rank == mvo.rank }">
-											<option id="rank${r.index }" selected="selected"><c:out value="${rankList.rank }"/></option>
+										<c:when test="${rvo.rank_name == mvo.rank }">
+											<option selected="selected"><c:out value="${rvo.rank_name }"/></option>
 										</c:when>
 										<c:otherwise>
-											<option id="rank${r.index }"><c:out value="${rankList.rank }"/></option>
+											<option><c:out value="${rvo.rank_name }"/></option>
 										</c:otherwise>
 									</c:choose>
 								</c:forEach>

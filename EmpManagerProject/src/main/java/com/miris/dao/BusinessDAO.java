@@ -37,4 +37,12 @@ public class BusinessDAO implements BusinessMapper {
 		return mapper.findBState(business_name);
 	}
 	
+	public void busiUpd(BusinessVO vo) {
+		mapper.busiUpd(vo);
+	}
+	
+	public BusinessVO busiFind(BusinessVO vo) {
+		return mapper.busiFind(vo);
+	}
+	
 }

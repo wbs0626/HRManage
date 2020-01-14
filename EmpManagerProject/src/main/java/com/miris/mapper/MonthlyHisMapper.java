@@ -99,7 +99,7 @@ public interface MonthlyHisMapper {
 			+ "FROM monthhistory "
 			+ "WHERE baseyear='2020' AND basemonth = '12' AND id = mh.id), 0) m12,"
 			+ "r.rank_rate "
-			+ "FROM monthhistory mh JOIN emp e "
+			+ "FROM monthhistory mh RIGHT OUTER JOIN emp e "
 			+ "ON mh.id = e.id "
 			+ "AND mh.baseyear = #{baseYear} "
 			+ "AND mh.basemonth = #{baseMonth} "

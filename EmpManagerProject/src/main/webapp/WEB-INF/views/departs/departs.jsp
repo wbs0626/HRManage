@@ -137,7 +137,6 @@ $(document).ready(function(){
 		$("input[name=depChk]:checked").each(function() {
 			var deptId = $(this).val();
 			console.log("id값 : " + deptId);
-			
 			let url = "../departUpd.do?depart_id=" + deptId;
 			window.open(url, "_blank", 'width=800px, height=350px');
 		});

@@ -59,4 +59,21 @@ public class TaskRestController {
 		}
 		return msg;
 	}
+	
+	@RequestMapping("task/taskUpdate_ok")
+	public String taskUpdate_ok(BusinessVO vo) {
+		String msg = "";
+		System.out.println(vo);
+		
+		try {	
+			if(bs.busiUpd(vo)) {
+				msg = "OK";
+			} else {
+				msg = "FAIL";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return msg;
+	}
 }

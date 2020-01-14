@@ -22,7 +22,7 @@ public class Interceptor extends HandlerInterceptorAdapter{
         if(userId==null || userId.trim().equals("")){
             logger.info(">> interceptor catch!!! userId is null.. ");            
             session.invalidate();            
-            response.sendRedirect(request.getContextPath() + "/login.do");
+            response.sendRedirect(request.getContextPath() + "login.do");
             
             return false;            
         }

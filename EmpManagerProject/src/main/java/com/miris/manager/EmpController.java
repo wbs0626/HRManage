@@ -14,9 +14,11 @@ import com.miris.service.DeptService;
 import com.miris.service.EmpService;
 import com.miris.service.HistoryService;
 import com.miris.service.MonthlyHisService;
+import com.miris.service.RankService;
 import com.miris.vo.DepartVO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.HistoryVO;
+import com.miris.vo.RankVO;
 
 @Controller
 public class EmpController {
@@ -28,6 +30,8 @@ public class EmpController {
 	private EmpService es;
 	@Autowired
 	private DeptService ds;
+	@Autowired
+	private RankService rs;
 	
 	// 30일 현황 창
 	@RequestMapping("empLog.do")
@@ -67,7 +71,10 @@ public class EmpController {
 	@RequestMapping("empIns.do")
 	public String empIns(Model model, HttpSession session) {
 		List<DepartVO> dvo = ds.deptList();
+		List<RankVO> rvo = rs.rankAllFind();
+		
 		model.addAttribute("dvo", dvo);
+		model.addAttribute("rvo", rvo);
 		
 		String permit = (String)session.getAttribute("permit");
 		
@@ -76,18 +83,19 @@ public class EmpController {
 		} else {
 			return "empIns";
 		}
-		
 	}
 	
 	@RequestMapping("empUpd.do")
 	public String empUpd(Model model, HttpSession session, EmpVO vo) {
 		List<DepartVO> deptvo = ds.deptList();
+		List<RankVO> rvo = rs.rankAllFind();
 		EmpVO evo = es.empInfoFind(vo);
 		
 		System.out.println("직원 변경용 정보: " + evo + "\n들어온 id값: " + vo.getId());
 		
 		model.addAttribute("deptvo", deptvo);
 		model.addAttribute("evo", evo);
+		model.addAttribute("rvo", rvo);
 		
 		String permit = (String)session.getAttribute("permit");
 		

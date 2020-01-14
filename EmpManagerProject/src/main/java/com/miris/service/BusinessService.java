@@ -45,4 +45,19 @@ public class BusinessService {
 		return isSuccess;
 	}
 	
+	public boolean busiUpd(BusinessVO vo) {
+		boolean isSuccess = false;
+		String business_name = vo.getBusiness_name();
+		
+		if(bdao.ChkBusiName(business_name) == 1) {
+			bdao.busiUpd(vo);
+			isSuccess = true;
+		}
+		return isSuccess;
+	}
+	
+	public BusinessVO busiFind(BusinessVO vo) {
+		return bdao.busiFind(vo);
+	}
+	
 }

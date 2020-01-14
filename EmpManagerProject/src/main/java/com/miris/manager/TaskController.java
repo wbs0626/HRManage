@@ -36,11 +36,26 @@ public class TaskController {
 	public String taskIns(HttpSession session) {
 		String permit = (String) session.getAttribute("permit");
 		
-		if(permit == null || permit.trim().equals("")) {
+		if(!permit.equals("A")) {
 			return "redirect:../login.do";
 		} else {
 			return "taskIns";
 		}
 		
+	}
+	
+	@RequestMapping("taskUpd.do")
+	public String taskUpd(Model model, HttpSession session, BusinessVO vo) {
+		String permit = (String) session.getAttribute("permit");
+		
+		BusinessVO bvo = bs.busiFind(vo);
+		
+		model.addAttribute("bvo", bvo);
+		
+		if(!permit.equals("A")) {
+			return "redirect:../login.do";
+		} else {
+			return "taskUpd";
+		}
 	}
 }

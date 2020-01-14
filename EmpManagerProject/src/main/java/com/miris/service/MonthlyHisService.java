@@ -46,7 +46,6 @@ public class MonthlyHisService {
 			System.out.println("날짜 검색");
 			return mdao.monEmpDateSearch(mvo);
 		}
-		
 	}
 	
 	public List<MonthEmpLogVO> yearHistoryList(String id) {
