@@ -64,17 +64,16 @@
 								<option value="2019">2019</option>
 								<option value="2020">2020</option>
 							</select>
-							기준월 : <select id="baseMonth" name="baseMonth">
-								<option value="0">전체</option>
+							　기준월 : <select id="baseMonth" name="baseMonth">
 							</select>
-							구분 : <select id="select" name="section">
+							　구분 : <select id="section" name="section">
 								<option value = "0">전체</option>
 								<option value = "1">내부</option>
 								<option value = "2">외부</option>
 							</select>
-							성명 : <input type="text" id="emp_name" name="emp_name">
-							직급 : <select id="rank" name="rank">
-								<option>전체</option>
+							　성명 : <input type="text" id="emp_name" name="emp_name">
+							　직급 : <select id="rank" name="rank">
+								<option value="">전체</option>
 								<option>상무</option>
 								<option>부장</option>
 								<option>차장</option>
@@ -82,13 +81,30 @@
 								<option>대리</option>
 								<option>사원</option>
 							</select>
-							현업무 : <input type="text" id="business_name" name="business_name">
+							　현업무 : <input type="text" id="business_name" name="business_name">
 							<input type="button" class="btn btn-primary"
 							 id="infoSearch" name="infoSearch" value="조회" style="float: right;"> 
 						</div>
-						<div>
-													
+						<!-- 라벨 안에 공백문자(ㄱ+한자)들어가있음 -->
+						<%-- <div style="margin: 5px 0px">
+							근무지 　: <select id="loc_name" name="loc_name">
+								<c:forEach items="${lList }" var="l">
+									<option><c:out value="${l.loc_name }"/></option>
+								</c:forEach>
+							</select>			
 						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state0" checked="checked">
+							<label class="form-control-label" for="state0">전체</label> 
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state1" name="state" value="0">
+							<label class="form-control-label" for="state1">C</label> 
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state2" name="state" value="1">
+							<label class="form-control-label" for="state2">P</label> 
+						</div> --%>
 						<div>
 							<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 						</div>
@@ -487,11 +503,6 @@ $(document).ready(function() {
 	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
 	
 	$("#infoSearch").on("click", function(){
-
-		if($("select[name=baseMonth]").val() == 0) {
-			alert("기준 월을 선택해주세요");
-			return;
-		}
 		
 		$.ajax({
 			url : 'operation_rate.do',

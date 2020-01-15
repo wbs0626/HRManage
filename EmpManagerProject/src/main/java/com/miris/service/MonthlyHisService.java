@@ -30,6 +30,12 @@ public class MonthlyHisService {
 		String rank = mvo.getRank();
 		String bname = mvo.getBusiness_name();
 		
+		if(rank.equals("전체")) {
+			rank = "";
+			mvo.setRank(rank);
+		}
+		
+		/*
 		if(section != 0 && name.isEmpty() == true && rank.equals("전체") && bname == "") {
 			System.out.println("구분 검색");
 			return mdao.monEmpSectionSearch(mvo);
@@ -45,6 +51,18 @@ public class MonthlyHisService {
 		} else {
 			System.out.println("날짜 검색");
 			return mdao.monEmpDateSearch(mvo);
+		}
+		*/
+		if(section == 0 && name.isEmpty() == true && rank.equals("전체") && bname == "") {
+			System.out.println("날짜 검색");
+			return mdao.monEmpDateSearch(mvo);
+		} else if (section == 0 && (name.isEmpty() == false || !rank.equals("전체") || bname != "")){
+			System.out.println("전체 검색");
+			return mdao.monMultiAllFind(mvo);
+		} else {
+			System.out.println("구분별 검색");
+			System.out.println("VO값 : " + mvo);
+			return mdao.monMultiFind(mvo);
 		}
 	}
 	

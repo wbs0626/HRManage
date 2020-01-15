@@ -59,7 +59,6 @@ $(document).ready(function(){
 			url : 'loc/locInsert_ok.do',
 			data : $("#locInsFrm").serialize(),
 			type : 'POST',
-			
 			success : function(res) {
 				if(res=="OK") {
 					alert("정상 처리되었습니다.");

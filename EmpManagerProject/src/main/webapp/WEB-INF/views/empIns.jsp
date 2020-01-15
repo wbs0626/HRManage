@@ -71,12 +71,12 @@
 						<input class="form-control" type="date" id="entry_date" name="entry_date" required="required">
 					</div>
 				</div>
-				<div class="form-group row">
+<!-- 				<div class="form-group row">
 					<label for="retire_date" class="col-sm-1 col-form-label">퇴사일 : </label>
 					<div class="col-sm-6">
 						<input class="form-control" type="date" id="retire_date" name="retire_date">
 					</div>
-				</div>
+				</div> -->
 				<div class="form-group row">
 					<label for="emp_remarks" class="col-sm-1 col-form-label">비고 : </label>
 					<div class="col-sm-6">

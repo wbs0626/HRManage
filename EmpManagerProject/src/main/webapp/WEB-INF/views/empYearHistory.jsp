@@ -17,13 +17,12 @@
 <body>
 	<div class="container" style="border:1px solid; padding: 15px">
 		<div>
+		<input type="hidden" id="empId" value="${empId }">
+		<input type="hidden" id="baseYear" value="${baseYear }">
+		<input type="hidden" id="baseMonth" value="${baseMonth }">
 			<span class="h4">▣ 기본정보
-				<a href="empStateIns.do?id=${empId }&baseYear=${baseYear}&baseMonth=${baseMonth}" target="_blank">
-					<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 0px 10px 0px; float:right;">현황등록</button>
-				</a>
-				<a href="empIns.do?id=${empId }&baseYear=${baseYear}&baseMonth=${baseMonth}" target="_blank">
-					<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right; margin: 0px 5px 10px 5px;">인력수정</button>
-				</a>
+				<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 0px 10px 0px; float:right;">현황등록</button>
+				<button class="btn btn-secondary btn-xs" id="empUpd" style="float: right; margin: 0px 5px 10px 5px;">인력수정</button>
 			</span>
 		</div>
 		<table id="empInfo" class="table table-bordered text-center">
@@ -91,6 +90,21 @@
 </body>
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript">
-
+$(document).ready(function(){
+	var empId = $("#empId").val();
+	var baseYear = $("#baseYear").val();
+	var baseMonth = $("#baseMonth").val();
+	
+	$("#empStateIns").on("click", function(){
+		let url = "empStateIns.do?id=" + empId + "&baseYear=" + baseYear + "&baseMonth=" + baseMonth + "";
+		window.resizeTo(700,600);
+		location.href = url;
+	});
+	
+	$("#empUpd").on("click", function() {
+		let url = "empUpd.do?id=" + empId + "&baseYear=" + baseYear + "&baseMonth=" + baseMonth + "";
+		location.href = url;
+	});
+});
 </script>
 </html>

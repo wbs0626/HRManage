@@ -58,6 +58,13 @@ public class MonthlyHisDAO implements MonthlyHisMapper {
 
 	public void monthHisUpdate(MonthVO mvo) {
 		mapper.monthHisUpdate(mvo);
-	}	
+	}
+	
+	public List<MonthVO> monMultiFind(MonthVO mvo) {
+		return mapper.monMultiFind(mvo);
+	}
 
+	public List<MonthVO> monMultiAllFind(MonthVO mvo) {
+		return mapper.monMultiAllFind(mvo);
+	}
 }

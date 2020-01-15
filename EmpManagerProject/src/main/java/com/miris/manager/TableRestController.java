@@ -116,7 +116,7 @@ public class TableRestController {
 		mvo.setBusiness_name(bname);
 		
 		list = ms.monEmpDataFind(mvo);
-		
+		System.out.println("최종값: " + list);
 		return list;
 	}
 	

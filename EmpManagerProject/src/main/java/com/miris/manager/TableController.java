@@ -78,11 +78,12 @@ public class TableController {
 		mvo.setBaseMonth(nMonth);
 
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
-		// List<MonthVO> mList = ms.monEmpAllList();
+		List<LocVO> lList = ls.locAllInfo();
 		
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);
 		model.addAttribute("mList", mList);
+		model.addAttribute("lList", lList);
 		model.addAttribute("nYear", nYear);
 		model.addAttribute("nMonth", nMonth);
 		
@@ -147,8 +148,12 @@ public class TableController {
 		mvo.setBaseMonth(Integer.parseInt(baseMonth));
 		System.out.println("직원 데이터 정보: " + mvo);
 		
+		/* 문제 발생 지점 */
 		if(mvo.getBusiness_name() == null) {
 			mvo = es.empInfo(id);
+			evo.setId(id);
+			evo.setBaseYear(Integer.parseInt(baseYear));
+			evo.setBaseMonth(Integer.parseInt(baseMonth));
 			evo.setSection(mvo.getSection());
 			evo.setDepart_name(mvo.getDepart_name());
 			evo.setEmp_name(mvo.getEmp_name());
