@@ -111,4 +111,8 @@ public class EmpService {
 	public EmpVO empInfoFind(EmpVO vo) {
 		return edao.empInfoFind(vo);
 	}
+	
+	public EmpVO empInfo2(String id) {
+		return edao.empInfo2(id);
+	}
 }

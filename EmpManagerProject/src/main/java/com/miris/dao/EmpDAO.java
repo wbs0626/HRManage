@@ -90,4 +90,8 @@ public class EmpDAO implements EmpMapper{
 	public EmpVO empInfoFind(EmpVO vo) {
 		return mapper.empInfoFind(vo);
 	}
+
+	public EmpVO empInfo2(String id) {
+		return mapper.empInfo2(id);
+	}
 }

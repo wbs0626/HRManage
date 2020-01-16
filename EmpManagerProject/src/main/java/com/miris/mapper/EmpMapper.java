@@ -100,6 +100,13 @@ public interface EmpMapper {
 			+ "AND e.id=#{id}")
 	public MonthVO empInfo(String id);
 	
+	// 직원 정보... (수정 필요)
+	@Select("SELECT e.id, e.section, d.depart_name, e.emp_name, e.rank, e.emp_remarks "
+			+ "FROM emp e JOIN departs d "
+			+ "ON e.depart_id = d.depart_id "
+			+ "AND e.id=#{id}")
+	public EmpVO empInfo2(String id);
+	
 	// 직급 목록
 	@Select("SELECT DISTINCT(rank) FROM emp")
 	public List<EmpVO> rankList();

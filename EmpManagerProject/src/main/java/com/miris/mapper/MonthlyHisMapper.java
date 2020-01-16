@@ -185,19 +185,21 @@ public interface MonthlyHisMapper {
 	@Select(defStr
 			+ "AND e.section = #{section} "
 			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
-			+ "AND r.rank_name LIKE '%'||#{rank}||'%' "
+			+ "AND e.rank LIKE '%'||#{rank}||'%' "
 			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
-			+ "LEFT OUTER JOIN site s "
+			+ "JOIN site s "
 			+ "ON mh.site_id = s.site_id "
+			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
 			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monMultiFind(MonthVO mvo);
 	
 	@Select(defStr
 			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
-			+ "AND r.rank_name LIKE '%'||#{rank}||'%' "
+			+ "AND e.rank LIKE '%'||#{rank}||'%' "
 			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
-			+ "LEFT OUTER JOIN site s "
+			+ "JOIN site s "
 			+ "ON mh.site_id = s.site_id "
+			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
 			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monMultiAllFind(MonthVO mvo);
 	
@@ -241,19 +243,22 @@ public interface MonthlyHisMapper {
 	public int monHisDupChk(MonthVO mvo);
 	
 	// 월별 이력 추가
-	@Insert("INSERT INTO monthhistory(ID, baseyear, basemonth, business_name, site_id, exclusion_state, state, month_remarks) "
-			+ "VALUES (#{id}, #{baseYear}, #{baseMonth}, #{business_name}, #{site_id}, #{exclusion_state}, #{state}, #{month_remarks})")
+	@Insert("INSERT INTO monthhistory "
+			+ "VALUES (#{id}, #{baseYear}, #{baseMonth}, #{business_name}, "
+			+ "#{site_id}, #{state}, #{exclusion_state}, #{month_remarks})")
 	public void monthHisInsert(MonthVO mvo);
 	
-	// 월별 이력 변경	
+	// 월별 이력 변경
 	@Update("UPDATE monthhistory SET "
-			+ "id = #{id}, "
 			+ "baseYear = #{baseYear}, "
 			+ "baseMonth = #{baseMonth}, "
 			+ "business_name = #{business_name}, "
 			+ "site_id = #{site_id}, "
 			+ "exclusion_state = #{exclusion_state}, "
-			+ "month_remarks = #{month_remarks}")
+			+ "month_remarks = #{month_remarks} "
+			+ "WHERE id = #{id} "
+			+ "AND baseYear = #{baseYear} "
+			+ "AND baseMonth = #{baseMonth}")
 	public void monthHisUpdate(MonthVO mvo);
 }
 	

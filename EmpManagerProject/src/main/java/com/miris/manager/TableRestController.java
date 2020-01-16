@@ -152,12 +152,16 @@ public class TableRestController {
 	
 	@RequestMapping("addState.do")
 	public String addState(MonthVO mvo) {
+		int result;
+		System.out.println("변경할 데이터: " + mvo );
 		
 		String msg = "";
 		
 		try {
-			ms.monthHisInsert(mvo);
-			msg = "OK";
+			result = ms.monthHisInsert(mvo);
+			if(result == 1 || result == 2) {
+				msg = "OK";
+			}
 		} catch(Exception e) {
 			msg = "FAIL";
 			e.printStackTrace();

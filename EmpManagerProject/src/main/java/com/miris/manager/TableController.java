@@ -79,11 +79,14 @@ public class TableController {
 
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
 		List<LocVO> lList = ls.locAllInfo();
-		
+		List<SiteVO> sList = ss.siteAllList();
+		List<RankVO> rList = rs.rankAllFind();
 		// 초기값 설정
 		model.addAttribute("rvo", rvo);
 		model.addAttribute("mList", mList);
 		model.addAttribute("lList", lList);
+		model.addAttribute("sList", sList);
+		model.addAttribute("rList", rList);
 		model.addAttribute("nYear", nYear);
 		model.addAttribute("nMonth", nMonth);
 		
@@ -139,16 +142,14 @@ public class TableController {
 	
 	// 현황 등록 창
 	@RequestMapping("empStateIns.do")
-	public String empStateIns(Model model, HttpSession session, String id, String baseYear, String baseMonth) {
+	public String empStateIns(Model model, HttpSession session, String id, String baseYear,
+			String baseMonth, String business_name) {
 		MonthVO mvo = new MonthVO();
 		EmpDetailVO evo = new EmpDetailVO();
 		
 		mvo.setId(id);
-		mvo.setBaseYear(Integer.parseInt(baseYear));
-		mvo.setBaseMonth(Integer.parseInt(baseMonth));
-		System.out.println("직원 데이터 정보: " + mvo);
 		
-		/* 문제 발생 지점 */
+		/*
 		if(mvo.getBusiness_name() == null) {
 			mvo = es.empInfo(id);
 			evo.setId(id);
@@ -162,14 +163,32 @@ public class TableController {
 		} else {
 			evo = ms.empDetailLog(mvo);
 		}
+		*/
+		System.out.println("업무명 : " + business_name);
 		
-		System.out.println("직원 정보: " + evo);
+		if(business_name == null || business_name.equals("")) {
+			mvo = es.empInfo(id);
+			mvo.setBaseYear(Integer.parseInt(baseYear));
+			mvo.setBaseMonth(Integer.parseInt(baseMonth));
+			model.addAttribute("info", mvo);
+			model.addAttribute("type", "newEmp");
+			System.out.println("직원 데이터 정보A: " + mvo);
+		} else {
+			mvo.setBaseYear(Integer.parseInt(baseYear));
+			mvo.setBaseMonth(Integer.parseInt(baseMonth));
+			evo = ms.empDetailLog(mvo);
+			model.addAttribute("info", evo);
+			model.addAttribute("type", "oldEmp");
+			System.out.println("직원 데이터 정보B: " + evo);
+		}
+		
+		//System.out.println("직원 정보: " + evo);
 		
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id);
 		List<BusinessVO> blist = bs.businessAllList();
 		List<SiteVO> slist = ss.siteAllList();
 		
-		model.addAttribute("info", evo);
+		
 		model.addAttribute("logList", logList);
 		model.addAttribute("blist", blist);
 		model.addAttribute("slist", slist);

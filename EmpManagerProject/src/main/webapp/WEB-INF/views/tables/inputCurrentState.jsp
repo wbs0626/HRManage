@@ -53,7 +53,7 @@
 					
 				<div>
 					<span class= "font-weight-bold" id="tTitle">■ 월별 인력 투입사항   (<c:out value="${nYear }년 ${nMonth }월"/>)
-						<button class="btn btn-secondary btn-xs" id="copyAll" style="float: right;">일괄복사</button>
+						<button class="btn btn-info btn-xs" data-toggle="modal" data-target="#info" style="float: right;">도움말</button>
 						<button class="btn btn-secondary btn-xs" id="empStateIns" style="margin: 0px 5px; float:right;">현황등록</button>
 						<button class="btn btn-secondary btn-xs" id="insEmp" style="float: right;">인력수정</button>
 					</span>
@@ -74,41 +74,41 @@
 							　성명 : <input type="text" id="emp_name" name="emp_name">
 							　직급 : <select id="rank" name="rank">
 								<option value="">전체</option>
-								<option>상무</option>
-								<option>부장</option>
-								<option>차장</option>
-								<option>과장</option>
-								<option>대리</option>
-								<option>사원</option>
+								<c:forEach items="${rList }" var="r">
+									<option><c:out value="${r.rank_name }"/></option>
+								</c:forEach>
 							</select>
 							　현업무 : <input type="text" id="business_name" name="business_name">
-							<input type="button" class="btn btn-primary"
-							 id="infoSearch" name="infoSearch" value="조회" style="float: right;"> 
+							<div style="margin: 5px 0px">
+								SITE 　　: <select id="site_name" name="site_name">
+									<option value="">전체</option>
+									<c:forEach items="${sList }" var="s">
+										<option><c:out value="${s.site_name }"/></option>
+									</c:forEach>
+								</select>
+								<input type="button" class="btn btn-primary"
+							 		id="infoSearch" name="infoSearch" value="조회" style="float: right;">
+							</div>
+							
 						</div>
-						<!-- 라벨 안에 공백문자(ㄱ+한자)들어가있음 -->
-						<%-- <div style="margin: 5px 0px">
-							근무지 　: <select id="loc_name" name="loc_name">
-								<c:forEach items="${lList }" var="l">
-									<option><c:out value="${l.loc_name }"/></option>
-								</c:forEach>
-							</select>			
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" id="state0" checked="checked">
-							<label class="form-control-label" for="state0">전체</label> 
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" id="state1" name="state" value="0">
-							<label class="form-control-label" for="state1">C</label> 
-						</div>
-						<div class="form-check form-check-inline">
-							<input class="form-check-input" type="radio" id="state2" name="state" value="1">
-							<label class="form-control-label" for="state2">P</label> 
-						</div> --%>
+						<!-- 수평선 -->
 						<div>
 							<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 						</div>
 					</form>
+						<!-- C, P 화면 display 변경 부분 -->
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state0" name="state" value="3" checked="checked">
+							<label class="form-control-label" for="state0">전체</label> 
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state1" name="state" value="1">
+							<label class="form-control-label" for="state1">C</label> 
+						</div>
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio" id="state2" name="state" value="2">
+							<label class="form-control-label" for="state2">P</label> 
+						</div>
 					<table class="table table-bordered table-hover" style="border: 1px solid red;">
 						<thead>
 							<tr class="table-active" style="text-align: center;">
@@ -151,8 +151,8 @@
 									</c:otherwise>
 								</c:choose>										
 								<td>
-									<%-- <a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" style="width=400; height=600;" target="_blank">${mlist.emp_name }</a> --%>
-									<a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" onclick="window.open(this.href,'_blank','width = 500px, height=600px'); return false;">${mlist.emp_name }</a>
+									<a href="../empYearHistory.do?id=${mlist.id }&baseYear=${nYear}&baseMonth=${nMonth}" 
+										onclick="window.open(this.href,'_blank','width = 500px, height=600px'); return false;">${mlist.emp_name }</a>
 								</td>
 								<td><c:out value="${mlist.rank }"/></td>
 								<td><c:out value="${mlist.business_name }"/></td>
@@ -485,7 +485,61 @@
 				</div>
 			</div>
 		</div>
-
+		<!-- Modal -->
+		<div class="modal fade" id="info" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">테이블 색상</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="row" style="margin: 5px 0px;">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<td style="width: 60%; font-weight: bold ;">색상</td>
+											<td style="font-weight: bold;">의미</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td style="background-color: #A5DF00;"></td>
+											<td>제외</td>
+										</tr>
+										<tr>
+											<td style="background-color: lightskyblue;"></td>
+											<td>기준월</td>
+										</tr>
+										<tr>
+											<td style="background-color: #FE9A2E;"></td>
+											<td>계획</td>
+										</tr>
+										<tr>
+											<td style="background-color: white;"></td>
+											<td>대기</td>
+										</tr>
+										<tr>
+											<td style="background-color: yellow;"></td>
+											<td>출산휴가</td>
+										</tr>
+									</tbody>
+									<tfoot>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Modal End -->
 	</div>
 	<!-- /.container-fluid -->
 </body>
@@ -503,6 +557,8 @@ $(document).ready(function() {
 	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
 	
 	$("#infoSearch").on("click", function(){
+		var stateView = $("input[type=radio][name=state]:checked").val();
+		console.log("stateView: " + stateView);
 		
 		$.ajax({
 			url : 'operation_rate.do',
@@ -567,8 +623,7 @@ $(document).ready(function() {
 					
 					/* State Color */
 					//var cColor = "#A5DF00";
-					//var pColor = "lightskyblue";
-					
+					//var pColor = "lightskyblue";					
 				    let str = '<tr>';
 				    str += '<td><input type="checkbox" name="empChk" value="'+ emp.id +'">' + '</td>';
 				    str += '<td>' + emp.section + '</td>';
@@ -576,7 +631,7 @@ $(document).ready(function() {
 				    str += '<td><a href="'+url+'" onclick="'+ option +'">' + emp.emp_name + '</a></td>';
 					str += '<td>' + emp.rank + '</td>';
 					if(emp.business_name == '출산 휴가') {
-						str += '<td style="background-color: ' + cColor + ';">' + emp.business_name + '</td>';
+						str += '<td style="background-color: yellow;">' + emp.business_name + '</td>';
 					} else {
 						str += '<td>' + emp.business_name + '</td>';
 					}
@@ -584,42 +639,78 @@ $(document).ready(function() {
 					
 					/* 상태 값 */
 					for (let a = 0; a < MONTHS; a++) {
-						
-						if(mArr[a] == 1 ) {
-							cColor = "#A5DF00";
-							if(a+1 == NOWMONTH) {
-								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
-							} else {
-								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
-							}
-						} else if(mArr[a] == 2) {
-							if(a+1 <= NOWMONTH) {
-								pColor = "lightskyblue";
+						// Selectd stateView value
+						if(stateView == 3) {
+							if(mArr[a] == 1 ) {
+								cColor = "#A5DF00";
 								if(a+1 == NOWMONTH) {
-									str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
 								} else {
+									str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
+								}
+							} else if(mArr[a] == 2) {
+								if(a+1 <= NOWMONTH) {
+									pColor = "lightskyblue";
+									if(a+1 == NOWMONTH) {
+										str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+									} else {
+										str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+									}
+								} else {
+									pColor = "#FE9A2E";
 									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
 								}
+							} else if(mArr[a] == 3) {
+								cColor = "WHITE";
+								if(a+1 == NOWMONTH) {
+									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
+								}
 							} else {
-								pColor = "#FE9A2E";
-								str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+								str+= '<td>' + '</td>'
 							}
-						} else if(mArr[a] == 3) {
-							cColor = "WHITE";
-							if(a+1 == NOWMONTH) {
-								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
+						} else if(stateView == 1) {
+							if(mArr[a] == 1 ) {
+								cColor = "#A5DF00";
+								if(a+1 == NOWMONTH) {
+									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
+								}
 							} else {
-								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
+								str+= '<td>' + '</td>'
 							}
-						} else {
-							str+= '<td>' + '</td>'
+						} else if(stateView == 2) {
+							if(mArr[a] == 2) {
+								if(a+1 <= NOWMONTH) {
+									pColor = "lightskyblue";
+									if(a+1 == NOWMONTH) {
+										str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+									} else {
+										str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+									}
+								} else {
+									pColor = "#FE9A2E";
+									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+								}
+							} else if(mArr[a] == 3) {
+								cColor = "WHITE";
+								if(a+1 == NOWMONTH) {
+									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
+								}
+							} else {
+								str+= '<td>' + '</td>'
+							}
 						}
 					}
 					
 					str += '<td>' + emp.month_remarks + '</td>';
 					str += '</tr>'
 					$("#empMonthData").append(str);
-					console.log(JSON.stringify(emp));
+					//console.log(JSON.stringify(emp));
 				});
 			},
 			error : function(res) {
@@ -628,6 +719,7 @@ $(document).ready(function() {
 		});
 	});
 	// SearchEvent END
+	
 	
 	$("#insEmp").on("click", function(){
 		
@@ -672,11 +764,20 @@ $(document).ready(function() {
 			let m = $("select[name=baseMonth]").val(); 
 			console.log("id값 : " + eid);
 			
+			var tr = $(this).parent().parent();
+			var td = tr.children();
+			
+			console.log("업무명 : " + td.eq(4).text());
+			let bname = td.eq(4).text();
+			if(bname == null || bname == "") {
+				bname = "";
+			}
+			
 			if(m == 0) {
 				m = NOWMONTH;
 			}  
 			
-			let url = "../empStateIns.do?id=" + eid + "&baseYear=" + y + "&baseMonth=" + m;
+			let url = "../empStateIns.do?id=" + eid + "&baseYear=" + y + "&baseMonth=" + m + "&business_name=" + bname;
 			window.open(url, "_blank", "width=700px, height=600px");
 		});
 	});

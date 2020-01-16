@@ -29,6 +29,8 @@ public class MonthlyHisService {
 		String name = mvo.getEmp_name();
 		String rank = mvo.getRank();
 		String bname = mvo.getBusiness_name();
+		String site_name = mvo.getSite_name();
+		System.out.println("현재 입력 값: " + mvo);
 		
 		if(rank.equals("전체")) {
 			rank = "";
@@ -53,10 +55,11 @@ public class MonthlyHisService {
 			return mdao.monEmpDateSearch(mvo);
 		}
 		*/
-		if(section == 0 && name.isEmpty() == true && rank.equals("전체") && bname == "") {
+		
+		if(section == 0 && name.isEmpty() == true && rank.equals("") && bname == "" && site_name == "") {
 			System.out.println("날짜 검색");
 			return mdao.monEmpDateSearch(mvo);
-		} else if (section == 0 && (name.isEmpty() == false || !rank.equals("전체") || bname != "")){
+		} else if (section == 0 && (name.isEmpty() == false || !rank.equals("") || bname != "" || site_name !="")){
 			System.out.println("전체 검색");
 			return mdao.monMultiAllFind(mvo);
 		} else {
@@ -78,19 +81,27 @@ public class MonthlyHisService {
 		return mdao.empDetailLog(mvo);
 	}
 	
-	public boolean monthHisInsert(MonthVO mvo) {
-		boolean isSuccess = false;
+	public int monthHisInsert(MonthVO mvo) {
+		final int INSOK = 1;
+		final int UPDOK = 2;
+		final int FAIL = 3;
 		
 		String bname = mvo.getBusiness_name();
-		int state = bdao.findBState(bname);
+		int exState = bdao.findBState(bname);
 		
-		mvo.setExclusion_state(state);
+		mvo.setExclusion_state(exState);
 		
-		if(mdao.monHisDupChk(mvo) != 1) {
-			mdao.monthHisInsert(mvo);
-			isSuccess = true;
+		try {
+			if(mdao.monHisDupChk(mvo) == 0) {
+				mdao.monthHisInsert(mvo);
+				return INSOK;
+			} else {
+				mdao.monthHisUpdate(mvo);
+				return UPDOK;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return FAIL;
 		}
-		
-		return isSuccess;
 	}
 }

@@ -42,7 +42,12 @@
 						<td><c:out value="${info.depart_name }"/></td>
 						<td><c:out value="${info.emp_name }"/></td>
 						<td><c:out value="${info.rank }"/></td>
-						<td><c:out value="${info.emp_remarks }"/></td>
+						<c:if test="${type == 'newEmp' }">
+							<td><c:out value="${info.month_remarks }"/></td>
+						</c:if>
+						<c:if test="${type == 'oldEmp' }">
+							<td><c:out value="${info.emp_remarks }"/></td>
+						</c:if>
 					</tr>
 			</tbody>
 		</table>
@@ -54,6 +59,10 @@
 		</div>
 		
 		<form id ="empStateRegFrm">
+			<input type ="hidden" id="id" name="id" value="${info.id }">
+			<input type ="hidden" name="section" value="${info.section }">
+			<input type ="hidden" name="emp_name" value="${info.emp_name }">
+			<input type ="hidden" name="rank" value="${info.rank }">
 			<table id="empInputInfo" class="table table-bordered text-center">
 				<thead>
 					<tr class="table-active">
@@ -67,7 +76,6 @@
 				<tbody id = "stateInfo">
 					<tr>
 						<td>
-							<input type ="hidden" id="empId" value="${info.id }">
 							<select class="form-control" id="baseYear" name="baseYear">
 								<option value="${info.baseYear }" selected="selected">
 									<c:out value="${info.baseYear }"/></option>
@@ -93,7 +101,7 @@
 							</select>
 						</td>
 						<td>
-							<select class="form-control" id="site_name0" name="site_name">
+							<select class="form-control" id="site_name0" name="site_id">
 								<option></option>
 								<c:forEach items="${slist }" var="slist">
 									<option value="${slist.site_id }"><c:out value="${slist.site_name }"/></option>
@@ -102,16 +110,8 @@
 						</td>
 						<td>
 							<select class="form-control" id="state0" name="state">
-								<c:choose>
-									<c:when test="${info.state == 1}"> 
-										<option value="1" selected="selected">Cost</option>
-										<option value="2">Price</option>
-									</c:when>
-									<c:when test="${info.state == 2}">
-										<option value="1">Cost</option>
-										<option value="2" selected="selected">Price</option>
-									</c:when>
-								</c:choose>
+								<option value="1" <c:if test="${info.state == 1}"> selected="selected"</c:if>>Cost</option>
+								<option value="2" <c:if test="${info.state == 2}"> selected="selected"</c:if>>Profit</option>
 							</select>
 						</td>
 					</tr>
@@ -120,7 +120,12 @@
 					<tr>
 						<td class="table-active">비고</td>
 						<td colspan="4">
-							<input type="text" class="form-control" value="${info.month_remarks }">
+							<c:if test="${type == 'newEmp' }">
+								<input type="text" class="form-control" name="month_remarks" value="">
+							</c:if>
+							<c:if test="${type == 'oldEmp' }">
+								<input type="text" class="form-control" name="month_remarks" value="${info.month_remarks }">
+							</c:if>
 						</td>
 					</tr>
 				</tfoot>
@@ -206,7 +211,7 @@ $(document).ready(function() {
 			str += '</td>'
 			// site
 			str += '<td>'
-			str += '<select class="form-control" id="site_name' + count + '" "name=site_name">';
+			str += '<select class="form-control" id="site_id' + count + '" "name=site_id">';
 			for(let i = 0; i < sArr.length; i++){
 				str += '<option value='+ sId[i] +'>' + sArr[i] + '</option>';				
 			}
@@ -216,7 +221,7 @@ $(document).ready(function() {
 			str += '<td>'
 			str += '<select class="form-control" id="state' + count + '" name="state">';
 			str += '<option value="1">Cost' + '</option>';
-			str += '<option value="2">Price' + '</option>';
+			str += '<option value="2">Profit' + '</option>';
 			str += '</select>'
 			str += '</td>'
 			
@@ -242,28 +247,24 @@ $(document).ready(function() {
 		
 		let id = $("#empId").val();
 		
-		if(count == 1) {
+		if(count == 0) {
 			$.ajax({
 				url : 'addState.do',
 				type : 'POST',
-				data : {
-							id : id, 
-							baseYear : baseYear,
-							baseMonth : baseMonth,
-							business_name : business_name, 
-							site_id : site_name,
-							state : state
-						},
+				data : $('#empStateRegFrm').serialize(),
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
-						history.replaceState({}, null, location.pathname);
-						window.replace();
+						opener.parent.location.reload();
+						window.close();
 					} else {
 						alert("오류 발생");
 						return;
 					}
-				}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
 			});
 		}
 		
