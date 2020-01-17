@@ -142,47 +142,36 @@ public class TableController {
 	
 	// 현황 등록 창
 	@RequestMapping("empStateIns.do")
-	public String empStateIns(Model model, HttpSession session, String id, String baseYear,
-			String baseMonth, String business_name) {
-		MonthVO mvo = new MonthVO();
+	public String empStateIns(Model model, HttpSession session, MonthVO mvo) {
+		//MonthVO mvo = new MonthVO();
 		EmpDetailVO evo = new EmpDetailVO();
 		
-		mvo.setId(id);
+		String id = mvo.getId();
+		int baseYear = mvo.getBaseYear();
+		int baseMonth = mvo.getBaseMonth();
+		String business_name = mvo.getBusiness_name();
 		
-		/*
-		if(mvo.getBusiness_name() == null) {
-			mvo = es.empInfo(id);
-			evo.setId(id);
-			evo.setBaseYear(Integer.parseInt(baseYear));
-			evo.setBaseMonth(Integer.parseInt(baseMonth));
-			evo.setSection(mvo.getSection());
-			evo.setDepart_name(mvo.getDepart_name());
-			evo.setEmp_name(mvo.getEmp_name());
-			evo.setRank(mvo.getRank());
-			evo.setEmp_remarks(mvo.getMonth_remarks());
-		} else {
-			evo = ms.empDetailLog(mvo);
-		}
-		*/
-		System.out.println("업무명 : " + business_name);
+		//mvo.setId(id);
 		
 		if(business_name == null || business_name.equals("")) {
 			mvo = es.empInfo(id);
-			mvo.setBaseYear(Integer.parseInt(baseYear));
-			mvo.setBaseMonth(Integer.parseInt(baseMonth));
+			//mvo.setBaseYear(Integer.parseInt(baseYear));
+			//mvo.setBaseMonth(Integer.parseInt(baseMonth));
+			mvo.setBaseYear(baseYear);
+			mvo.setBaseMonth(baseMonth);
 			model.addAttribute("info", mvo);
 			model.addAttribute("type", "newEmp");
-			System.out.println("직원 데이터 정보A: " + mvo);
+			//System.out.println("직원 데이터 정보A: " + mvo);
 		} else {
-			mvo.setBaseYear(Integer.parseInt(baseYear));
-			mvo.setBaseMonth(Integer.parseInt(baseMonth));
+			//mvo.setBaseYear(Integer.parseInt(baseYear));
+			//mvo.setBaseMonth(Integer.parseInt(baseMonth));
 			evo = ms.empDetailLog(mvo);
 			model.addAttribute("info", evo);
 			model.addAttribute("type", "oldEmp");
-			System.out.println("직원 데이터 정보B: " + evo);
+			//System.out.println("직원 데이터 정보B: " + evo);
 		}
 		
-		//System.out.println("직원 정보: " + evo);
+		System.out.println("직원 정보: " + evo);
 		
 		List<MonthEmpLogVO> logList = ms.yearHistoryList(id);
 		List<BusinessVO> blist = bs.businessAllList();

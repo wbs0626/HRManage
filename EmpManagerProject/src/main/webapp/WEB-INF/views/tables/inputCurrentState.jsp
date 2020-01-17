@@ -584,7 +584,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			url : 'empMonthDataFind.do',
-			data : $('#empMonthForm').serialize(),
+			data : $('#empMonthForm').serializeArray(),
 			type : 'POST',
 			success : function(emp) {
 				$("#empMonthData tr").remove();
@@ -748,7 +748,7 @@ $(document).ready(function() {
 	$("#empStateIns").on("click", function(){
 		
 		if($("input[name=empChk]").is(":checked") == false) {
-			alert("검색할 대상을 선택해 주세요");
+			alert("직원을 선택해 주세요");
 			return;
 		}
 		

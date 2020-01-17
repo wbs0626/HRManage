@@ -1,5 +1,7 @@
 package com.miris.vo;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -26,6 +28,8 @@ public class MonthVO {
 	private int state; // DB상에는 1: C 2: P
 	private String month_remarks;
 	private String depart_name;
+	
+	private List<MonthVO> list;
 	// ============================
 	private int m1;//jan;
 	private int m2;//feb;

@@ -153,7 +153,8 @@ public class TableRestController {
 	@RequestMapping("addState.do")
 	public String addState(MonthVO mvo) {
 		int result;
-		System.out.println("변경할 데이터: " + mvo );
+
+		System.out.println("\n****RESTCONTROLLER****\n" + mvo);
 		
 		String msg = "";
 		
@@ -166,6 +167,27 @@ public class TableRestController {
 			msg = "FAIL";
 			e.printStackTrace();
 		}
+		
+		return msg;
+	}
+	
+	@RequestMapping("addListState.do")
+	public String addListState(List<MonthVO> mvo) {
+		int result;
+		String msg = "";
+		
+		for(MonthVO tmp : mvo) {
+			System.out.println("변경할 데이터 목록 :" + tmp);
+			try {
+				result = ms.monthHisInsert(tmp);
+				if(result == 1 || result == 2) {
+					msg = "OK";
+				}
+			} catch(Exception e) {
+				msg = "FAIL";
+				e.printStackTrace();
+			}
+		}		
 		
 		return msg;
 	}

@@ -254,6 +254,7 @@ public interface MonthlyHisMapper {
 			+ "baseMonth = #{baseMonth}, "
 			+ "business_name = #{business_name}, "
 			+ "site_id = #{site_id}, "
+			+ "state = #{state}, "
 			+ "exclusion_state = #{exclusion_state}, "
 			+ "month_remarks = #{month_remarks} "
 			+ "WHERE id = #{id} "

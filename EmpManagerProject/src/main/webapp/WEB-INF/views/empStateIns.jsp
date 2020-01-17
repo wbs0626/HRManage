@@ -59,10 +59,7 @@
 		</div>
 		
 		<form id ="empStateRegFrm">
-			<input type ="hidden" id="id" name="id" value="${info.id }">
-			<input type ="hidden" name="section" value="${info.section }">
-			<input type ="hidden" name="emp_name" value="${info.emp_name }">
-			<input type ="hidden" name="rank" value="${info.rank }">
+			<input type ="hidden" id="empId" name="id" value="${info.id }">
 			<table id="empInputInfo" class="table table-bordered text-center">
 				<thead>
 					<tr class="table-active">
@@ -118,13 +115,13 @@
 				</tbody>
 				<tfoot>
 					<tr>
-						<td class="table-active">비고</td>
+						<td class="table-active" id="tbFoo">비고</td>
 						<td colspan="4">
 							<c:if test="${type == 'newEmp' }">
-								<input type="text" class="form-control" name="month_remarks" value="">
+								<input type="text" class="form-control" id="month_remarks" name="month_remarks" value="">
 							</c:if>
 							<c:if test="${type == 'oldEmp' }">
-								<input type="text" class="form-control" name="month_remarks" value="${info.month_remarks }">
+								<input type="text" class="form-control" id="month_remarks" name="month_remarks" value="${info.month_remarks }">
 							</c:if>
 						</td>
 					</tr>
@@ -139,13 +136,14 @@
 		</form>
 	</div>
 </body>
-<script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	const MONTHS = 12;
 	const NOWYEAR = new Date().getFullYear();
 	const NOWMONTH = $("#eMonth").val();
-	var count = 0;
+	var count = 1;
+	console.log("기본 count값 : " + count);
 	
 	var bArr = new Array();	// 업무 목록
 	var bState = new Array();
@@ -183,8 +181,9 @@ $(document).ready(function() {
 	});
 	
 	$("#addInfoBox").on("click", function(){
-		if(count < 11) {
-			count++;
+		$("#baseMonth0 option[value='1']").attr("selected", true);
+		count++;
+		if(count < 13) {
 			let str = '<tr>';
 			// baseYear
 			str += '<td>';
@@ -197,7 +196,11 @@ $(document).ready(function() {
 			str += '<td>'
 			str += '<select class="form-control" id="baseMonth' + count + '" name="baseMonth">';
 			for(let i = 1; i < 13; i++) {
-				str += '<option value="i">' + i + '</option>';
+				if(count == i) {
+					str += '<option value="i" selected="selected">' + i + '</option>';
+				} else {
+					str += '<option value="i">' + i + '</option>';
+				}
 			}
 			str += '</select>'
 			str += '</td>'
@@ -231,10 +234,11 @@ $(document).ready(function() {
 		} else {
 			$("#addInfoBox").attr('disabled', true);
 		}
-		console.log("count값 : " + count);
+		
 	});
 	
 	$("#empStateRegBtn").on("click", function(){
+		
 		if($("#business_name0").val() == null) {
 			$("#business_name0").focus();
 			return;
@@ -245,13 +249,97 @@ $(document).ready(function() {
 			return;
 		}
 		
-		let id = $("#empId").val();
+		var id = $("#empId").val();
+		var month_remarks = $("#month_remarks").val();
 		
-		if(count == 0) {
+		if(count == 1) {
+			var frmData = $('#empStateRegFrm').serializeArray();
+			
+			var arr = [];
+			
+			$("#stateInfo tr").each(function(index, item) {
+				var baseYear = $(this).children("td:eq(0)").children("select").val();
+				var baseMonth = $(this).children("td:eq(1)").children("select").val();
+				var business_name = $(this).children("td:eq(2)").children("select").val();
+				var site = $(this).children("td:eq(3)").children("select").val();
+				var state = $(this).children("td:eq(4)").children("select").val();
+				
+				/* var params = {};
+				
+				params["id"] = id;
+				params["baseYear"] = baseYear;
+				params["baseMonth"] = baseMonth;
+				params["business_name"] = business_name;
+				params["site"] = site;
+				params["state"] = state;
+				params["month_remarks"] = month_remarks; */
+				
+				/* params["name"] = "id";
+				params["name"] = "baseYear";
+				params["name"] = "baseMonth";
+				params["name"] = "business_name";
+				params["name"] = "site";
+				params["name"] = "state";
+				params["name"] = "month_remarks";
+				
+				params["value"] = id;
+				params["value"] = baseYear;
+				params["value"] = baseMonth;
+				params["value"] = business_name;
+				params["value"] = site;
+				params["value"] = state;
+				params["value"] = month_remarks; */
+				
+				/* arr.push(params); */
+				
+				/* alert("baseYear: " + baseYear +
+						"\nbaseMonth: " + baseMonth +
+						"\nbusiness_name: " + business_name +
+						"\nsite: " + site +
+						"\nstate: " + state + 
+						"\nmonth_remarks: " + month_remarks
+				);	 */
+				
+				//var obj = JSON.parse(params);
+				
+				/* alert("params 값: " + JSON.stringify(params));
+				alert("arr 값: " + JSON.stringify(arr)); */
+				alert("frmData 값: " + JSON.stringify(frmData));
+				console.log(JSON.stringify(frmData))
+			});
+			
+			/* $.ajax({
+				url : 'addState.do',
+				type : 'POST',
+				data : {
+						id : id,
+						baseYear : baseYear,
+						baseMonth : baseMonth,
+						business_name : business_name,
+						site : site,
+						state : state,
+						month_remarks : month_remarks
+				},
+				success : function(res) {
+					if(res=="OK") {
+						alert("정상 처리되었습니다.");
+						opener.parent.location.reload();
+						window.close();
+					} else {
+						alert("오류 발생");
+						return;
+					}
+				},
+				error : function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			    }
+			}); */
+			
 			$.ajax({
 				url : 'addState.do',
 				type : 'POST',
-				data : $('#empStateRegFrm').serialize(),
+				data : frmData,
+				traditional: true,
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");
@@ -266,8 +354,8 @@ $(document).ready(function() {
 			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			    }
 			});
-		}
-		
+			//alert("Data값 " + JSON.stringify(frmData));
+		} 
 	});
 	
 })
