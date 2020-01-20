@@ -78,6 +78,21 @@
 						</tbody>
 					</table>
 					<div style="margin: 0px 10px 10px 10px;">
+						<input type="hidden" id="curPage" value=${curPage }>
+						<input type="hidden" id="totalPage" value=${totalPage }>
+						<ul class="pagination justify-content-center">
+							<li class="page-item" id="start">
+								<a class="page-link" href="empManage.do?page=${curPage - 1 }">이전</a>
+							</li>
+							<c:forEach begin="1" end="${totalPage }" varStatus="i">
+								<li class="page-item">
+									<a class="page-link" href="empManage.do?page=${i.count }">${i.count }</a>
+								</li>
+							</c:forEach>
+							<li class="page-item" id="end">
+								<a class="page-link" href="empManage.do?page=${curPage + 1 }">다음</a>
+							</li>
+						</ul>
 						<button class="btn btn-danger" id="empDelBtn" style="float:right; margin:5px;">삭제</button>
 						<button class="btn btn-warning" id="empUpdBtn" style="float:right; margin:5px;">수정</button>
 						<button class="btn btn-active" id="empInsBtn" style="float:right; margin:5px;">등록</button>	
@@ -92,6 +107,23 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery.js"></script>
 <script type="text/javascript"> 
 $(document).ready(function(){
+	var curPage = $("#curPage").val();
+	var totalPage = $("#totalPage").val();
+	
+	console.log("현재: " + curPage + "\n총 페이지: " + totalPage);
+	
+	if(curPage == 1) {
+		$("#start").addClass("disabled");
+		$("#end").addClass("active");
+	} else if (curPage == totalPage) {
+		$("#start").addClass("active");
+		$("#end").addClass("disabled");
+	} else {
+		$("#start").removeClass("disabled");
+		$("#start").addClass("active");
+		$("#end").removeClass("disabled");
+		$("#end").addClass("active");
+	}
 	
 	$("#empChkAll").click(function(){ 
 		if($("#empChkAll").prop("checked")) { 
@@ -207,7 +239,8 @@ $(document).ready(function(){
 			    }
 			})
 		});
-	})
+	});
+	
 });	
 </script>
 </html>

@@ -11,14 +11,33 @@ import com.miris.dto.EmpDataTableDTO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.HistoryVO;
 import com.miris.vo.MonthVO;
+import com.miris.vo.Pagination;
 
 public interface EmpMapper {
 	// 직원 총 수
-	@Select("SELECT count(*) FROM emp")
+	@Select("SELECT count(*) as totalCount FROM emp")
 	public int empCount();
 
 	@Select("SELECT * FROM emp WHERE ID=#{id} ")
 	public EmpVO empDetailInfo(EmpVO vo);
+
+	@Select("SELECT id, emp_name, rank, section, depart_name, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, "
+			+ "TO_CHAR(retire_date, 'YYYY-MM-DD') retire_date, emp_remarks, B.rnum "
+			+ "FROM ( "
+				+ "SELECT A.id, A.emp_name, A.RANK, A.SECTION, A.depart_name, A.entry_date, A.retire_date, A.emp_remarks, rownum AS rnum "
+				+ "FROM ( "
+					+ "SELECT e.id, e.emp_name, e.rank, e.section, d.depart_name, e.ENTRY_DATE, "
+						+ "e.RETIRE_DATE, e.EMP_REMARKS "
+					+ "FROM emp e "
+					+ "JOIN departs d "
+						+ "ON e.depart_id = d.depart_id "
+					+ "ORDER BY e.id "
+					+ ") A "
+					+ "WHERE rownum <= #{end} "
+				+ ") B "
+			+ "WHERE B.rnum >= #{start}")
+	public List<EmpVO> empPaging(Pagination pa);
+	
 	
 	// 직원 내역 출력
 	@Select("SELECT id, pwd, emp_name, rank, section, d.depart_name, TO_CHAR(entry_date, 'YYYY-MM-DD') entry_date, "

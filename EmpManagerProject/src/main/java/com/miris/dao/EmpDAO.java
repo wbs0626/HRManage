@@ -9,6 +9,7 @@ import com.miris.dto.EmpDataTableDTO;
 import com.miris.mapper.EmpMapper;
 import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
+import com.miris.vo.Pagination;
 
 @Repository
 public class EmpDAO implements EmpMapper{
@@ -93,5 +94,9 @@ public class EmpDAO implements EmpMapper{
 
 	public EmpVO empInfo2(String id) {
 		return mapper.empInfo2(id);
+	}
+
+	public List<EmpVO> empPaging(Pagination pa) {
+		return mapper.empPaging(pa);
 	}
 }

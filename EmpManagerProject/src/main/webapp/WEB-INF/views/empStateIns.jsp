@@ -145,10 +145,14 @@ $(document).ready(function() {
 	var count = 1;
 	console.log("기본 count값 : " + count);
 	
-	var bArr = new Array();	// 업무 목록
+	// 업무 목록
+	var bArr = new Array();	
 	var bState = new Array();
-	var sArr = new Array();	// site 목록
+	// site 목록
+	var sArr = new Array();	
 	var sId = new Array();
+	
+	var inputArr = new Array(); // 투입 정보 추가 목록
 	
 	for(let i = 0; i < MONTHS; i++) {
 		$("#baseMonth0").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
@@ -164,6 +168,7 @@ $(document).ready(function() {
 				bArr[index] = data.business_name;
 				bState[index] = data.exclusion_state;
 				//console.log("bArr " + index + "번 : " + bArr[index]);
+				console.log("bArr: " + bArr);
 			})
 		}
 	});
@@ -234,7 +239,6 @@ $(document).ready(function() {
 		} else {
 			$("#addInfoBox").attr('disabled', true);
 		}
-		
 	});
 	
 	$("#empStateRegBtn").on("click", function(){
@@ -255,8 +259,6 @@ $(document).ready(function() {
 		if(count == 1) {
 			var frmData = $('#empStateRegFrm').serializeArray();
 			
-			var arr = [];
-			
 			$("#stateInfo tr").each(function(index, item) {
 				var baseYear = $(this).children("td:eq(0)").children("select").val();
 				var baseMonth = $(this).children("td:eq(1)").children("select").val();
@@ -264,82 +266,18 @@ $(document).ready(function() {
 				var site = $(this).children("td:eq(3)").children("select").val();
 				var state = $(this).children("td:eq(4)").children("select").val();
 				
-				/* var params = {};
+				//inputArr[index] = [baseYear, baseMonth, business_name, site, state];
 				
-				params["id"] = id;
-				params["baseYear"] = baseYear;
-				params["baseMonth"] = baseMonth;
-				params["business_name"] = business_name;
-				params["site"] = site;
-				params["state"] = state;
-				params["month_remarks"] = month_remarks; */
-				
-				/* params["name"] = "id";
-				params["name"] = "baseYear";
-				params["name"] = "baseMonth";
-				params["name"] = "business_name";
-				params["name"] = "site";
-				params["name"] = "state";
-				params["name"] = "month_remarks";
-				
-				params["value"] = id;
-				params["value"] = baseYear;
-				params["value"] = baseMonth;
-				params["value"] = business_name;
-				params["value"] = site;
-				params["value"] = state;
-				params["value"] = month_remarks; */
-				
-				/* arr.push(params); */
-				
-				/* alert("baseYear: " + baseYear +
-						"\nbaseMonth: " + baseMonth +
-						"\nbusiness_name: " + business_name +
-						"\nsite: " + site +
-						"\nstate: " + state + 
-						"\nmonth_remarks: " + month_remarks
-				);	 */
-				
-				//var obj = JSON.parse(params);
-				
-				/* alert("params 값: " + JSON.stringify(params));
-				alert("arr 값: " + JSON.stringify(arr)); */
-				alert("frmData 값: " + JSON.stringify(frmData));
+				alert("frmData : " + JSON.stringify(frmData));
 				console.log(JSON.stringify(frmData))
 			});
-			
-			/* $.ajax({
-				url : 'addState.do',
-				type : 'POST',
-				data : {
-						id : id,
-						baseYear : baseYear,
-						baseMonth : baseMonth,
-						business_name : business_name,
-						site : site,
-						state : state,
-						month_remarks : month_remarks
-				},
-				success : function(res) {
-					if(res=="OK") {
-						alert("정상 처리되었습니다.");
-						opener.parent.location.reload();
-						window.close();
-					} else {
-						alert("오류 발생");
-						return;
-					}
-				},
-				error : function(request,status,error){
-			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			    }
-			}); */
-			
+			// traditional : 배열 객체를 parameter로 보냄
 			$.ajax({
 				url : 'addState.do',
 				type : 'POST',
 				data : frmData,
 				traditional: true,
+				async : false,
 				success : function(res) {
 					if(res=="OK") {
 						alert("정상 처리되었습니다.");

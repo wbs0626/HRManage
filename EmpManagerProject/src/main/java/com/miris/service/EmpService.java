@@ -10,6 +10,7 @@ import com.miris.dao.EmpDAO;
 import com.miris.dto.EmpDataTableDTO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
+import com.miris.vo.Pagination;
 
 @Service
 public class EmpService {
@@ -114,5 +115,10 @@ public class EmpService {
 	
 	public EmpVO empInfo2(String id) {
 		return edao.empInfo2(id);
+	}
+	
+	public List<EmpVO> empPaging(Pagination pa) {
+		
+		return edao.empPaging(pa);
 	}
 }

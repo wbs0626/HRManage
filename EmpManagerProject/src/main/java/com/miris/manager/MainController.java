@@ -2,6 +2,7 @@ package com.miris.manager;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class MainController {
 	
 
 	@RequestMapping("main.do")
-	public String main_main(Model model, HttpSession session, RedirectAttributes ra) {
+	public String main_main(Model model, HttpSession session, HttpServletRequest request) {
 		int nYear;
 		int nMonth;
 		int nDay;
@@ -64,8 +65,14 @@ public class MainController {
 		model.addAttribute("currentDate", currentDate);
 		model.addAttribute("hvo", hvo);
 		
+		/*
+		 * String referer = request.getHeader("referer");
+		 * 
+		 * System.out.println(" 이전 페이지 ======> "+old_url);
+		 */
+		
 		//==========================================
-
+		
 		
 		if(tempId == null || tempId.trim().equals("")) {
 			return "redirect:login.do";

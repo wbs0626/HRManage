@@ -18,6 +18,7 @@ import com.miris.service.RankService;
 import com.miris.vo.DepartVO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.HistoryVO;
+import com.miris.vo.Pagination;
 import com.miris.vo.RankVO;
 
 @Controller
@@ -54,9 +55,24 @@ public class EmpController {
 	
 	// 인력 관리 화면
 	@RequestMapping("emp/empManage.do")
-	public String empManage(Model model, HttpSession session) {
-		List<EmpVO> elist = es.empAllList();
+	public String empManage(Model model, HttpSession session, String page) {
+		int totalPage;
+		int curPage;
+		int totalCnt = es.empCount();
 		
+		if(page == null || page == "") {
+			page = "1";
+		}
+		
+		curPage = Integer.parseInt(page);
+		
+		Pagination pa = new Pagination(totalCnt, curPage);
+		totalPage = pa.getTotalPage();
+		curPage = pa.getCurPage();
+		List<EmpVO> elist = es.empPaging(pa);
+		
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("totalPage", totalPage);
 		model.addAttribute("elist", elist);
 		
 		String tempId = (String)session.getAttribute("userId");

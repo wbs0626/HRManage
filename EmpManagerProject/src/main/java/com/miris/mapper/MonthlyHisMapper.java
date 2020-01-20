@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 import com.miris.vo.EmpDetailVO;
 import com.miris.vo.MonthEmpLogVO;
 import com.miris.vo.MonthVO;
+import com.miris.vo.Pagination;
 
 public interface MonthlyHisMapper {
 	
@@ -105,47 +106,23 @@ public interface MonthlyHisMapper {
 			+ "AND mh.basemonth = #{baseMonth} "
 			+ "JOIN ranktable r "
 			+ "ON e.rank = r.rank_name ";
-	/*
-	 * // 월별 인력 투입 현황 전체
-	 * 
-	 * @Select("SELECT id, section, emp_name, rank, business_name, site_name, state, baseyear, basemonth, month_remarks, num "
-	 * +
-	 * "FROM (SELECT e.id, e.section, e.emp_name, e.rank, mh.business_name, s.site_name, "
-	 * + "mh.state, mh.baseyear, mh.basemonth, mh.month_remarks, rownum as num " +
-	 * " FROM monthhistory mh JOIN emp e " + "ON mh.id = e.id " +
-	 * "LEFT OUTER JOIN site s " + "ON mh.site_id = s.site_id " +
-	 * "ORDER BY mh.baseyear, mh.basemonth)") public List<MonthVO> monEmpAllList();
-	 * 
-	 * // 전체 현황 수
-	 * 
-	 * @Select("SELECT count(*) " + "FROM monthhistory mh JOIN emp e " +
-	 * "ON mh.id = e.id " + "LEFT OUTER JOIN site s " + "ON mh.site_id = s.site_id")
-	 * public int monEmpTotalCount();
-	 * 
-	 * // 페이징 전체 내역
-	 * 
-	 * @Select("SELECT id, section, emp_name, rank, business_name, site_name, state, baseyear, basemonth, month_remarks, num "
-	 * +
-	 * "FROM (SELECT e.id, e.section, e.emp_name, e.rank, mh.business_name, s.site_name, "
-	 * + "mh.state, mh.baseyear, mh.basemonth, mh.month_remarks, rownum as num " +
-	 * " FROM monthhistory mh JOIN emp e " + "ON mh.id = e.id " +
-	 * "LEFT OUTER JOIN site s " + "ON mh.site_id = s.site_id " +
-	 * "ORDER BY mh.baseyear, mh.basemonth) " +
-	 * "WHERE num Between #{start} and #{end}") public List<MonthVO>
-	 * monEmpTotalList(Map<String, Object> map);
-	 * 
-	 * // 페이징 용 (20개 씩)
-	 * 
-	 * @Select("SELECT Ceil(count(*)/20) " + "FROM monthhistory mh JOIN emp e " +
-	 * "ON mh.id = e.id " + "LEFT OUTER JOIN site s " +
-	 * "ON mh.site_id = s.site_id ") public int monEmpTotalPage();
-	 */
-	
+		
 	// 월별 인력 투입 현황 (연도 + 월 검색)
-	@Select(defStr
+	@Select("SELECT id, section, emp_name, rank, business_name, baseyear, basemonth, site_name, state, "
+			+ "m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, rank_rate, month_remarks, B.rnum "
+			+ "FROM ( "
+			+ "SELECT A.id, A.section, A.emp_name, A.rank, A.business_name, A.baseyear, A.basemonth, "
+				+ "A.site_name, A.state, "
+				+ "A.m1, A.m2, A.m3, A.m4, A.m5, A.m6, A.m7, A.m8, A.m9, A.m10, A.m11, A.m12, A.rank_rate, A.month_remarks, rownum AS rnum "
+			+ "FROM ( "
+			+ defStr
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate, mh.month_remarks "
+			+ ") A "
+			+ "WHERE rownum <= #{pa.end} "
+			+ ") B "
+			+ "WHERE B.rnum >= #{pa.start}")
 	public List<MonthVO> monEmpDateSearch(MonthVO mvo);
 	
 	// 구분(내부, 외부) 검색

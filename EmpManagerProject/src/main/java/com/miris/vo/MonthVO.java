@@ -30,6 +30,8 @@ public class MonthVO {
 	private String depart_name;
 	
 	private List<MonthVO> list;
+	private Pagination pa;
+	
 	// ============================
 	private int m1;//jan;
 	private int m2;//feb;

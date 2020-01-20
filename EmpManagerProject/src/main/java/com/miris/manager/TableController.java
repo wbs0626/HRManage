@@ -3,6 +3,7 @@ package com.miris.manager;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -54,9 +55,24 @@ public class TableController {
 	}
 	
 	@RequestMapping("tables/inputCurrentState.do")
-	public String currentState(Model model, HttpSession session) {
-
+	public String currentState(Model model, HttpSession session, String page) {
+		
 		MonthVO mvo = new MonthVO();
+		int totalPage;
+		int curPage;
+		int totalCnt = es.empCount();
+		
+		if(page == null || page == "") {
+			page = "1";
+		}
+		
+		curPage = Integer.parseInt(page);
+		
+		Pagination pa = new Pagination(totalCnt, curPage);
+		
+		totalPage = pa.getTotalPage();
+		curPage = pa.getCurPage();
+		
 		
 		Calendar calendar = new GregorianCalendar(Locale.KOREA);
 		int nYear = calendar.get(Calendar.YEAR);
@@ -76,6 +92,7 @@ public class TableController {
 		rvo.setRate(operRate);
 		mvo.setBaseYear(nYear);
 		mvo.setBaseMonth(nMonth);
+		mvo.setPa(pa);
 
 		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
 		List<LocVO> lList = ls.locAllInfo();
@@ -89,6 +106,8 @@ public class TableController {
 		model.addAttribute("rList", rList);
 		model.addAttribute("nYear", nYear);
 		model.addAttribute("nMonth", nMonth);
+		model.addAttribute("curPage", curPage);
+		model.addAttribute("totalPage", totalPage);
 		
 		String tempId = (String)session.getAttribute("userId");
 		
@@ -151,20 +170,15 @@ public class TableController {
 		int baseMonth = mvo.getBaseMonth();
 		String business_name = mvo.getBusiness_name();
 		
-		//mvo.setId(id);
-		
 		if(business_name == null || business_name.equals("")) {
 			mvo = es.empInfo(id);
-			//mvo.setBaseYear(Integer.parseInt(baseYear));
-			//mvo.setBaseMonth(Integer.parseInt(baseMonth));
+
 			mvo.setBaseYear(baseYear);
 			mvo.setBaseMonth(baseMonth);
 			model.addAttribute("info", mvo);
 			model.addAttribute("type", "newEmp");
 			//System.out.println("직원 데이터 정보A: " + mvo);
 		} else {
-			//mvo.setBaseYear(Integer.parseInt(baseYear));
-			//mvo.setBaseMonth(Integer.parseInt(baseMonth));
 			evo = ms.empDetailLog(mvo);
 			model.addAttribute("info", evo);
 			model.addAttribute("type", "oldEmp");

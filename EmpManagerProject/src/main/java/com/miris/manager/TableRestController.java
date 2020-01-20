@@ -154,7 +154,7 @@ public class TableRestController {
 	public String addState(MonthVO mvo) {
 		int result;
 
-		System.out.println("\n****RESTCONTROLLER****\n" + mvo);
+		System.out.println("\n****RESTCONTROLLER ENCOUNTER!!!!!****\n" + mvo);
 		
 		String msg = "";
 		
