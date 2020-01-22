@@ -477,20 +477,21 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<div style="margin: 0px 10px 10px 10px;">
+					<!-- Pagination Button -->
+					<div id="pagingDiv" style="margin: 0px 10px 10px 10px;">
 						<input type="hidden" id="curPage" value=${curPage }>
 						<input type="hidden" id="totalPage" value=${totalPage }>
-						<ul class="pagination justify-content-center">
+						<ul class="pagination justify-content-center" id="pagingUl">
 							<li class="page-item" id="start">
-								<a class="page-link" href="inputCurrentState.do?page=${curPage - 1 }">이전</a>
+								<a class="page-link" id="pagePrev" href="inputCurrentState.do?page=${curPage - 1 }">이전</a>
 							</li>
 							<c:forEach begin="1" end="${totalPage }" varStatus="i">
 								<li class="page-item">
-									<a class="page-link" href="inputCurrentState.do?page=${i.count }">${i.count }</a>
+									<a class="page-link" id="pageMove" href="inputCurrentState.do?page=${i.count }">${i.count }</a>
 								</li>
 							</c:forEach>
 							<li class="page-item" id="end">
-								<a class="page-link" href="inputCurrentState.do?page=${curPage + 1 }">다음</a>
+								<a class="page-link" id="pageNext" href="inputCurrentState.do?page=${curPage + 1 }">다음</a>
 							</li>
 						</ul>
 					</div>
@@ -568,8 +569,8 @@ $(document).ready(function() {
 	$("#baseYear option[value='"+ NOWYEAR +"']").attr("selected", true);
 	$("#baseMonth option[value='"+ NOWMONTH +"']").attr("selected", true);
 	
-	var curPage = $("#curPage").val();
-	var totalPage = $("#totalPage").val();
+	var curPage = parseInt($("#curPage").val());
+	var totalPage = parseInt($("#totalPage").val());
 	
 	console.log("현재: " + curPage + "\n총 페이지: " + totalPage);
 	
@@ -586,14 +587,18 @@ $(document).ready(function() {
 		$("#end").addClass("active");
 	}
 	
-	
 	$("#infoSearch").on("click", function(){
 		var stateView = $("input[type=radio][name=state]:checked").val();
-		console.log("stateView: " + stateView);
+		var formData = $('#empMonthForm').serializeArray();
+		var formSz = $('#empMonthForm').serialize();
+		
+		formData.push({name : "page", value : curPage });
+		console.log("formData: " + JSON.stringify(formData));
+		console.log("formSz: " + formSz);
 		
 		$.ajax({
 			url : 'operation_rate.do',
-			data : $('#empMonthForm').serialize(),
+			data : formData,
 			type : 'POST',
 			success : function(res) {
 				$('#monthRateData td').remove();
@@ -608,17 +613,45 @@ $(document).ready(function() {
 				$("#monthRateData").append(str);
 				//console.log(JSON.stringify(res));
 			},
-			error : function(res) {
-				alert ("AJAX 가동률테이블 오류");
-			}
+			error : function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
 		});
 		
 		$.ajax({
 			url : 'empMonthDataFind.do',
-			data : $('#empMonthForm').serializeArray(),
+			data : formData,
 			type : 'POST',
 			success : function(emp) {
+				var maxNum = parseFloat(emp.length) / 10;
+				var prev = (curPage) - 1;
+				var next = (curPage) + 1;
+				
+				console.log("emp리스트크기: " + emp.length);
+				console.log("총 페이지 수: " + maxNum);
+				
+				if(emp.length % 10 != 0) {
+					maxNum++;
+				}
+				
 				$("#empMonthData tr").remove();
+				//console.log(JSON.stringify(emp));
+				
+				$("#pagingUl li").remove();
+				let tmp = '';
+					//tmp += '<li class="page-item" id="start">';
+					//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + prev + '">' + '이전' + '</a>';
+					//tmp += '</li>';
+					for(let i = 1; i <= maxNum; i++) {
+						tmp += '<li class="page-item">';
+						//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + i + '">' + i + '</a>';
+						tmp += '<a class="page-link" id="pagePrev" href="#">' + i + '</a>';
+						tmp += '</li>';
+					}
+					//tmp += '<li class="page-item" id="end">';
+					//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + next + '">' + '다음' + '</a>';
+					//tmp += '</li>';
+				$("#pagingUl").append(tmp);
 				
 				$.each(emp, function(index, emp) {
 					if(emp.section == 1) {
@@ -626,7 +659,6 @@ $(document).ready(function() {
 					} else if (emp.section == 2) {
 						emp.section = "외부";
 					}
-					
 					if(emp.business_name == null) {
 						emp.business_name = "";
 					}
@@ -743,14 +775,16 @@ $(document).ready(function() {
 					$("#empMonthData").append(str);
 					//console.log(JSON.stringify(emp));
 				});
+				// each END
+				
+			
 			},
-			error : function(res) {
-				alert ("AJAX 인력 테이블 오류");
-			}
+			error : function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
 		});
 	});
 	// SearchEvent END
-	
 	
 	$("#insEmp").on("click", function(){
 		

@@ -32,11 +32,6 @@ public class MonthlyHisService {
 		String site_name = mvo.getSite_name();
 		System.out.println("현재 입력 값: " + mvo);
 		
-		if(rank.equals("전체")) {
-			rank = "";
-			mvo.setRank(rank);
-		}
-		
 		/*
 		if(section != 0 && name.isEmpty() == true && rank.equals("전체") && bname == "") {
 			System.out.println("구분 검색");
@@ -64,7 +59,7 @@ public class MonthlyHisService {
 			return mdao.monMultiAllFind(mvo);
 		} else {
 			System.out.println("구분별 검색");
-			System.out.println("VO값 : " + mvo);
+			//System.out.println("VO값 : " + mvo);
 			return mdao.monMultiFind(mvo);
 		}
 	}
@@ -103,5 +98,12 @@ public class MonthlyHisService {
 			e.printStackTrace();
 			return FAIL;
 		}
+	}
+	
+	public int cntFind(MonthVO vo) {
+		if(vo.getSection() == 0) {
+			mdao.cntAllFind(vo);
+		}
+		return mdao.cntFind(vo);
 	}
 }

@@ -55,7 +55,7 @@
 			<p>기타 일수 : ${empStateList.others } 일</p>
 		</div>
 		
-		<div>
+		<div class="text-right">
 			<button type="button" class="btn btn-primary" onClick="window.open('about:blank','_self').self.close();">
 				닫기
 			</button>

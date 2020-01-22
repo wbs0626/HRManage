@@ -1,5 +1,8 @@
 package com.miris.vo;
 
+import lombok.ToString;
+
+@ToString
 public class Pagination {
 	public final int PAGE_SCALE = 10;	// 페이지당 데이터 개수
 	public final int BLOCK = 5;
@@ -29,9 +32,12 @@ public class Pagination {
 		start = (curPage - 1) * PAGE_SCALE + 1;
 		end = start + PAGE_SCALE - 1;
 	}
-
+	
 	public void setTotalPage(int totalCnt) {
 		totalPage = (int) Math.ceil(totalCnt * 1.0 / PAGE_SCALE);
+		if(totalPage == 0) {
+			totalPage++;
+		}
 	}
 
 	public int getTotalPage() {

@@ -73,7 +73,7 @@
 				<tbody id = "stateInfo">
 					<tr>
 						<td>
-							<select class="form-control" id="baseYear" name="baseYear">
+							<select class="form-control" id="baseYear1" name="baseYear">
 								<option value="${info.baseYear }" selected="selected">
 									<c:out value="${info.baseYear }"/></option>
 								<c:if test="${info.baseYear == 2019 }">
@@ -86,11 +86,11 @@
 						</td>
 						<td>
 							<input type="hidden" id="eMonth" value="${info.baseMonth }">
-							<select class="form-control" id="baseMonth0" name="baseMonth">
+							<select class="form-control" id="baseMonth1" name="baseMonth">
 							</select>
 						</td>
 						<td>
-							<select class="form-control" id="business_name0" name="business_name">
+							<select class="form-control" id="business_name1" name="business_name">
 								<option></option>
 								<c:forEach items="${blist }" var="blist">
 									<option><c:out value="${blist.business_name }"/></option>
@@ -98,7 +98,7 @@
 							</select>
 						</td>
 						<td>
-							<select class="form-control" id="site_name0" name="site_id">
+							<select class="form-control" id="site_id1" name="site_id">
 								<option></option>
 								<c:forEach items="${slist }" var="slist">
 									<option value="${slist.site_id }"><c:out value="${slist.site_name }"/></option>
@@ -106,7 +106,7 @@
 							</select>
 						</td>
 						<td>
-							<select class="form-control" id="state0" name="state">
+							<select class="form-control" id="state1" name="state">
 								<option value="1" <c:if test="${info.state == 1}"> selected="selected"</c:if>>Cost</option>
 								<option value="2" <c:if test="${info.state == 2}"> selected="selected"</c:if>>Profit</option>
 							</select>
@@ -153,12 +153,12 @@ $(document).ready(function() {
 	var sId = new Array();
 	
 	var inputArr = new Array(); // 투입 정보 추가 목록
-	
+	 
 	for(let i = 0; i < MONTHS; i++) {
-		$("#baseMonth0").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
+		$("#baseMonth1").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
 	}
 
-	$("#baseMonth0 option[value='"+ NOWMONTH +"']").attr("selected", true);
+	$("#baseMonth1 option[value='"+ NOWMONTH +"']").attr("selected", true);
 
 	$.ajax({
 		url : 'getBsInfo.do',
@@ -168,7 +168,7 @@ $(document).ready(function() {
 				bArr[index] = data.business_name;
 				bState[index] = data.exclusion_state;
 				//console.log("bArr " + index + "번 : " + bArr[index]);
-				console.log("bArr: " + bArr);
+				//console.log("bArr: " + bArr);
 			})
 		}
 	});
@@ -186,7 +186,7 @@ $(document).ready(function() {
 	});
 	
 	$("#addInfoBox").on("click", function(){
-		$("#baseMonth0 option[value='1']").attr("selected", true);
+		$("#baseMonth1 option[value='1']").attr("selected", true);
 		count++;
 		if(count < 13) {
 			let str = '<tr>';
@@ -202,9 +202,9 @@ $(document).ready(function() {
 			str += '<select class="form-control" id="baseMonth' + count + '" name="baseMonth">';
 			for(let i = 1; i < 13; i++) {
 				if(count == i) {
-					str += '<option value="i" selected="selected">' + i + '</option>';
+					str += '<option value="' + i + '" selected="selected">' + i + '</option>';
 				} else {
-					str += '<option value="i">' + i + '</option>';
+					str += '<option value="' + i + '">' + i + '</option>';
 				}
 			}
 			str += '</select>'
@@ -239,48 +239,67 @@ $(document).ready(function() {
 		} else {
 			$("#addInfoBox").attr('disabled', true);
 		}
+		console.log("현재 count : " + count);
 	});
 	
 	$("#empStateRegBtn").on("click", function(){
+		//alert("현재 count : " + count);
+		var loop = 1;
+		//alert("loop 전 : " + loop);
 		
-		if($("#business_name0").val() == null) {
-			$("#business_name0").focus();
-			return;
-		}
-		
-		if($("#site_name0").val() == null) {
-			$("#site_name0").focus();
-			return;
-		}
-		
-		var id = $("#empId").val();
-		var month_remarks = $("#month_remarks").val();
-		
-		if(count == 1) {
+		while(loop <= count) {
+			
+			if($("#business_name" + loop).val() == null) {
+				$("#business_name" + loop).focus();
+				return;
+			}
+			
+			if($("#site_id" + loop).val() == null) {
+				$("#site_id" + loop).focus();
+				return;
+			}
+			
+			var id = $("#empId").val();			
+			var month_remarks = $("#month_remarks").val();
+			
 			var frmData = $('#empStateRegFrm').serializeArray();
 			
-			$("#stateInfo tr").each(function(index, item) {
-				var baseYear = $(this).children("td:eq(0)").children("select").val();
-				var baseMonth = $(this).children("td:eq(1)").children("select").val();
-				var business_name = $(this).children("td:eq(2)").children("select").val();
-				var site = $(this).children("td:eq(3)").children("select").val();
-				var state = $(this).children("td:eq(4)").children("select").val();
-				
-				//inputArr[index] = [baseYear, baseMonth, business_name, site, state];
-				
-				alert("frmData : " + JSON.stringify(frmData));
-				console.log(JSON.stringify(frmData))
-			});
-			// traditional : 배열 객체를 parameter로 보냄
+			var baseYear = $("#baseYear" + loop).val();
+			var baseMonth = $("#baseMonth" + loop).val();
+			var business_name = $("#business_name" + loop).val();
+			var site_id = $("#site_id" + loop).val();
+			var state = $("#state" + loop).val();
+			
+			/* alert(
+					"baseYear : " + baseYear +
+					"\nbaseMonth : " + baseMonth +
+					"\nbusiness_name : " + business_name +
+					"\nsite_id : " + site_id +
+					"\nstate : " + state
+				); */
+			
+			var myArr = new Array();
+			myArr.push({name : "id", value : id});
+			myArr.push({name : "baseYear", value : baseYear});
+			myArr.push({name : "baseMonth", value : baseMonth});
+			myArr.push({name : "business_name", value : business_name});
+			myArr.push({name : "site_id", value : site_id});
+			myArr.push({name : "state", value : state});
+			myArr.push({name : "month_remarks", value : month_remarks});
+			
+			//alert("count : " + count);
+			//alert("frmData : " + JSON.stringify(frmData));
+			//alert("myArr : " + JSON.stringify(myArr));
+			
 			$.ajax({
 				url : 'addState.do',
 				type : 'POST',
-				data : frmData,
+				data : myArr,
 				traditional: true,
 				async : false,
 				success : function(res) {
 					if(res=="OK") {
-						alert("정상 처리되었습니다.");
+						alert("총 " + count + "회중 "+ loop + "건 정상 처리되었습니다.");
 						opener.parent.location.reload();
 						window.close();
 					} else {
@@ -291,11 +310,14 @@ $(document).ready(function() {
 				error : function(request,status,error){
 			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			    }
+				
 			});
-			//alert("Data값 " + JSON.stringify(frmData));
-		} 
+			loop++;
+		};
+		//alert("Data값 " + JSON.stringify(frmData));
+		//alert("loop 후 : " + loop);
 	});
-	
+
 })
 </script>
 </html>

@@ -67,4 +67,12 @@ public class MonthlyHisDAO implements MonthlyHisMapper {
 	public List<MonthVO> monMultiAllFind(MonthVO mvo) {
 		return mapper.monMultiAllFind(mvo);
 	}
+
+	public int cntFind(MonthVO vo) {
+		return mapper.cntFind(vo);
+	}
+
+	public int cntAllFind(MonthVO vo) {
+		return mapper.cntAllFind(vo);
+	}
 }

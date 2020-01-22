@@ -1,5 +1,6 @@
 package com.miris.manager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -55,46 +56,51 @@ public class TableController {
 	}
 	
 	@RequestMapping("tables/inputCurrentState.do")
-	public String currentState(Model model, HttpSession session, String page) {
-		
-		MonthVO mvo = new MonthVO();
+	public String currentState(Model model, HttpSession session, String page, MonthVO vo) {
+
+		Calendar calendar = new GregorianCalendar(Locale.KOREA);
+		int nYear = calendar.get(Calendar.YEAR);
+		int nMonth = calendar.get(Calendar.MONTH) + 1;
+
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		map.put("baseYear", nYear);
+		map.put("baseMonth", nMonth);
+
+		MonthlyRateVO rvo = hs.operationRate(map);
+
+		int input1 = rvo.getMInput1();
+		int possible = rvo.getMPossible();
+		double tmp = ((double) input1 / (double) possible) * 100.0;
+		double operRate = (Math.round(tmp * 100) / 100.0);
+
+		rvo.setRate(operRate);
+		// mvo 데이터 설정
 		int totalPage;
 		int curPage;
 		int totalCnt = es.empCount();
-		
-		if(page == null || page == "") {
+
+		if (page == null || page == "") {
 			page = "1";
 		}
-		
+
 		curPage = Integer.parseInt(page);
-		
+
 		Pagination pa = new Pagination(totalCnt, curPage);
-		
+
 		totalPage = pa.getTotalPage();
 		curPage = pa.getCurPage();
 		
 		
-		Calendar calendar = new GregorianCalendar(Locale.KOREA);
-		int nYear = calendar.get(Calendar.YEAR);
-		int nMonth = calendar.get(Calendar.MONTH) + 1;
-		
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		map.put("baseYear", nYear);
-		map.put("baseMonth", nMonth);
-		
-		MonthlyRateVO rvo = hs.operationRate(map);
-		
-		int input1 = rvo.getMInput1();
-		int possible = rvo.getMPossible();
-		double tmp = ((double)input1 / (double)possible) * 100.0;
-		double operRate = (Math.round(tmp * 100) / 100.0);
-		
-		rvo.setRate(operRate);
-		mvo.setBaseYear(nYear);
-		mvo.setBaseMonth(nMonth);
-		mvo.setPa(pa);
+		vo.setBaseYear(nYear);
+		vo.setBaseMonth(nMonth);
+		vo.setPa(pa);
 
-		List<MonthVO> mList = ms.monEmpDateSearch(mvo);
+		//System.out.println("\ncontroller에요: " + vo);
+		
+		List<MonthVO> mList = new ArrayList<MonthVO>();
+		
+		mList = ms.monEmpDateSearch(vo);
+		
 		List<LocVO> lList = ls.locAllInfo();
 		List<SiteVO> sList = ss.siteAllList();
 		List<RankVO> rList = rs.rankAllFind();
@@ -108,14 +114,15 @@ public class TableController {
 		model.addAttribute("nMonth", nMonth);
 		model.addAttribute("curPage", curPage);
 		model.addAttribute("totalPage", totalPage);
-		
-		String tempId = (String)session.getAttribute("userId");
-		
-		if(tempId == null || tempId.trim().equals("")) {
+
+		String tempId = (String) session.getAttribute("userId");
+
+		if (tempId == null || tempId.trim().equals("")) {
 			return "redirect:../login.do";
 		} else {
 			return "tables/inputCurrentState";
 		}
+
 	}
 	
 	// 인력 정보 수정 창

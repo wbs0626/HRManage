@@ -24,17 +24,15 @@
 			<div class="card-body">
 				<div style="margin: 0px 10px 10px 10px;">
 						<form id="searchForm">
-						<span style="margin:20px">
+						<span style="margin: 20px 0px">
 						    구분 : <select id="select" name="select">
 						    	<option>전체</option>
 						    	<option>이름</option>
-						    </select>
-						    성명 : <input type="text" id="emp_name" name="emp_name">
+						    </select>　
+						    성명 : <input type="text" id="emp_name" name="emp_name">　
 							날짜 : <input type="date" id="htime" name="htime">
 						</span>
-							
-							
-							<span style="float:right"><input type="button" value="현황조회" id="searchBtn"></span>
+							<span style="float:right"><input type="button" class="btn btn-outline-dark" value="현황조회" id="searchBtn"></span>
 						</form>
 					
 				</div>
@@ -94,7 +92,7 @@ $(document).ready(function() {
     }); */
 	
 	// 날짜별 근무 상태표
-	$("#searchBtn").bind("click", function(){
+	$("#searchBtn").on("click", function(){
 		
 		var info = $('#select').val();
 		console.log(info);
@@ -117,9 +115,9 @@ $(document).ready(function() {
 						str += '<td>' + res.others + '</td>';
 						$("#stateContent").append(str);
 					},
-					error : function(res) {
-						alert ("AJAX 통신 오류1-1");
-					}
+					error : function(request,status,error){
+				        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				    }
 				});
 			}
 		} 
@@ -149,12 +147,10 @@ $(document).ready(function() {
 					};
 					
 					var url = "../empLog.do?id=" + emp.id;
-					var winWidth = 100;
-				    var winHeight = 300;
-				    var option = "_blank";
+				    var option = "window.open(this.href,'_blank','width = 500px, height=600px'); return false;";
 					
 					let str = '<tr>';
-					str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
+					str += '<td><a href="' + url + '" onclick="'+ option +'">' + emp.emp_name + '</a></td>';
 					str += '<td>' + emp.rank + '</td>';
 					str += '<td>' + emp.depart_name + '</td>';
 					str += '<td>' + emp.state + '</td>';
@@ -164,9 +160,9 @@ $(document).ready(function() {
 					$("#empData").append(str);
 				});
 			},
-			error : function(res) {
-				alert ("AJAX 통신 오류2");
-			}
+			error : function(request,status,error){
+		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		    }
 		});
 	});
 	

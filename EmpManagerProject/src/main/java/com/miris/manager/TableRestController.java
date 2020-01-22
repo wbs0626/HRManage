@@ -23,6 +23,7 @@ import com.miris.vo.EmpDetailVO;
 import com.miris.vo.EmpVO;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
+import com.miris.vo.Pagination;
 import com.miris.vo.SiteVO;
 
 @RestController
@@ -106,17 +107,42 @@ public class TableRestController {
 		
 		return rvo;
 	}
+
 	
 	@RequestMapping("tables/empMonthDataFind.do")
-	public List<MonthVO> empMonthDataFind(MonthVO mvo) {
+	public List<MonthVO> empMonthDataFind(MonthVO mvo, String page) {
 		List<MonthVO> list = new ArrayList<MonthVO>();
+		
+		//System.out.println("\nrest에요: " + mvo);
+		
+		int totalPage;
+		int curPage;
+
+		int totalCnt = ms.cntFind(mvo);
+
+		if (page == null || page == "") {
+			page = "1";
+		}
+
+		curPage = Integer.parseInt(page);
+
+		Pagination pa = new Pagination(totalCnt, curPage);
+		
+		totalPage = pa.getTotalPage();
+		curPage = pa.getCurPage();
 		
 		String bname = mvo.getBusiness_name();
 		bname.trim();
 		mvo.setBusiness_name(bname);
+		mvo.setPa(pa);
+		
+		//System.out.println("\n\npage 정보: " + page);
+		//System.out.println("mvo 정보: " + mvo);
+		//System.out.println("mvo pa: " + mvo.getPa());
+		//System.out.println("page total: " + pa.getTotalPage());
 		
 		list = ms.monEmpDataFind(mvo);
-		System.out.println("최종값: " + list);
+		//System.out.println("List 크기: " + list.size());
 		return list;
 	}
 	

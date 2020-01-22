@@ -118,7 +118,7 @@ public interface MonthlyHisMapper {
 			+ defStr
 			+ "LEFT OUTER JOIN site s "
 			+ "ON mh.site_id = s.site_id "
-			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate, mh.month_remarks "
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate "
 			+ ") A "
 			+ "WHERE rownum <= #{pa.end} "
 			+ ") B "
@@ -156,10 +156,15 @@ public interface MonthlyHisMapper {
 			+ "ON mh.site_id = s.site_id "
 			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
 	public List<MonthVO> monEmpBNameSearch(MonthVO mvo);
-	// ****************************************************************************
-	// * 다중검색 테스트 ==> 잘되서 위에 검색 옵션 Mapper들 최종 점검후 삭제 예정 *
-	// ****************************************************************************
-	@Select(defStr
+	
+	// 검색 갯수
+	@Select("SELECT count(*) "
+			+ "FROM monthhistory mh RIGHT OUTER JOIN emp e "
+			+ "ON mh.id = e.id "
+			+ "AND mh.baseyear = #{baseYear} "
+			+ "AND mh.basemonth = #{baseMonth} "
+			+ "JOIN ranktable r "
+			+ "ON e.rank = r.rank_name "
 			+ "AND e.section = #{section} "
 			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
 			+ "AND e.rank LIKE '%'||#{rank}||'%' "
@@ -168,6 +173,79 @@ public interface MonthlyHisMapper {
 			+ "ON mh.site_id = s.site_id "
 			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
 			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
+	public int cntFind(MonthVO vo);
+	
+	@Select("SELECT count(*) "
+			+ "FROM monthhistory mh RIGHT OUTER JOIN emp e "
+			+ "ON mh.id = e.id "
+			+ "AND mh.baseyear = #{baseYear} "
+			+ "AND mh.basemonth = #{baseMonth} "
+			+ "JOIN ranktable r "
+			+ "ON e.rank = r.rank_name "
+			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
+			+ "AND e.rank LIKE '%'||#{rank}||'%' "
+			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
+			+ "JOIN site s "
+			+ "ON mh.site_id = s.site_id "
+			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
+	public int cntAllFind(MonthVO vo);
+	
+	// ****************************************************************************
+	// * 다중검색 테스트 ==> 잘되서 위에 검색 옵션 Mapper들 최종 점검후 삭제 예정 *
+	// ****************************************************************************
+//	@Select("SELECT id, section, emp_name, rank, business_name, baseyear, basemonth, site_name, state, "
+//			+ "m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, rank_rate, month_remarks, B.rnum "
+//			+ "FROM ( "
+//			+ "SELECT A.id, A.section, A.emp_name, A.rank, A.business_name, A.baseyear, A.basemonth, "
+//				+ "A.site_name, A.state, "
+//				+ "A.m1, A.m2, A.m3, A.m4, A.m5, A.m6, A.m7, A.m8, A.m9, A.m10, A.m11, A.m12, A.rank_rate, A.month_remarks, rownum AS rnum "
+//			+ "FROM ( "
+//			+ defStr
+//			+ "AND e.section = #{section} "
+//			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
+//			+ "AND e.rank LIKE '%'||#{rank}||'%' "
+//			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
+//			+ "JOIN site s "
+//			+ "ON mh.site_id = s.site_id "
+//			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
+//			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate "
+//			+ ") A "
+//			+ "WHERE rownum <= #{pa.end} "
+//			+ ") B "
+//			+ "WHERE B.rnum >= #{pa.start}")
+//	public List<MonthVO> monMultiFind(MonthVO mvo);
+	
+//	@Select("SELECT id, section, emp_name, rank, business_name, baseyear, basemonth, site_name, state, "
+//			+ "m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, rank_rate, month_remarks, B.rnum "
+//			+ "FROM ( "
+//			+ "SELECT A.id, A.section, A.emp_name, A.rank, A.business_name, A.baseyear, A.basemonth, "
+//				+ "A.site_name, A.state, "
+//				+ "A.m1, A.m2, A.m3, A.m4, A.m5, A.m6, A.m7, A.m8, A.m9, A.m10, A.m11, A.m12, A.rank_rate, A.month_remarks, rownum AS rnum "
+//			+ "FROM ( "
+//			+ defStr
+//			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
+//			+ "AND e.rank LIKE '%'||#{rank}||'%' "
+//			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
+//			+ "JOIN site s "
+//			+ "ON mh.site_id = s.site_id "
+//			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
+//			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate "
+//			+ ") A "
+//			+ "WHERE rownum <= #{pa.end} "
+//			+ ") B "
+//			+ "WHERE B.rnum >= #{pa.start}")
+//	public List<MonthVO> monMultiAllFind(MonthVO mvo);
+	
+	@Select(defStr
+			+ "AND e.section = #{section} "
+			+ "AND e.emp_name LIKE '%'||#{emp_name}||'%' "
+			+ "AND e.rank LIKE '%'||#{rank}||'%' "
+			+ "AND mh.business_name LIKE '%'||#{business_name}||'%' "
+			+ "JOIN site s "
+			+ "ON mh.site_id = s.site_id "
+			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate ")
 	public List<MonthVO> monMultiFind(MonthVO mvo);
 	
 	@Select(defStr
@@ -177,8 +255,9 @@ public interface MonthlyHisMapper {
 			+ "JOIN site s "
 			+ "ON mh.site_id = s.site_id "
 			+ "AND s.site_name LIKE '%'||#{site_name}||'%' "
-			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate")
+			+ "ORDER BY mh.baseYear, mh.baseMonth, r.rank_rate ")
 	public List<MonthVO> monMultiAllFind(MonthVO mvo);
+	
 	
 	// -------------- 회원별 달마다 상태 구분 -----------
 
