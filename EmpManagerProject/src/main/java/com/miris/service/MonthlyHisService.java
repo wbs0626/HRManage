@@ -32,24 +32,7 @@ public class MonthlyHisService {
 		String site_name = mvo.getSite_name();
 		System.out.println("현재 입력 값: " + mvo);
 		
-		/*
-		if(section != 0 && name.isEmpty() == true && rank.equals("전체") && bname == "") {
-			System.out.println("구분 검색");
-			return mdao.monEmpSectionSearch(mvo);
-		} else if(section == 0 && name.isEmpty() == false && rank.equals("전체") && bname == "") {
-			System.out.println("이름 검색");
-			return mdao.monEmpNameSearch(mvo);
-		} else if (section == 0 && name.isEmpty() == true && !rank.equals("전체") && bname == "") {
-			System.out.println("직위 검색");
-			return mdao.monEmpRankSearch(mvo);
-		} else if (section == 0 && name.isEmpty() == true && rank.equals("전체") && bname != "") {
-			System.out.println("업무 검색");
-			return mdao.monEmpBNameSearch(mvo);
-		} else {
-			System.out.println("날짜 검색");
-			return mdao.monEmpDateSearch(mvo);
-		}
-		*/
+		
 		
 		if(section == 0 && name.isEmpty() == true && rank.equals("") && bname == "" && site_name == "") {
 			System.out.println("날짜 검색");
@@ -102,7 +85,7 @@ public class MonthlyHisService {
 	
 	public int cntFind(MonthVO vo) {
 		if(vo.getSection() == 0) {
-			mdao.cntAllFind(vo);
+			return mdao.cntAllFind(vo);
 		}
 		return mdao.cntFind(vo);
 	}

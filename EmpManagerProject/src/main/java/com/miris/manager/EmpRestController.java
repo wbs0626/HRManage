@@ -27,7 +27,7 @@ public class EmpRestController {
 	public String empInsert_ok(EmpVO vo) {
 		String msg = "";
 		
-		System.out.println("들어온 값 : " + vo);
+		System.out.println("입력 값: " + vo);
 		
 		try {	// 같은 이름이 이미 있으면 FAIL
 			if(es.empInsert(vo)) {

@@ -87,6 +87,12 @@ public class EmpService {
 	public boolean empInsert(EmpVO vo) {
 		boolean isSuccess = false;
 		
+		String rDate = vo.getRetire_date();
+		
+		if(rDate == null) {
+			vo.setRetire_date(null);
+		}
+		
 		if(edao.loginIdCheck(vo) == 0) {
 			edao.empInsert(vo);
 			isSuccess = true;

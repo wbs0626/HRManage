@@ -587,14 +587,16 @@ $(document).ready(function() {
 		$("#end").addClass("active");
 	}
 	
-	$("#infoSearch").on("click", function(){
-		var stateView = $("input[type=radio][name=state]:checked").val();
+	$("#infoSearch").on("click", findData);
+	// SearchEvent END
+	
+	
+	function findData(){
 		var formData = $('#empMonthForm').serializeArray();
 		var formSz = $('#empMonthForm').serialize();
 		
 		formData.push({name : "page", value : curPage });
 		console.log("formData: " + JSON.stringify(formData));
-		console.log("formSz: " + formSz);
 		
 		$.ajax({
 			url : 'operation_rate.do',
@@ -618,9 +620,18 @@ $(document).ready(function() {
 		    }
 		});
 		
+		DataLoad(formData);
+	}
+	
+	// 테이블에 데이터 로딩
+	function DataLoad(dataJson) {
+		var stateView = $("input[type=radio][name=state]:checked").val();
+		
+		console.log(dataJson);
+		
 		$.ajax({
 			url : 'empMonthDataFind.do',
-			data : formData,
+			data : dataJson,
 			type : 'POST',
 			success : function(emp) {
 				var maxNum = parseFloat(emp.length) / 10;
@@ -635,22 +646,14 @@ $(document).ready(function() {
 				}
 				
 				$("#empMonthData tr").remove();
-				//console.log(JSON.stringify(emp));
 				
 				$("#pagingUl li").remove();
 				let tmp = '';
-					//tmp += '<li class="page-item" id="start">';
-					//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + prev + '">' + '이전' + '</a>';
-					//tmp += '</li>';
 					for(let i = 1; i <= maxNum; i++) {
 						tmp += '<li class="page-item">';
-						//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + i + '">' + i + '</a>';
-						tmp += '<a class="page-link" id="pagePrev" href="#">' + i + '</a>';
+						tmp += '<a class="page-link" id="pageMove" data-page=' + i +'>' + i + '</a>';
 						tmp += '</li>';
 					}
-					//tmp += '<li class="page-item" id="end">';
-					//tmp += '<a class="page-link" id="pagePrev" href="inputCurrentState.do?' + formSz + "&page=" + next + '">' + '다음' + '</a>';
-					//tmp += '</li>';
 				$("#pagingUl").append(tmp);
 				
 				$.each(emp, function(index, emp) {
@@ -783,8 +786,8 @@ $(document).ready(function() {
 		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		    }
 		});
-	});
-	// SearchEvent END
+	}
+	
 	
 	$("#insEmp").on("click", function(){
 		

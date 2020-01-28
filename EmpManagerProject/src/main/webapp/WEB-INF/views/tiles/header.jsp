@@ -49,7 +49,7 @@
             <!-- <a class="dropdown-item" href="#">관리자</a>
             <a class="dropdown-item" href="#">투입 현황</a>
             <a class="dropdown-item" href="#">근무 상태</a> -->
-            <a class="dropdown-item"><c:out value="${sessionScope.userId }"/>님</a>
+            <a class="dropdown-item" style="font-weight: bold;"><c:out value="${sessionScope.userId }"/>님</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a>
           </div>

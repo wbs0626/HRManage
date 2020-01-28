@@ -198,7 +198,6 @@ public class TableController {
 		List<BusinessVO> blist = bs.businessAllList();
 		List<SiteVO> slist = ss.siteAllList();
 		
-		
 		model.addAttribute("logList", logList);
 		model.addAttribute("blist", blist);
 		model.addAttribute("slist", slist);

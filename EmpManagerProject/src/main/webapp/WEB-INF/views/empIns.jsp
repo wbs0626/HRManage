@@ -120,7 +120,7 @@ $(document).ready(function(){
 	$("#empAddBtn").on("click", function(){
 		$.ajax ({
 			url : 'emp/empInsert_ok.do',
-			data : $("#empInsFrm").serialize(),
+			data : $("#empInsFrm").serializeArray(),
 			type : 'POST',
 			
 			success : function(res) {

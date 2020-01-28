@@ -150,9 +150,9 @@ public interface EmpMapper {
 	public void empDetailUpdate(EmpVO vo);
 	
 	// 직원 등록
-	@Insert("INSERT INTO emp (id, section, emp_name, depart_id, rank, emp_remarks, entry_date, retire_date) "
+	@Insert("INSERT INTO emp (id, section, emp_name, depart_id, rank, emp_remarks, entry_date) "
 			+ "VALUES (#{id}, #{section}, #{emp_name}, #{depart_id}, "
-			+ "#{rank}, #{emp_remarks}, #{entry_date}, #{retire_date})")
+			+ "#{rank}, #{emp_remarks}, #{entry_date})")
 	public void empInsert(EmpVO vo);
 	
 	// 직원 삭제
