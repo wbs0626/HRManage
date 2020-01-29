@@ -487,7 +487,7 @@
 							</li>
 							<c:forEach begin="1" end="${totalPage }" varStatus="i">
 								<li class="page-item">
-									<a class="page-link" id="pageMove" href="inputCurrentState.do?page=${i.count }">${i.count }</a>
+									<a class="page-link" id="pageMove${i.count }" href="inputCurrentState.do?page=${i.count }" data-page="${i.count }">${i.count }</a>
 								</li>
 							</c:forEach>
 							<li class="page-item" id="end">
@@ -557,11 +557,12 @@
 	<!-- /.container-fluid -->
 </body>
 <script type="text/javascript">
+const MONTHS = 12;
+const NOWYEAR = new Date().getFullYear();
+const NOWMONTH = new Date().getMonth() + 1;
+
 $(document).ready(function() {	
-	const MONTHS = 12;
-	const NOWYEAR = new Date().getFullYear();
-	const NOWMONTH = new Date().getMonth() + 1;
-	
+
 	for(var i = 0; i < MONTHS; i++) {
 		$("#baseMonth").append("<option value= "+ (i + 1) +">"+ (i + 1) +"</option>");
 	}
@@ -587,207 +588,9 @@ $(document).ready(function() {
 		$("#end").addClass("active");
 	}
 	
-	$("#infoSearch").on("click", findData);
-	// SearchEvent END
-	
-	
-	function findData(){
-		var formData = $('#empMonthForm').serializeArray();
-		var formSz = $('#empMonthForm').serialize();
-		
-		formData.push({name : "page", value : curPage });
-		console.log("formData: " + JSON.stringify(formData));
-		
-		$.ajax({
-			url : 'operation_rate.do',
-			data : formData,
-			type : 'POST',
-			success : function(res) {
-				$('#monthRateData td').remove();
-				let str = '<td>' + res.mtotal + '</td>';
-				str += '<td>' + res.mexcept + '</td>';
-				str += '<td>' + res.mpossible + '</td>';
-				str += '<td>' + res.minput1 + '</td>';
-				str += '<td>' + '</td>';
-				str += '<td>' + res.mwait + '</td>';
-				str += '<td>' + res.rate + ' %</td>';
-				str += '<td>' + '</td>';
-				$("#monthRateData").append(str);
-				//console.log(JSON.stringify(res));
-			},
-			error : function(request,status,error){
-		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    }
-		});
-		
-		DataLoad(formData);
-	}
-	
-	// 테이블에 데이터 로딩
-	function DataLoad(dataJson) {
-		var stateView = $("input[type=radio][name=state]:checked").val();
-		
-		console.log(dataJson);
-		
-		$.ajax({
-			url : 'empMonthDataFind.do',
-			data : dataJson,
-			type : 'POST',
-			success : function(emp) {
-				var maxNum = parseFloat(emp.length) / 10;
-				var prev = (curPage) - 1;
-				var next = (curPage) + 1;
-				
-				console.log("emp리스트크기: " + emp.length);
-				console.log("총 페이지 수: " + maxNum);
-				
-				if(emp.length % 10 != 0) {
-					maxNum++;
-				}
-				
-				$("#empMonthData tr").remove();
-				
-				$("#pagingUl li").remove();
-				let tmp = '';
-					for(let i = 1; i <= maxNum; i++) {
-						tmp += '<li class="page-item">';
-						tmp += '<a class="page-link" id="pageMove" data-page=' + i +'>' + i + '</a>';
-						tmp += '</li>';
-					}
-				$("#pagingUl").append(tmp);
-				
-				$.each(emp, function(index, emp) {
-					if(emp.section == 1) {
-						emp.section = "내부";
-					} else if (emp.section == 2) {
-						emp.section = "외부";
-					}
-					if(emp.business_name == null) {
-						emp.business_name = "";
-					}
-					if(emp.site_name == null) {
-						emp.site_name = "";
-					}
-					if(emp.month_remarks == null) {
-						emp.month_remarks = "";
-					}
-					
-					let y = $("select[name=baseYear]").val();
-					let m = $("select[name=baseMonth]").val();
-					
-					if(m == 0) {
-						m = NOWMONTH;
-					} 
-					
-					let url = "../empYearHistory.do?id=" + emp.id + "&baseYear=" + y + "&baseMonth=" + m;
-					let option = "window.open(this.href,'_blank','width = 500px, height=600px'); return false;";
-					
-					/* State value array */
-					var mArr = [emp.m1, emp.m2, emp.m3, emp.m4,
-								emp.m5, emp.m6, emp.m7, emp.m8,
-								emp.m9, emp.m10, emp.m11, emp.m12];
-					
-					/* State Color */
-					//var cColor = "#A5DF00";
-					//var pColor = "lightskyblue";					
-				    let str = '<tr>';
-				    str += '<td><input type="checkbox" name="empChk" value="'+ emp.id +'">' + '</td>';
-				    str += '<td>' + emp.section + '</td>';
-				    //str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
-				    str += '<td><a href="'+url+'" onclick="'+ option +'">' + emp.emp_name + '</a></td>';
-					str += '<td>' + emp.rank + '</td>';
-					if(emp.business_name == '출산 휴가') {
-						str += '<td style="background-color: yellow;">' + emp.business_name + '</td>';
-					} else {
-						str += '<td>' + emp.business_name + '</td>';
-					}
-					str += '<td>' + emp.site_name + '</td>';
-					
-					/* 상태 값 */
-					for (let a = 0; a < MONTHS; a++) {
-						// Selectd stateView value
-						if(stateView == 3) {
-							if(mArr[a] == 1 ) {
-								cColor = "#A5DF00";
-								if(a+1 == NOWMONTH) {
-									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
-								} else {
-									str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
-								}
-							} else if(mArr[a] == 2) {
-								if(a+1 <= NOWMONTH) {
-									pColor = "lightskyblue";
-									if(a+1 == NOWMONTH) {
-										str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
-									} else {
-										str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
-									}
-								} else {
-									pColor = "#FE9A2E";
-									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
-								}
-							} else if(mArr[a] == 3) {
-								cColor = "WHITE";
-								if(a+1 == NOWMONTH) {
-									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
-								} else {
-									str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
-								}
-							} else {
-								str+= '<td>' + '</td>'
-							}
-						} else if(stateView == 1) {
-							if(mArr[a] == 1 ) {
-								cColor = "#A5DF00";
-								if(a+1 == NOWMONTH) {
-									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
-								} else {
-									str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
-								}
-							} else {
-								str+= '<td>' + '</td>'
-							}
-						} else if(stateView == 2) {
-							if(mArr[a] == 2) {
-								if(a+1 <= NOWMONTH) {
-									pColor = "lightskyblue";
-									if(a+1 == NOWMONTH) {
-										str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
-									} else {
-										str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
-									}
-								} else {
-									pColor = "#FE9A2E";
-									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
-								}
-							} else if(mArr[a] == 3) {
-								cColor = "WHITE";
-								if(a+1 == NOWMONTH) {
-									str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
-								} else {
-									str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
-								}
-							} else {
-								str+= '<td>' + '</td>'
-							}
-						}
-					}
-					
-					str += '<td>' + emp.month_remarks + '</td>';
-					str += '</tr>'
-					$("#empMonthData").append(str);
-					//console.log(JSON.stringify(emp));
-				});
-				// each END
-				
-			
-			},
-			error : function(request,status,error){
-		        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		    }
-		});
-	}
-	
+	$("#infoSearch").on("click", function(){
+		findData(curPage);
+	});	// 검색-> function에 그냥 함수 넣으면 바로 실행됨
 	
 	$("#insEmp").on("click", function(){
 		
@@ -812,7 +615,6 @@ $(document).ready(function() {
 	});
 	// InsUpd Event END 
 
-	
 	$("#empStateIns").on("click", function(){
 		
 		if($("input[name=empChk]").is(":checked") == false) {
@@ -852,6 +654,208 @@ $(document).ready(function() {
 	// StateIns Event END
 	
 });
+
+function findData(pageNum){
+	var formData = $('#empMonthForm').serializeArray();
+	var formSz = $('#empMonthForm').serialize();
+	var page = pageNum;
+	if(page == null) {
+		console.log("page 값이 null");
+		page = 1;
+	}
+	
+	formData.push({name : "page", value : page });
+	console.log("formData: " + JSON.stringify(formData));
+	console.log("Page값: " + page);
+	
+	$.ajax({
+		url : 'operation_rate.do',
+		data : formData,
+		type : 'POST',
+		success : function(res) {
+ 			$('#monthRateData td').remove();
+			let str = '<td>' + res.mtotal + '</td>';
+			str += '<td>' + res.mexcept + '</td>';
+			str += '<td>' + res.mpossible + '</td>';
+			str += '<td>' + res.minput1 + '</td>';
+			str += '<td>' + '</td>';
+			str += '<td>' + res.mwait + '</td>';
+			str += '<td>' + res.rate + ' %</td>';
+			str += '<td>' + '</td>';
+			$("#monthRateData").append(str);
+			//console.log(JSON.stringify(res));
+		},
+		error : function(request,status,error){
+	        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    }
+	});
+	
+	DataLoad(formData);
+}
+
+// 테이블에 데이터 로드
+function DataLoad(dataJson) {
+	var stateView = $("input[type=radio][name=state]:checked").val();
+	
+	console.log(dataJson);
+	
+	$.ajax({
+		url : 'empMonthDataFind.do',
+		data : dataJson,
+		type : 'POST',
+		success : function(data) {
+			var emp = data.list;
+			var maxNum = data.totalCnt / 10;
+			var prev = (curPage) - 1;
+			var next = (curPage) + 1;
+			
+			if(maxNum % 10 != 0) {
+				maxNum++;
+			}
+			
+			$("#empMonthData tr").remove();
+			
+			// 페이징 처리
+			$("#pagingUl li").remove();
+			let tmp = '';
+				for(let i = 1; i <= maxNum; i++) {
+					tmp += '<li class="page-item">';
+					tmp += '<a class="page-link" data-page='+ i +' onclick="findData('+ i +');">' + i + '</a>';
+					tmp += '</li>';
+				}
+			$("#pagingUl").append(tmp);
+			
+			$.each(emp, function(index, emp) {
+				if(emp.section == 1) {
+					emp.section = "내부";
+				} else if (emp.section == 2) {
+					emp.section = "외부";
+				}
+				if(emp.business_name == null) {
+					emp.business_name = "";
+				}
+				if(emp.site_name == null) {
+					emp.site_name = "";
+				}
+				if(emp.month_remarks == null) {
+					emp.month_remarks = "";
+				}
+				
+				let y = $("select[name=baseYear]").val();
+				let m = $("select[name=baseMonth]").val();
+				
+				if(m == 0) {
+					m = NOWMONTH;
+				} 
+				
+				let url = "../empYearHistory.do?id=" + emp.id + "&baseYear=" + y + "&baseMonth=" + m;
+				let option = "window.open(this.href,'_blank','width = 500px, height=600px'); return false;";
+				
+				/* State value array */
+				var mArr = [emp.m1, emp.m2, emp.m3, emp.m4,
+							emp.m5, emp.m6, emp.m7, emp.m8,
+							emp.m9, emp.m10, emp.m11, emp.m12];
+				
+				/* State Color */
+				//var cColor = "#A5DF00";
+				//var pColor = "lightskyblue";					
+			    let str = '<tr>';
+			    str += '<td><input type="checkbox" name="empChk" value="'+ emp.id +'">' + '</td>';
+			    str += '<td>' + emp.section + '</td>';
+			    //str += '<td><a href="'+url+'" width="'+winWidth+'" height="'+winHeight+'" target="'+option+'">' + emp.emp_name + '</a></td>';
+			    str += '<td><a href="'+url+'" onclick="'+ option +'">' + emp.emp_name + '</a></td>';
+				str += '<td>' + emp.rank + '</td>';
+				if(emp.business_name == '출산 휴가') {
+					str += '<td style="background-color: yellow;">' + emp.business_name + '</td>';
+				} else {
+					str += '<td>' + emp.business_name + '</td>';
+				}
+				str += '<td>' + emp.site_name + '</td>';
+				
+				/* 상태 값 */
+				for (let a = 0; a < MONTHS; a++) {
+					// Selectd stateView value
+					if(stateView == 3) {
+						if(mArr[a] == 1 ) {
+							cColor = "#A5DF00";
+							if(a+1 == NOWMONTH) {
+								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
+							} else {
+								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
+							}
+						} else if(mArr[a] == 2) {
+							if(a+1 <= NOWMONTH) {
+								pColor = "lightskyblue";
+								if(a+1 == NOWMONTH) {
+									str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+								}
+							} else {
+								pColor = "#FE9A2E";
+								str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+							}
+						} else if(mArr[a] == 3) {
+							cColor = "WHITE";
+							if(a+1 == NOWMONTH) {
+								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
+							} else {
+								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
+							}
+						} else {
+							str+= '<td>' + '</td>'
+						}
+					} else if(stateView == 1) {
+						if(mArr[a] == 1 ) {
+							cColor = "#A5DF00";
+							if(a+1 == NOWMONTH) {
+								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'C' + '</td>';
+							} else {
+								str += '<td style="background-color: ' + cColor + ';">' + 'C' + '</td>';
+							}
+						} else {
+							str+= '<td>' + '</td>'
+						}
+					} else if(stateView == 2) {
+						if(mArr[a] == 2) {
+							if(a+1 <= NOWMONTH) {
+								pColor = "lightskyblue";
+								if(a+1 == NOWMONTH) {
+									str += '<td style="background-color: ' + pColor + '; font-weight: bold;">' + 'P' + '</td>';
+								} else {
+									str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+								}
+							} else {
+								pColor = "#FE9A2E";
+								str += '<td style="background-color: ' + pColor + ';">' + 'P' + '</td>';
+							}
+						} else if(mArr[a] == 3) {
+							cColor = "WHITE";
+							if(a+1 == NOWMONTH) {
+								str += '<td style="background-color: ' + cColor + '; font-weight: bold;">' + 'P' + '</td>';
+							} else {
+								str += '<td style="background-color: ' + cColor + ';">' + 'P' +'</td>';
+							}
+						} else {
+							str+= '<td>' + '</td>'
+						}
+					}
+				}
+				
+				str += '<td>' + emp.month_remarks + '</td>';
+				str += '</tr>'
+				$("#empMonthData").append(str);
+				//console.log(JSON.stringify(emp));
+			});
+			// each END
+			
+		
+		},
+		error : function(request,status,error){
+	        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    }
+	});
+}
 
 </script>
 </html>

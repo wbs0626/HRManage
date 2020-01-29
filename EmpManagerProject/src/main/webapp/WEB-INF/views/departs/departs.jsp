@@ -143,9 +143,10 @@ $(document).ready(function(){
 	});
 	
 	$("#depDelBtn").on("click", function(){
+		
 		$("input[name=depChk]:checked").each(function() {
 			var id = $(this).val();
-		
+			
 			$.ajax({
 				url : 'depDel_ok.do',
 				type : 'POST',
@@ -162,10 +163,9 @@ $(document).ready(function(){
 				error : function(request,status,error){
 			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			    }
-			})
+			});
 		});
-	})
-	
+	});
 });
 </script>
 </html>

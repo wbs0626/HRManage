@@ -21,6 +21,7 @@ import com.miris.vo.BusinessVO;
 import com.miris.vo.DepartVO;
 import com.miris.vo.EmpDetailVO;
 import com.miris.vo.EmpVO;
+import com.miris.vo.MonWrapperVO;
 import com.miris.vo.MonthVO;
 import com.miris.vo.MonthlyRateVO;
 import com.miris.vo.Pagination;
@@ -66,8 +67,6 @@ public class TableRestController {
 		// 차후 물어보고 추가할 부분
 		String[] arr = { "전체" };
 
-		//System.out.println("vo 값 : " + ToStringBuilder.reflectionToString(tvo));
-		// == 쓰면 안됨 주소값 다름(문서 참조)
 		if (select.equals(arr[0])) {
 			if(tvo.getHtime().equals("") && tvo.getEmp_name().isEmpty() == false) {
 				data = es.empNameSearch(tvo);
@@ -110,8 +109,10 @@ public class TableRestController {
 
 	
 	@RequestMapping("tables/empMonthDataFind.do")
-	public List<MonthVO> empMonthDataFind(MonthVO mvo, String page) {
+	public MonWrapperVO empMonthDataFind(MonthVO mvo, String page) {
 		List<MonthVO> list = new ArrayList<MonthVO>();
+		MonWrapperVO wrapper = new MonWrapperVO();
+		
 		int curPage;
 		int totalCnt = ms.cntFind(mvo);
 
@@ -128,12 +129,14 @@ public class TableRestController {
 		System.out.println("page 정보: " + pa
 							+ "\ntotalCnt 값: " + totalCnt
 							+ "\ncurPage 값: " + curPage);
-		
 		mvo.setPa(pa);
 		
 		list = ms.monEmpDataFind(mvo);
 		//System.out.println("List 크기: " + list.size());
-		return list;
+		wrapper.setList(list);
+		wrapper.setTotalCnt(totalCnt);
+		
+		return wrapper;
 	}
 	
 	@RequestMapping("empInfoUpd_ok.do")
