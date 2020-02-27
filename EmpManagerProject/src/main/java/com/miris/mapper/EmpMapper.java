@@ -66,13 +66,14 @@ public interface EmpMapper {
 	public int EmpTableCount();
 	
 	// 직원 이름으로 검색
-	@Select("SELECT e.id, e.emp_name, e.rank, d.depart_name, dh.state, l.loc_addr, to_char(dh.history_time, 'YYYY.MM.DD hh24:mm') htime " + 
+	@Select("SELECT e.id, e.emp_name, e.rank, d.depart_name, dh.state, NVL(l.loc_addr, ' ') loc_addr, NVL(TO_CHAR(dh.history_time, 'YYYY.MM.DD hh24:mm'), ' ') htime " + 
 			"FROM emp e JOIN dailyhistory dh " + 
 			"ON e.id = dh.id AND e.emp_name LIKE '%'||#{emp_name}||'%' " +
 			"JOIN departs d "
 			+ "ON e.depart_id = d.depart_id "
 			+ "LEFT OUTER JOIN loc l "
-			+ "ON dh.loc_name = l.loc_name")
+			+ "ON dh.loc_name = l.loc_name "
+			+ "ORDER BY htime desc")
 	public List<EmpDataTableDTO> empNameSearch(EmpDataTableDTO tvo);
 	
 	// 직원 명 검색(직원 관리)

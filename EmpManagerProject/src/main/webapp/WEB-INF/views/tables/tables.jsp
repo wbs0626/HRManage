@@ -40,7 +40,7 @@
 				<div>
 					<table id="dailyEmpStateCount" class= "table table-bordered">
 						<thead>
-							<tr class="table-active">
+							<tr class="table-active text-center">
 								<th>총인원</th>
 								<th>근무</th>
 								<th>휴가</th>
@@ -49,7 +49,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr class="table-light" id="stateContent">
+							<tr class="table-light text-center" id="stateContent">
 							
 							</tr>
 						</tbody>

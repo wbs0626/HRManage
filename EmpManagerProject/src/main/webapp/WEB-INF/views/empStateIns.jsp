@@ -277,7 +277,8 @@ $(document).ready(function() {
 					"\nsite_id : " + site_id +
 					"\nstate : " + state
 				); */
-			
+
+			// SerializeArray() 와 같은 형태로 만들어준다.
 			var myArr = new Array();
 			myArr.push({name : "id", value : id});
 			myArr.push({name : "baseYear", value : baseYear});

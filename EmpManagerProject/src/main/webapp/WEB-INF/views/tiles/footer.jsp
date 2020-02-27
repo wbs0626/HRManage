@@ -2,7 +2,7 @@
 <footer class="sticky-footer">
 	<div class="container my-auto">
 		<div class="copyright text-center my-auto">
-			<span>Copyright © 미르이즈</span>
+			<span>Copyright © wbs</span>
 		</div>
 	</div>
 </footer>
