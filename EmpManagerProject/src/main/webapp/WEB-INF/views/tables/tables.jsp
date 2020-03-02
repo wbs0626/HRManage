@@ -32,7 +32,7 @@
 						    성명 : <input type="text" id="emp_name" name="emp_name">　
 							날짜 : <input type="date" id="htime" name="htime">
 						</span>
-							<span style="float:right"><input type="button" class="btn btn-outline-dark" value="현황조회" id="searchBtn"></span>
+							<span style="float:right"><input type="button" class="btn btn-secondary" value="현황조회" id="searchBtn"></span>
 						</form>
 					
 				</div>
@@ -85,7 +85,7 @@
 $(document).ready(function() {
 	
 	// 날짜 초기값...
-	//document.getElementById('htime').value = new Date().toISOString().substring(0, 10);
+	document.getElementById('htime').value = new Date().toISOString().substring(0, 10);
 	
 	/* $('#dataTable > thead > tr').children().each(function (indexInArray, valueOfElement) { 
         $('#select').append('<option>'+valueOfElement.innerHTML+'</option>');

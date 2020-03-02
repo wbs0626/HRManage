@@ -657,7 +657,7 @@ $(document).ready(function() {
 
 function findData(pageNum){
 	var formData = $('#empMonthForm').serializeArray();
-	var formSz = $('#empMonthForm').serialize();
+	//var formSz = $('#empMonthForm').serialize();
 	var page = pageNum;
 	if(page == null) {
 		console.log("page 값이 null");

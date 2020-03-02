@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Insert title here</title>
+<title>근무 이력</title>
 <link href="resources/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link href="resources/assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="resources/assets/css/sb-admin.css" rel="stylesheet">
